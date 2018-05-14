@@ -1,2 +1,2 @@
 # Panzer_Batallion
-A repo fora recreation of Wii Tanks in Java Greenfoot.
+A repo for a recreation of Wii Tanks in Java Greenfoot.
