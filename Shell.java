@@ -1,20 +1,17 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * Write a description of class Shell here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class Shell extends Actor
 {
     private static final int SHELL_SPEED=6;
     private int direction;
+    private static final int TIMES_ALLOWED_TO_BOUNCE=1;
+    private int timesBounced;
     
     public Shell(int rotation)
     {
         direction=rotation;
         this.setRotation(direction);
+        timesBounced=0;
     }
     
     /**
@@ -27,29 +24,24 @@ public class Shell extends Actor
         
         if(isAtEdge())
         {
-            this.getWorld().removeObject(this);
+        	if(timesBounced<TIMES_ALLOWED_TO_BOUNCE)
+        	{
+        		bounce();
+        	}
+        	else
+        	{
+        		this.getWorld().removeObject(this);
+        	}
         }
     } 
+    
+    private void bounce()
+    {
+    	
+    }
     
     private void move()
     {
         move(SHELL_SPEED);
     }
-    
-    private boolean needsToBeRemoved()
-    {
-        if(this.getX()==0 || this.getX()==this.getWorld().getWidth())
-        {
-            return true;
-        }
-        else if(this.getY()==0 || this.getY()==this.getWorld().getHeight())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
 }
