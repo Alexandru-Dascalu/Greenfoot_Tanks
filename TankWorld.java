@@ -11,6 +11,9 @@ public class TankWorld extends World
     private Cursor customCursor;
     private JPanel panel;
     
+    private static final int PLAYER_SHELLS_ALLOWED=6;
+    private int numPlayerShells;
+    
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -19,6 +22,7 @@ public class TankWorld extends World
     {    
         super(1100, 900, 1);
         tankTarget=new Target();
+        numPlayerShells=0;
         prepare(); 
         
         hideCursor();
@@ -53,5 +57,25 @@ public class TankWorld extends World
     public Target getTankTarget()
     {
         return tankTarget;
+    }
+    
+    public static int getPlayerShellsAllowed()
+    {
+    	return PLAYER_SHELLS_ALLOWED;
+    }
+    
+    public int numOfPlayerShells()
+    {
+    	return numPlayerShells;
+    }
+    
+    public void incrementPlayerShells()
+    {
+    	numPlayerShells++;
+    }
+    
+    public void decrementPlayerShells()
+    {
+    	numPlayerShells--;
     }
 }
