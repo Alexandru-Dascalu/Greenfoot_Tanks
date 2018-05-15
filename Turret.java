@@ -1,25 +1,25 @@
 import greenfoot.*; 
-/**Write a description of class Turret here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
+
 public class Turret extends Actor
 {
     private MouseInfo lastMouseInfo;
     private static final int RATE_OF_FIRE=1000;
     private long lastTimeFired;
     
+    private static int DEFAULT_MOUSE_X=200;
+    private static int DEFAULT_MOUSE_Y=210;
+    
     public Turret(Tank tank)
     {
+        lastMouseInfo=null;
+        lastTimeFired=0;
+        
         World world=tank.getWorld();
         if(world!=null)
         {
             world.addObject(this,tank.getX(),tank.getY());
             tank.getImage().drawImage(this.getImage(),tank.getX(),tank.getY());
         }
-        lastMouseInfo=null;
-        lastTimeFired=0;
     }
     
     
@@ -46,8 +46,8 @@ public class Turret extends Actor
        
        if(lastMouseInfo==null)
        {
-           mouseX=10;
-           mouseY=10;
+           mouseX=DEFAULT_MOUSE_X;
+           mouseY=DEFAULT_MOUSE_Y;
        }
        else
        {
@@ -56,7 +56,7 @@ public class Turret extends Actor
        }
         
        this.turnTowards(mouseX,mouseY);     
-       MyWorld tankWorld=(MyWorld)this.getWorld();
+       TankWorld tankWorld=(TankWorld)this.getWorld();
        tankWorld.getTankTarget().setLocation(mouseX,mouseY);
     }
     
@@ -81,4 +81,11 @@ public class Turret extends Actor
        }
     }
     
+    @Override
+    protected void addedToWorld(World world)
+    {
+    	TankWorld tankWorld=(TankWorld) world;
+    	Target tankTarget=tankWorld.getTankTarget();
+    	turnTowards(tankTarget.getX(),tankTarget.getY());
+    }
 }
