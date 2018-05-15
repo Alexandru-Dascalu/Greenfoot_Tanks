@@ -3,7 +3,7 @@ import greenfoot.*;
 public class Turret extends Actor
 {
     private MouseInfo lastMouseInfo;
-    private static final int RATE_OF_FIRE=1000;
+    private static final int RATE_OF_FIRE=100;
     private long lastTimeFired;
     
     private static int DEFAULT_MOUSE_X=200;
@@ -71,12 +71,16 @@ public class Turret extends Actor
        
        if(lastMouseInfo!=null)
        {
+    	   TankWorld tankWorld=(TankWorld) getWorld();
            if(lastMouseInfo.getButton()==1 && System.currentTimeMillis()-
-                lastTimeFired>RATE_OF_FIRE)
+                lastTimeFired>RATE_OF_FIRE && tankWorld.numOfPlayerShells()<TankWorld.getPlayerShellsAllowed())
            {
                Shell tankShell=new Shell(this.getRotation());
-               this.getWorld().addObject(tankShell,this.getX(),this.getY());
+             
+               tankWorld.addObject(tankShell,this.getX(),this.getY());
+               tankWorld.incrementPlayerShells();
                lastTimeFired=System.currentTimeMillis();
+               
            }
        }
     }
