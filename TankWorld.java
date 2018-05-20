@@ -49,6 +49,19 @@ public class TankWorld extends World
      */
     private void prepare()
     {
+    	WallBlock wallBlock1=new WallBlock();
+    	addObject(wallBlock1,370,360);
+    	WallBlock wallBlock2=new WallBlock();
+    	addObject(wallBlock2,430,360);
+    	WallBlock wallBlock3=new WallBlock();
+    	addObject(wallBlock3,490,360);
+    	WallBlock wallBlock4=new WallBlock();
+    	addObject(wallBlock4,550,360);
+    	WallBlock wallBlock5=new WallBlock();
+    	addObject(wallBlock5,610,360);
+    	WallBlock wallBlock6=new WallBlock();
+    	addObject(wallBlock6,670,360);
+    	
     	addObject(tankTarget,200,210);
         Tank tank = new Tank();
         addObject(tank,900,200);
