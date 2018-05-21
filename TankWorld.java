@@ -82,13 +82,15 @@ public class TankWorld extends World
     	return numPlayerShells;
     }
     
-    public void incrementPlayerShells()
+    public void addObject(Shell shell, int x, int y)
     {
+    	super.addObject(shell, x, y);
     	numPlayerShells++;
     }
     
-    public void decrementPlayerShells()
+    public void removeObject(Shell shell)
     {
+    	super.removeObject(shell);
     	numPlayerShells--;
     }
 }
