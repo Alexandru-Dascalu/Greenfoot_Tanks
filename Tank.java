@@ -1,193 +1,122 @@
-import greenfoot.*;
+import greenfoot.*;  
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Toolkit;
+import javax.swing.*;
+import greenfoot.core.WorldHandler;
 
-public class Tank extends Actor
+public class TankWorld extends World
 {
-	private Turret tankTurret;
-	private GreenfootSound tankDriving;
-	private final static double DIAGONAL=35.362409;
-	private final static double ANGLE=43.85423781591219;
-	public Tank()
-	{
-		super();
-		tankDriving = new GreenfootSound("tank_moving.wav");
-	}
+    private Target tankTarget;
+    private Cursor customCursor;
+    private JPanel panel;
+    
+    private static final int PLAYER_SHELLS_ALLOWED=6;
+    private int numPlayerShells;
+    
+    /**
+     * Constructor for objects of class MyWorld.
+     * 
+     */
+    public TankWorld()
+    {    
+        super(1000, 800, 1,true);
+        tankTarget=new Target();
+        numPlayerShells=0;
+        prepare(); 
+        
+        hideCursor();
+    }
 
-	/**
-	 * Act - do whatever the Tank wants to do. This method is called whenever the
-	 * 'Act' or 'Run' button gets pressed in the environment.
-	 */
-	public void act()
-	{
-		moveAndTurn();
-		playSound();
-	}
-
-	public void moveAndTurn()
-	{
-		if (Greenfoot.isKeyDown("w") && canMoveForwards())
-		{
-			move(2);
-			tankTurret.setLocation(this.getX(), this.getY());
-		}
-
-		if (Greenfoot.isKeyDown("s") && canMoveBackwards())
-		{
-			move(-2);
-			tankTurret.setLocation(this.getX(), this.getY());
-		}
-
-		if (Greenfoot.isKeyDown("a") && canTurnLeft())
-		{
-			turn(-2);
-			tankTurret.turn(-2);
-		}
-
-		if (Greenfoot.isKeyDown("d") && canTurnRight())
-		{
-			turn(2);
-			tankTurret.turn(2);
-		}
-	}
-
-	public boolean canMoveForwards()
-	{
-		Actor forwardLeft;
-		Actor forwardRight;
-		Actor forward;
-
-		forwardRight = getOneObjectAtOffset(getXOffset(true), getYOffset(true), WallBlock.class);
-		forwardLeft = getOneObjectAtOffset(getXOffset(false), getYOffset(false), WallBlock.class);
-		forward= getOneObjectAtOffset(getFrontXOffset(),getFrontYOffset(),WallBlock.class);
-		
-
-		if ((forwardRight == null) && (forwardLeft == null) && (forward==null))
-		{
-			return true;
-		} 
-		else
-		{
-			return false;
-		}
-	}
-
-	public boolean canMoveBackwards()
-	{
-		Actor backwardLeft;
-		Actor backwardRight;
-		Actor backward;
-
-		backwardRight = getOneObjectAtOffset(-getXOffset(false), -getYOffset(false), WallBlock.class);
-		backwardLeft = getOneObjectAtOffset(-getXOffset(true), -getYOffset(true), WallBlock.class);
-		backward= getOneObjectAtOffset(-getFrontXOffset(), -getFrontYOffset(), WallBlock.class);
-		
-		if ((backwardRight == null) && (backwardLeft == null) && (backward==null))
-		{
-			return true;
-		} 
-		else
-		{
-			return false;
-		}
-	}
-	
-	public boolean canTurnRight()
-	{
-		Actor forwardRight;
-		Actor backwardLeft;
-		
-		forwardRight = getOneObjectAtOffset(getXOffset(true), getYOffset(true), WallBlock.class);
-		backwardLeft = getOneObjectAtOffset(-getXOffset(true), -getYOffset(true), WallBlock.class);
-		
-		return ((forwardRight==null) && (backwardLeft==null));
-	}
-	
-	public boolean canTurnLeft()
-	{
-		Actor forwardLeft;
-		Actor backwardRight;
-		
-		forwardLeft = getOneObjectAtOffset(getXOffset(false), getYOffset(false), WallBlock.class);
-		backwardRight = getOneObjectAtOffset(-getXOffset(false), -getYOffset(false), WallBlock.class);
-		
-		return ((forwardLeft==null) && (backwardRight==null));
-	}
-
-	public boolean isMoving()
-	{
-		boolean isMoving = Greenfoot.isKeyDown("w") || Greenfoot.isKeyDown("s") || Greenfoot.isKeyDown("a")
-				|| Greenfoot.isKeyDown("d");
-
-		return isMoving;
-	}
-
-	private int getFrontXOffset()
-	{
-		int degree=getRotation();
-		int xOffset=(int) Math.ceil(25.5*Math.cos(Math.toRadians(degree)));
-		
-		return xOffset;
-	}
-	
-	private int getFrontYOffset()
-	{
-		int degree=getRotation();
-		int yOffset=(int) Math.ceil(25.5*Math.sin(Math.toRadians(degree)));
-		
-		return yOffset;
-	}
-	
-	private int getXOffset(boolean right)
-	{
-		double degree;
-		if(right)
-		{
-			degree = ANGLE+getRotation();
-		}
-		else
-		{
-			degree=getRotation()-ANGLE;
-		}
-
-		int xOffset = (int) Math.ceil(DIAGONAL * Math.cos(Math.toRadians(degree)));
-
-		return xOffset;
-	}
-
-	private int getYOffset(boolean right)
-	{
-		double degree;
-		if(right)
-		{
-			degree = ANGLE+getRotation();
-		}
-		else
-		{
-			degree=getRotation()-ANGLE;
-		}
-		
-		int yOffset = (int) Math.ceil(DIAGONAL * Math.sin(Math.toRadians(degree)));
-
-		return yOffset;
-	}
-
-	public void playSound()
-	{
-		if (isMoving())
-		{
-			if (!tankDriving.isPlaying())
-			{
-				tankDriving.play();
-			}
-		} 
-		else
-		{
-			tankDriving.stop();
-		}
-	}
-
-	protected void addedToWorld(World world)
-	{
-		setRotation(180);
-		this.tankTurret = new Turret(this);
-	}
+    public void act()
+    {
+        panel.setCursor(customCursor);
+    }
+    
+    private void hideCursor()
+    {
+    	Toolkit toolkit=Toolkit.getDefaultToolkit();
+        Point defaultPoint=new Point(0,0);
+        GreenfootImage emptyImage= new GreenfootImage(5,5);
+        customCursor=toolkit.createCustomCursor(emptyImage.getAwtImage(),defaultPoint,
+            "Target");
+        panel=WorldHandler.getInstance().getWorldCanvas(); 
+    }
+   
+    /**
+     * Prepare the world for the start of the program.
+     * That is: create the initial objects and add them to the world.
+     */
+    private void prepare()
+    {
+    	addExternalWalls();
+    	
+    	WallBlock wallBlock1=new WallBlock();
+    	addObject(wallBlock1,370,360);
+    	WallBlock wallBlock2=new WallBlock();
+    	addObject(wallBlock2,430,360);
+    	WallBlock wallBlock3=new WallBlock();
+    	addObject(wallBlock3,490,360);
+    	WallBlock wallBlock4=new WallBlock();
+    	addObject(wallBlock4,550,360);
+    	WallBlock wallBlock5=new WallBlock();
+    	addObject(wallBlock5,610,360);
+    	WallBlock wallBlock6=new WallBlock();
+    	addObject(wallBlock6,670,360);
+    	
+    	addObject(tankTarget,200,210);
+        Tank tank = new Tank();
+        addObject(tank,900,200);
+    }
+    
+    private void addExternalWalls()
+    {
+    	for(int i=30;i<860;i+=60)
+    	{
+    		WallBlock wall=new WallBlock();
+    		addObject(wall,30,i);
+    		wall=new WallBlock();
+    		addObject(wall,970,i);
+    	}
+    
+    	for(int i=90;i+30<1000;i+=60)
+    	{
+    		WallBlock wall=new WallBlock();
+    		addObject(wall,i,30);
+    		wall=new WallBlock();
+    		addObject(wall,i,770);
+    	}
+    }
+    
+    public Target getTankTarget()
+    {
+        return tankTarget;
+    }
+    
+    public static int getPlayerShellsAllowed()
+    {
+    	return PLAYER_SHELLS_ALLOWED;
+    }
+    
+    public int numOfPlayerShells()
+    {
+    	return numPlayerShells;
+    }
+    
+    public void addObject(Shell shell, int x, int y)
+    {
+    	super.addObject(shell, x, y);
+    	numPlayerShells++;
+    }
+    
+    public void removeObject(Shell shell)
+    {
+    	super.removeObject(shell);
+    	numPlayerShells--;
+    }
+    
+    public void remobeObject(Tank tank)
+    {
+    	tank.deleteTank();
+    }
 }
