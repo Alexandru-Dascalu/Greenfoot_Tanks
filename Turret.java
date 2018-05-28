@@ -75,11 +75,26 @@ public class Turret extends Actor
            if(lastMouseInfo.getButton()==1 && System.currentTimeMillis()-
                 lastTimeFired>RATE_OF_FIRE && tankWorld.numOfPlayerShells()<TankWorld.getPlayerShellsAllowed())
            {
-               Shell tankShell=new Shell(this.getRotation(), tankWorld, getX(), getY());
-               lastTimeFired=System.currentTimeMillis();
-               
+        	   Shell tankShell=new Shell(this.getRotation(), tankWorld, getShellX(), getShellY());
+               lastTimeFired=System.currentTimeMillis();   
            }
        }
+    }
+    
+    private int getShellX()
+    {
+    	int rotation=getRotation();
+    	int shellX=getX()+(int)(30*Math.cos(Math.toRadians(rotation)));
+    	
+    	return shellX;
+    }
+    
+    private int getShellY()
+    {
+    	int rotation=getRotation();
+    	int shellY=getY()+(int)(30*Math.sin(Math.toRadians(rotation)));
+    	
+    	return shellY;
     }
     
     @Override
