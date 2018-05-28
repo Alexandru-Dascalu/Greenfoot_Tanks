@@ -6,12 +6,13 @@ public class Tank extends Actor
 	private GreenfootSound tankDriving;
 	private final static double DIAGONAL=35.362409;
 	private final static double ANGLE=43.85423781591219;
+	
 	public Tank()
 	{
 		super();
-		tankDriving = new GreenfootSound("tank_moving.wav");
+		tankDriving = new GreenfootSound("tank_moving_1.wav");
 	}
-
+	
 	/**
 	 * Act - do whatever the Tank wants to do. This method is called whenever the
 	 * 'Act' or 'Run' button gets pressed in the environment.
@@ -39,13 +40,11 @@ public class Tank extends Actor
 		if (Greenfoot.isKeyDown("a") && canTurnLeft())
 		{
 			turn(-2);
-			tankTurret.turn(-2);
 		}
 
 		if (Greenfoot.isKeyDown("d") && canTurnRight())
 		{
 			turn(2);
-			tankTurret.turn(2);
 		}
 	}
 
@@ -189,5 +188,12 @@ public class Tank extends Actor
 	{
 		setRotation(180);
 		this.tankTurret = new Turret(this);
+	}
+	
+	public void deleteTank()
+	{
+		TankWorld world=(TankWorld) getWorld();
+		world.removeObject(tankTurret);
+		world.removeObject(this);
 	}
 }
