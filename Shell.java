@@ -6,17 +6,19 @@ public class Shell extends Actor
     private static final int SHELL_SPEED=6;
     private static final int TIMES_ALLOWED_TO_BOUNCE=1;
     private final static int PI_RADIANS=180;
-    private final static int DESTROY_DELAY=40;
     
-    private final long creationTime;
     private int timesBounced;
+    private Tank parentTank;
+    private boolean destroyParent;
     
-    public Shell(int rotation, TankWorld world, int x, int y)
+    public Shell(int rotation, Tank parent, int x, int y)
     {
         setRotation(rotation);
         timesBounced=0;
+        parentTank=parent;
+        destroyParent=false;
+        TankWorld world=(TankWorld) parentTank.getWorld();
         world.addObject(this, x, y);
-        creationTime=System.currentTimeMillis();
     }
     
     /**
@@ -61,11 +63,16 @@ public class Shell extends Actor
     		removeShell=true;
     	}
     	
-    	if(!intersectTanks.isEmpty())
+    	if(!intersectTanks.contains(parentTank))
     	{
+    		destroyParent=true;
+    	}
+    	
+    	if(!intersectTanks.isEmpty())
+    	{  		
     		for(Tank t: intersectTanks)
     		{
-    			if(creationTime+DESTROY_DELAY<System.currentTimeMillis())
+    			if((t.equals(parentTank) && destroyParent) || !t.equals(parentTank))
     			{
     				t.deleteTank();
     				removeShell=true;

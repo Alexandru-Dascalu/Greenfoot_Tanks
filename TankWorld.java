@@ -7,7 +7,8 @@ import greenfoot.core.WorldHandler;
 
 public class TankWorld extends World
 {
-    private Target tankTarget;
+    private final Target tankTarget;
+    private final Tank playerTank;
     private Cursor customCursor;
     private JPanel panel;
     
@@ -20,9 +21,11 @@ public class TankWorld extends World
      */
     public TankWorld()
     {    
-        super(1100, 900, 1);
+        super(1000, 800, 1,true);
         tankTarget=new Target();
         numPlayerShells=0;
+        playerTank=new Tank();
+        
         prepare(); 
         
         hideCursor();
@@ -49,6 +52,8 @@ public class TankWorld extends World
      */
     private void prepare()
     {
+    	addExternalWalls();
+    	
     	WallBlock wallBlock1=new WallBlock();
     	addObject(wallBlock1,370,360);
     	WallBlock wallBlock2=new WallBlock();
@@ -62,9 +67,28 @@ public class TankWorld extends World
     	WallBlock wallBlock6=new WallBlock();
     	addObject(wallBlock6,670,360);
     	
-    	addObject(tankTarget,200,210);
-        Tank tank = new Tank();
-        addObject(tank,900,200);
+    	addObject(tankTarget,200,200);
+        
+        addObject(playerTank,900,200);
+    }
+    
+    private void addExternalWalls()
+    {
+    	for(int i=30;i<860;i+=60)
+    	{
+    		WallBlock wall=new WallBlock();
+    		addObject(wall,30,i);
+    		wall=new WallBlock();
+    		addObject(wall,970,i);
+    	}
+    
+    	for(int i=90;i+30<1000;i+=60)
+    	{
+    		WallBlock wall=new WallBlock();
+    		addObject(wall,i,30);
+    		wall=new WallBlock();
+    		addObject(wall,i,770);
+    	}
     }
     
     public Target getTankTarget()
@@ -92,5 +116,10 @@ public class TankWorld extends World
     {
     	super.removeObject(shell);
     	numPlayerShells--;
+    }
+    
+    public void removeObject(Tank tank)
+    {
+    	tank.deleteTank();
     }
 }

@@ -1,13 +1,20 @@
 #BlueJ class context
 comment0.target=Shell
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Shell\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=rotation
-comment1.target=Shell(int)
+comment1.params=rotation\ parent\ x\ y
+comment1.target=Shell(int,\ Tank,\ int,\ int)
 comment2.params=
 comment2.target=void\ act()
 comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ Shell\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
 comment3.params=
-comment3.target=void\ move()
+comment3.target=boolean\ destroyTargets()
 comment4.params=
-comment4.target=boolean\ needsToBeRemoved()
-numComments=5
+comment4.target=boolean\ hitsWall()
+comment5.params=
+comment5.target=void\ move()
+comment6.params=
+comment6.target=void\ bounce()
+comment7.params=direction
+comment7.target=int\ getMirroredVertically(int)
+comment8.params=direction
+comment8.target=int\ getMirroredHorizontally(int)
+numComments=9
