@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Turret
+comment1.params=tank
+comment1.target=Turret(Tank)
+comment10.params=
+comment10.target=void\ deleteTurret()
+comment2.params=
+comment2.target=void\ act()
+comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ Turret\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+comment3.params=
+comment3.target=TargetLine[]\ getTargetLines()
+comment4.params=
+comment4.target=void\ aim()
+comment5.params=
+comment5.target=void\ fire()
+comment6.params=
+comment6.target=boolean\ lmbClicked()
+comment7.params=
+comment7.target=int\ getShellX()
+comment7.text=private\ boolean\ lmbClicked()\r\n\ \ \ \ {\r\n\ \ \ \ \tMouseInfo\ mouse\=Greenfoot.getMouseInfo();\r\n\ \ \ \ \ \ \ \ int\ mButtonClicked;\r\n\ \ \ \ \ \ \ \ \r\n\ \ \ \ \ \ \ \ \r\n\ \ \ \ \ \ \ \ if(mouse\!\=null)\r\n\ \ \ \ \ \ \ \ {\r\n\ \ \ \ \ \ \ \ \ \ \ \ mButtonClicked\=mouse.getButton();\r\n\ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ else\r\n\ \ \ \ \ \ \ \ {\r\n\ \ \ \ \ \ \ \ \tmButtonClicked\=0;\r\n\ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ \r\n\ \ \ \ \ \ \ \ if(lmbPressStart\!\=0)\r\n\ \ \ \ \ \ \ \ {\r\n\ \ \ \ \ \ \ \ \tlong\ current\=System.currentTimeMillis();\r\n\ \ \ \ \ \ \ \ \tif(mButtonClicked\!\=1\ &&\ current<\=lmbPressStart+165)\r\n\ \ \ \ \ \ \ \ \t{\r\n\ \ \ \ \ \ \ \ \t\tSystem.out.println(mouse.hashCode());\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ System.out.println(mouse);\r\n\ \ \ \ \ \ \ \ \t\tSystem.out.println("Time\ "+\ current);\r\n\ \ \ \ \ \ \ \ \t\tSystem.out.println("button\:"+\ mButtonClicked);\r\n\ \ \ \ \ \ \ \ \t\tSystem.out.println("Start\:\ "+lmbPressStart);\r\n\ \ \ \ \ \ \ \ \t\tlmbPressStart\=0;\r\n\ \ \ \ \ \ \ \ \t\treturn\ true;\r\n\ \ \ \ \ \ \ \ \t}\r\n\ \ \ \ \ \ \ \ \telse\ if(mButtonClicked\!\=1\ &&\ System.currentTimeMillis()>lmbPressStart+165)\r\n\ \ \ \ \ \ \ \ \t{\r\n\ \ \ \ \ \ \ \ \t\tlmbPressStart\=0;\r\n\ \ \ \ \ \ \ \ \t}\r\n\ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ else\r\n\ \ \ \ \ \ \ \ {\r\n\ \ \ \ \ \ \ \ \tif(mButtonClicked\=\=1)\r\n\ \ \ \ \ \ \ \ \t{\r\n\ \ \ \ \ \ \ \ \t\tSystem.out.println("Pressed\ again\:\ ");\r\n\ \ \ \ \ \ \ \ \t\tSystem.out.println(mouse.hashCode());\r\n\ \ \ \ \ \ \ \ \t\tSystem.out.println(mouse);\r\n\ \ \ \ \ \ \ \ \t\tlmbPressStart\=System.currentTimeMillis();\r\n\ \ \ \ \ \ \ \ \t}\r\n\ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ \r\n\ \ \ \ \ \ \ \ return\ false;\r\n}
+comment8.params=
+comment8.target=int\ getShellY()
+comment9.params=world
+comment9.target=void\ addedToWorld(greenfoot.World)
+numComments=11
