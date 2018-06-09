@@ -50,6 +50,8 @@ public class Shell extends Actor
     {
     	List<Shell> intersectShells=getIntersectingObjects(Shell.class);
     	List<Tank> intersectTanks=getIntersectingObjects(Tank.class);
+    	List<LandMine> intersectMines=getIntersectingObjects(LandMine.class);
+    	
     	TankWorld world=(TankWorld) getWorld();
     	boolean removeShell=false;
     	
@@ -78,6 +80,16 @@ public class Shell extends Actor
     				removeShell=true;
     			}
     		}
+    	}
+    	
+    	if(!intersectMines.isEmpty())
+    	{
+    		for(LandMine m: intersectMines)
+    		{
+    			world.removeObject(m);
+    		}
+    		
+    		removeShell=true;
     	}
     	
     	if(removeShell)
