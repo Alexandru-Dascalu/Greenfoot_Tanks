@@ -2,15 +2,16 @@ import greenfoot.*;
 
 public class Tank extends Actor
 {
-	private Turret tankTurret;
-	private GreenfootSound tankDriving;
-	private final static double DIAGONAL=35.362409;
-	private final static double ANGLE=43.85423781591219;
+	protected Turret tankTurret;
+	protected static final String DRIVING_SOUND_NAME="tank_moving_1.wav";
+	protected GreenfootSound drivingSound;
+	protected final static double DIAGONAL=35.362409;
+	protected final static double ANGLE=43.85423781591219;
 	
 	public Tank()
 	{
 		super();
-		tankDriving = new GreenfootSound("tank_moving_1.wav");
+		drivingSound = new GreenfootSound(DRIVING_SOUND_NAME);
 	}
 	
 	/**
@@ -19,33 +20,7 @@ public class Tank extends Actor
 	 */
 	public void act()
 	{
-		moveAndTurn();
 		playSound();
-	}
-
-	public void moveAndTurn()
-	{
-		if (Greenfoot.isKeyDown("w") && canMoveForwards())
-		{
-			move(2);
-			tankTurret.setLocation(this.getX(), this.getY());
-		}
-
-		if (Greenfoot.isKeyDown("s") && canMoveBackwards())
-		{
-			move(-2);
-			tankTurret.setLocation(this.getX(), this.getY());
-		}
-
-		if (Greenfoot.isKeyDown("a") && canTurnLeft())
-		{
-			turn(-2);
-		}
-
-		if (Greenfoot.isKeyDown("d") && canTurnRight())
-		{
-			turn(2);
-		}
 	}
 
 	public boolean canMoveForwards()
@@ -113,10 +88,7 @@ public class Tank extends Actor
 
 	public boolean isMoving()
 	{
-		boolean isMoving = Greenfoot.isKeyDown("w") || Greenfoot.isKeyDown("s") || Greenfoot.isKeyDown("a")
-				|| Greenfoot.isKeyDown("d");
-
-		return isMoving;
+		return true;
 	}
 
 	private int getFrontXOffset()
@@ -169,18 +141,18 @@ public class Tank extends Actor
 		return yOffset;
 	}
 
-	public void playSound()
+	protected void playSound()
 	{
 		if (isMoving())
 		{
-			if (!tankDriving.isPlaying())
+			if (!drivingSound.isPlaying())
 			{
-				tankDriving.play();
+				drivingSound.play();
 			}
 		} 
 		else
 		{
-			tankDriving.stop();
+			drivingSound.stop();
 		}
 	}
 
