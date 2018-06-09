@@ -8,7 +8,7 @@ import greenfoot.core.WorldHandler;
 public class TankWorld extends World
 {
     private final Target tankTarget;
-    private final Tank playerTank;
+    private final PlayerTank playerTank;
     private Cursor customCursor;
     private JPanel panel;
     
@@ -24,7 +24,7 @@ public class TankWorld extends World
         super(1000, 800, 1,true);
         tankTarget=new Target();
         numPlayerShells=0;
-        playerTank=new Tank();
+        playerTank=new PlayerTank();
         
         prepare(); 
         
@@ -70,6 +70,9 @@ public class TankWorld extends World
     	addObject(tankTarget,200,200);
         
         addObject(playerTank,900,200);
+        
+        BrownTank enemyTank=new BrownTank();
+        addObject(enemyTank, 300, 500);
     }
     
     private void addExternalWalls()

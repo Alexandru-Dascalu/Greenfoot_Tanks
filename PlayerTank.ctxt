@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=PlayerTank
+comment1.params=
+comment1.target=void\ act()
+comment2.params=
+comment2.target=void\ moveAndTurn()
+comment3.params=
+comment3.target=boolean\ isMoving()
+comment3.text=private\ void\ layMines()\r\n\t{\r\n\t\tWorld\ world\=\ getWorld();\r\n\t\t\r\n\t\tif(mmbClicked())\r\n\ \ \ \ \ \ \ \ {\r\n\ \ \ \ \ \t\ \ \ LandMine\ mine\=new\ LandMine();\r\n\ \ \ \ \ \t\ \ \ world.addObject(mine,\ getX(),\ getY());\r\n\ \ \ \ \ \ \ \ }\r\n\t}\r\n\t\r\n\tprivate\ boolean\ mmbClicked()\r\n\t{\r\n\t\tPlayerTurret\ playerTurret\=(PlayerTurret)\ tankTurret;\r\n\t\tTankWorld\ world\=getWorldOfType(TankWorld.class);\r\n\t\t\r\n\t\tif(playerTurret.getMouseButton()\=\=2)\r\n\t\t{\r\n\t\t\tSystem.out.println(Greenfoot.mouseClicked(world.getTankTarget()));\r\n\t\t}\r\n\t\treturn\ (Greenfoot.mouseClicked(world.getTankTarget())\ &&\ playerTurret.getMouseButton()\=\=2);\r\n}
+comment4.params=world
+comment4.target=void\ addedToWorld(greenfoot.World)
+numComments=5
