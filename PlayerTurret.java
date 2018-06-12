@@ -58,6 +58,17 @@ public class PlayerTurret extends Turret
        }
         
        this.turnTowards(mouseX,mouseY);
+       
+      /* if(mouse!=null)
+       {
+    	   double deltaX=mouseX-getX();
+    	   double deltaY=mouseY-getY();
+    	   double hypotenuse=Math.sqrt(deltaX*deltaX+deltaY*deltaY);
+    	   
+    	   double angle=Math.toDegrees(Math.asin(deltaX/hypotenuse));
+    	   System.out.println("Real angle: "+angle);
+    	   System.out.println("After aiming: "+getRotation());
+       }*/
        TankWorld tankWorld=(TankWorld)this.getWorld();
        tankWorld.getTankTarget().setLocation(mouseX,mouseY);
     }
@@ -77,11 +88,13 @@ public class PlayerTurret extends Turret
     	   TankWorld tankWorld=(TankWorld) getWorld();
            if(lmbClicked() && tankWorld.numOfPlayerShells()<TankWorld.getPlayerShellsAllowed())
            {
-        	   Shell tankShell=new Shell(this.getRotation(), tank, getShellX(), getShellY());
+        	   int rotation=this.getRotation();
+        	   //System.out.println("Before firing:"+rotation);
+        	   Shell tankShell=new Shell(rotation, tank, getShellX(), getShellY());
            }
            else if(mmbClicked())
            {
-        	   LandMine mine=new LandMine();
+        	   LandMine mine=new LandMine(tank);
          	   world.addObject(mine, getX(), getY());
            }
        }
