@@ -4,7 +4,7 @@ import java.util.List;
 public class Shell extends Actor
 {
     private static final int SHELL_SPEED=6;
-    private static final int TIMES_ALLOWED_TO_BOUNCE=1;
+    public static final int TIMES_ALLOWED_TO_BOUNCE=1;
     private final static int PI_RADIANS=180;
     
     private int timesBounced;
@@ -50,7 +50,6 @@ public class Shell extends Actor
     {
     	List<Shell> intersectShells=getIntersectingObjects(Shell.class);
     	List<Tank> intersectTanks=getIntersectingObjects(Tank.class);
-    	List<LandMine> intersectMines=getIntersectingObjects(LandMine.class);
     	
     	TankWorld world=(TankWorld) getWorld();
     	boolean removeShell=false;
@@ -80,16 +79,6 @@ public class Shell extends Actor
     				removeShell=true;
     			}
     		}
-    	}
-    	
-    	if(!intersectMines.isEmpty())
-    	{
-    		for(LandMine m: intersectMines)
-    		{
-    			world.removeObject(m);
-    		}
-    		
-    		removeShell=true;
     	}
     	
     	if(removeShell)
