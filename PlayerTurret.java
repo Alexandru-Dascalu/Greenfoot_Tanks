@@ -90,7 +90,7 @@ public class PlayerTurret extends Turret
            {
         	   int rotation=this.getRotation();
         	   //System.out.println("Before firing:"+rotation);
-        	   Shell tankShell=new Shell(rotation, tank, getShellX(), getShellY());
+        	   Shell tankShell=new Shell(rotation, tank, getShellX(), getShellY(),true);
            }
            else if(mmbClicked())
            {
