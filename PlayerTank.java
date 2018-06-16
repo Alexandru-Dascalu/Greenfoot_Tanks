@@ -2,6 +2,11 @@ import greenfoot.*;
 
 public class PlayerTank extends Tank
 {
+	public PlayerTank(int startX, int startY)
+	{
+		super(startX,startY);
+	}
+	
 	@Override
 	public void act()
 	{
