@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import javax.swing.*;
 import greenfoot.core.WorldHandler;
+import java.util.List;
 
 public class TankWorld extends World
 {
@@ -13,8 +14,14 @@ public class TankWorld extends World
     private JPanel panel;
     
     private static final int PLAYER_SHELLS_ALLOWED=6;
+    private static final String MISSION_FAILED="mission_failed.png";
+    private static final String GAME_OVER="game_over.png";
+    private static final String MISSION_CLEARED="mission_cleared.png";
     private int numPlayerShells;
-    
+    private int level;
+    private int enemyTanks;
+    private int playerLives;
+    private boolean showStartScreen;
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -24,7 +31,10 @@ public class TankWorld extends World
         super(1000, 800, 1,true);
         tankTarget=new Target();
         numPlayerShells=0;
-        playerTank=new PlayerTank();
+        playerTank=new PlayerTank(900,200);
+        level=1;
+        playerLives=3;
+        showStartScreen=true;
         
         prepare(); 
         
@@ -33,6 +43,11 @@ public class TankWorld extends World
 
     public void act()
     {
+    	if(showStartScreen)
+    	{
+    		showStartScreen();
+    	}
+    	
         panel.setCursor(customCursor);
     }
     
@@ -46,11 +61,38 @@ public class TankWorld extends World
         panel=WorldHandler.getInstance().getWorldCanvas(); 
     }
    
+    private void prepare()
+    {
+    	List<Actor> actors=getObjects(Actor.class);
+    	
+    	for(Actor a: actors)
+    	{
+    		removeObject(a);
+    	}
+    	
+    	switch(level)
+    	{
+    		case 1:
+    			prepareLevel1();
+    			break;
+    		default:
+    			Greenfoot.stop();
+    			break;
+    	}
+    	
+    	LivesMeter livesMeter=new LivesMeter();
+        addObject(livesMeter,100,25);
+        livesMeter.act();
+        
+        EnemyCount enemyCount=new EnemyCount();
+        addObject(enemyCount,500,23);
+        enemyCount.act();
+    }
     /**
      * Prepare the world for the start of the program.
      * That is: create the initial objects and add them to the world.
      */
-    private void prepare()
+    private void prepareLevel1()
     {
     	addExternalWalls();
     	
@@ -71,8 +113,75 @@ public class TankWorld extends World
         
         addObject(playerTank,900,200);
         
-        BrownTank enemyTank=new BrownTank();
+        BrownTank enemyTank=new BrownTank(300,500);
         addObject(enemyTank, 300, 500);
+        enemyTanks=1;
+    }
+    
+    private void showStartScreen()
+    {
+    	StartScreen levelStart=new StartScreen(this);
+    	addObject(levelStart,500,400);
+    	Greenfoot.delay(300);
+    	removeObject(levelStart);
+    	Greenfoot.delay(200);
+    	showStartScreen=false;
+    }
+    
+    private void missionCleared()
+    {
+    	Actor missionCleared=new WallBlock();
+    	missionCleared.setImage(new GreenfootImage(MISSION_CLEARED));
+    	addObject(missionCleared,500,400);
+    	
+    	Greenfoot.delay(300);
+    	level++;
+    	prepare();
+    	
+    	removeObject(missionCleared);
+    	showStartScreen=true;
+    }
+    
+    private void reloadLevel()
+    {
+    	Actor missionFail=new WallBlock();
+    	missionFail.setImage(new GreenfootImage(MISSION_FAILED));
+    	addObject(missionFail,500,400);
+    	Greenfoot.delay(300);
+    	removeObject(missionFail);
+    	
+    	List<Tank> tanks=getObjects(Tank.class);
+    	List<Shell> shells=getObjects(Shell.class);
+    	List<LandMine> mines=getObjects(LandMine.class);
+    	
+    	for(LandMine lm: mines)
+    	{
+    		removeObject(lm);
+    	}
+    	
+    	for(Shell s: shells)
+    	{
+    		removeObject(s);
+    	}
+    	
+    	for(Tank t: tanks)
+    	{
+    		t.reloadTank();
+    	}
+    	
+    	addObject(playerTank,900,200);
+    	tankTarget.setLocation(200, 200);
+    	showStartScreen=true;
+    }
+    
+    private void gameOver()
+    {
+    	Actor gameOver=new WallBlock();
+    	gameOver.setImage(new GreenfootImage(GAME_OVER));
+    	addObject(gameOver,500,400);
+    	
+    	Greenfoot.delay(300);
+    	Greenfoot.stop();
     }
     
     private void addExternalWalls()
@@ -109,20 +218,65 @@ public class TankWorld extends World
     	return numPlayerShells;
     }
     
+    public int getPlayerLives()
+    {
+    	return playerLives;
+    }
+    
+    public int getLevel()
+    {
+    	return level;
+    }
+    
+    public int getNrEnemyTanks()
+    {
+    	return enemyTanks;
+    }
+    
     public void addObject(Shell shell, int x, int y)
     {
     	super.addObject(shell, x, y);
-    	numPlayerShells++;
+    	//if(shell.isPlayerShell())
+    	//{
+    		numPlayerShells++;
+    	//}
+    	
+    	//System.out.println(numPlayerShells);
     }
     
     public void removeObject(Shell shell)
     {
     	super.removeObject(shell);
-    	numPlayerShells--;
+    	//if(shell.isPlayerShell())
+    	//{
+    		numPlayerShells--;
+    	//}
     }
     
     public void removeObject(Tank tank)
     {
     	tank.deleteTank();
+    	
+    	if(tank.getClass()==PlayerTank.class)
+    	{
+    		playerLives--;
+    		if(playerLives>0)
+    		{
+    			reloadLevel();
+    		}
+    		else
+    		{
+    			gameOver();
+    		}
+    	}
+    	else
+    	{
+    		enemyTanks--;
+    		
+    		if(enemyTanks==0)
+    		{
+    			missionCleared();
+    		}
+    	}
     }
 }

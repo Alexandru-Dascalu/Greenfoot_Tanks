@@ -2,6 +2,11 @@ import greenfoot.*;
 
 public class BrownTank extends Tank
 {
+	public BrownTank(int startX, int startY)
+	{
+		super(startX,startY);
+	}
+	
 	@Override
 	public boolean isMoving()
 	{

@@ -30,7 +30,7 @@ public class Turret extends Actor
      
     protected void fire()
     {
-    	Shell tankShell=new Shell(this.getRotation(), tank, getShellX(), getShellY());
+    	Shell tankShell=new Shell(this.getRotation(), tank, getShellX(), getShellY(),false);
     }
     
     protected int getShellX()

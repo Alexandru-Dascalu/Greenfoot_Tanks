@@ -7,10 +7,14 @@ public class Tank extends Actor
 	protected GreenfootSound drivingSound;
 	protected final static double DIAGONAL=35.362409;
 	protected final static double ANGLE=43.85423781591219;
+	protected final int startX;
+	protected final int startY;
 	
-	public Tank()
+	public Tank(int startX, int startY)
 	{
 		super();
+		this.startX=startX;
+		this.startY=startY;
 		drivingSound = new GreenfootSound(DRIVING_SOUND_NAME);
 	}
 	
@@ -172,5 +176,17 @@ public class Tank extends Actor
 		World world= getWorld();
 		tankTurret.deleteTurret();
 		world.removeObject(this);
+	}
+	
+	public void reloadTank()
+	{
+		TankWorld world=getWorldOfType(TankWorld.class);
+		if(world!=null)
+		{
+			setLocation(startX,startY);
+			tankTurret.setLocation(startX, startY);
+			setRotation(180);
+			tankTurret.setRotation(180);
+		}
 	}
 }
