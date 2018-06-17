@@ -4,6 +4,7 @@ public class BrownTurret extends Turret
 {
 	private static final int DETECT_INTERVAL=10;
 	private static final int FIRE_COOLDOWN=1500;
+	private static final int SHELLS_ALLOWED=2;
 	
 	private boolean finishTurn;
 	private int nextRotation;
@@ -17,16 +18,16 @@ public class BrownTurret extends Turret
 		lastFiring=0;
 	}
 	
-	public void act() 
+	public void fire()
 	{
-		aim();
-		
 		if(detectTarget())
 		{
-			if(lastFiring+FIRE_COOLDOWN<System.currentTimeMillis())
+			if((lastFiring+FIRE_COOLDOWN<System.currentTimeMillis()) &&
+					liveShells<SHELLS_ALLOWED)
 			{
-				fire();
+				super.fire();
 				lastFiring=System.currentTimeMillis();
+				liveShells++;
 			}
 		}
 	}
@@ -104,7 +105,7 @@ public class BrownTurret extends Turret
 		return false;
 	}
 	
-	private void aim()
+	public void aim()
 	{	
 		if(finishTurn)
 		{
