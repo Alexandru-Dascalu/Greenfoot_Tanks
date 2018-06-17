@@ -13,11 +13,10 @@ public class TankWorld extends World
     private Cursor customCursor;
     private JPanel panel;
     
-    private static final int PLAYER_SHELLS_ALLOWED=6;
     private static final String MISSION_FAILED="mission_failed.png";
     private static final String GAME_OVER="game_over.png";
     private static final String MISSION_CLEARED="mission_cleared.png";
-    private int numPlayerShells;
+   
     private int level;
     private int enemyTanks;
     private int playerLives;
@@ -30,7 +29,6 @@ public class TankWorld extends World
     {    
         super(1000, 800, 1,true);
         tankTarget=new Target();
-        numPlayerShells=0;
         playerTank=new PlayerTank(900,200);
         level=1;
         playerLives=3;
@@ -208,16 +206,6 @@ public class TankWorld extends World
         return tankTarget;
     }
     
-    public static int getPlayerShellsAllowed()
-    {
-    	return PLAYER_SHELLS_ALLOWED;
-    }
-    
-    public int numOfPlayerShells()
-    {
-    	return numPlayerShells;
-    }
-    
     public int getPlayerLives()
     {
     	return playerLives;
@@ -233,24 +221,10 @@ public class TankWorld extends World
     	return enemyTanks;
     }
     
-    public void addObject(Shell shell, int x, int y)
-    {
-    	super.addObject(shell, x, y);
-    	//if(shell.isPlayerShell())
-    	//{
-    		numPlayerShells++;
-    	//}
-    	
-    	//System.out.println(numPlayerShells);
-    }
-    
     public void removeObject(Shell shell)
     {
+    	shell.getTank().getTurret().decLiveShells();
     	super.removeObject(shell);
-    	//if(shell.isPlayerShell())
-    	//{
-    		numPlayerShells--;
-    	//}
     }
     
     public void removeObject(Tank tank)

@@ -5,8 +5,10 @@ public class PlayerTurret extends Turret
 	private static final int DEFAULT_MOUSE_X=200;
     private static final int DEFAULT_MOUSE_Y=200;
     
+    private static final int SHELLS_ALLOWED=6;
 	private static TargetLine[] targetLines;
 	private static MouseInfo lastMouseInfo;
+	
 	private long lmbPressStart;
 	
 	public PlayerTurret(Tank tank)
@@ -18,7 +20,7 @@ public class PlayerTurret extends Turret
 		TankWorld world=getWorldOfType(TankWorld.class);
 		targetLines=new TargetLine[TargetLine.NR_LINES];
         Target playerTarget=world.getTankTarget();
-        
+       
         for (int i = 0;  i< TargetLine.NR_LINES; i++)
         {
         	targetLines[i]=new TargetLine(this, playerTarget,i+1);
@@ -27,15 +29,7 @@ public class PlayerTurret extends Turret
         }
 	}
 	
-	@Override
-	public void act()
-	{
-		aim();
-		
-		fire();
-	}
-	
-	private void aim()
+	public void aim()
     {
        MouseInfo mouse=Greenfoot.getMouseInfo();
         
@@ -73,7 +67,7 @@ public class PlayerTurret extends Turret
        tankWorld.getTankTarget().setLocation(mouseX,mouseY);
     }
 	
-	protected void fire()
+	public void fire()
     {
        MouseInfo mouse=Greenfoot.getMouseInfo();
        World world= getWorld();
@@ -86,11 +80,12 @@ public class PlayerTurret extends Turret
        if(lastMouseInfo!=null)
        {
     	   TankWorld tankWorld=(TankWorld) getWorld();
-           if(lmbClicked() && tankWorld.numOfPlayerShells()<TankWorld.getPlayerShellsAllowed())
+           if(lmbClicked() && liveShells<SHELLS_ALLOWED)
            {
         	   int rotation=this.getRotation();
         	   //System.out.println("Before firing:"+rotation);
-        	   Shell tankShell=new Shell(rotation, tank, getShellX(), getShellY(),true);
+        	   Shell tankShell=new Shell(rotation, tank, getShellX(), getShellY());
+        	   liveShells++;
            }
            else if(mmbClicked())
            {

@@ -11,7 +11,6 @@ public class PlayerTank extends Tank
 	public void act()
 	{
 		moveAndTurn();
-		//layMines();
 		super.act();
 	}
 	

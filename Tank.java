@@ -25,6 +25,9 @@ public class Tank extends Actor
 	public void act()
 	{
 		playSound();
+		
+		tankTurret.aim();
+		tankTurret.fire();
 	}
 
 	public boolean canMoveForwards()
