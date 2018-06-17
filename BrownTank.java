@@ -7,14 +7,6 @@ public class BrownTank extends Tank
 		super(startX,startY);
 	}
 	
-	public void act()
-	{
-		super.act();
-		
-		tankTurret.aim();
-		tankTurret.fire();
-	}
-	
 	@Override
 	public boolean isMoving()
 	{
