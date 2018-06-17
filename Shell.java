@@ -10,9 +10,8 @@ public class Shell extends Actor
     private int timesBounced;
     private Tank parentTank;
     private boolean destroyParent;
-    private boolean isPlayerShell;
     
-    public Shell(int rotation, Tank parent, int x, int y, boolean isPlayerShell)
+    public Shell(int rotation, Tank parent, int x, int y)
     {
         setRotation(rotation);
         timesBounced=0;
@@ -20,7 +19,6 @@ public class Shell extends Actor
         destroyParent=false;
         TankWorld world=(TankWorld) parentTank.getWorld();
         world.addObject(this, x, y);
-        this.isPlayerShell=isPlayerShell;
     }
     
     /**
@@ -190,8 +188,8 @@ public class Shell extends Actor
     	return newDirection;
     }
     
-    public boolean isPlayerShell()
+    public Tank getTank()
     {
-    	return isPlayerShell;
+    	return parentTank;
     }
 }
