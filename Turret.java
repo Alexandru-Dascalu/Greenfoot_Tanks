@@ -3,12 +3,14 @@ import greenfoot.*;
 public class Turret extends Actor
 {
     protected Tank tank;
+    protected int liveShells;
     
     public Turret(Tank tank)
     {
     	super();
         this.tank=tank;
         TankWorld world=tank.getWorldOfType(TankWorld.class);
+        liveShells=0;
         
         if(world!=null)
         {
@@ -16,21 +18,15 @@ public class Turret extends Actor
             tank.getImage().drawImage(this.getImage(),tank.getX(),tank.getY());
         }
     }
-    
-    
-    /**
-     * Act - do whatever the Turret wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    @Override
-    public void act() 
-    {
-        
-    }
      
-    protected void fire()
+    public void fire()
     {
-    	Shell tankShell=new Shell(this.getRotation(), tank, getShellX(), getShellY(),false);
+    	Shell tankShell=new Shell(this.getRotation(), tank, getShellX(), getShellY());
+    }
+    
+    public void aim()
+    {
+    	
     }
     
     protected int getShellX()
@@ -47,6 +43,11 @@ public class Turret extends Actor
     	int shellY=getY()+(int)(30*Math.sin(Math.toRadians(rotation)));
     	
     	return shellY;
+    }
+    
+    public void decLiveShells()
+    {
+    	liveShells--;
     }
     
     @Override
