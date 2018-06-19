@@ -12,7 +12,7 @@ public class UIDisplay extends Actor
 	
 	public UIDisplay()
 	{
-		data=0;
+		data=-1;
 	}
 	
     /**
