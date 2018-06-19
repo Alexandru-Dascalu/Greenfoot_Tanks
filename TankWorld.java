@@ -16,7 +16,8 @@ public class TankWorld extends World
     private static final String MISSION_FAILED="mission_failed.png";
     private static final String GAME_OVER="game_over.png";
     private static final String MISSION_CLEARED="mission_cleared.png";
-   
+    private static final String GAME_WIN="game_Win.png";
+    
     private int level;
     private int enemyTanks;
     private int playerLives;
@@ -61,7 +62,7 @@ public class TankWorld extends World
    
     private void prepare()
     {
-    	List<Actor> actors=getObjects(Actor.class);
+    	List<Actor> actors=getObjects(null);
     	
     	for(Actor a: actors)
     	{
@@ -74,8 +75,8 @@ public class TankWorld extends World
     			prepareLevel1();
     			break;
     		default:
-    			Greenfoot.stop();
-    			break;
+    			gameWin();
+    			return;
     	}
     	
     	LivesMeter livesMeter=new LivesMeter();
@@ -120,9 +121,9 @@ public class TankWorld extends World
     {
     	StartScreen levelStart=new StartScreen(this);
     	addObject(levelStart,500,400);
-    	Greenfoot.delay(300);
+    	Greenfoot.delay(50);
     	removeObject(levelStart);
-    	Greenfoot.delay(200);
+    	Greenfoot.delay(50);
     	showStartScreen=false;
     }
     
@@ -131,13 +132,21 @@ public class TankWorld extends World
     	Actor missionCleared=new WallBlock();
     	missionCleared.setImage(new GreenfootImage(MISSION_CLEARED));
     	addObject(missionCleared,500,400);
-    	
     	Greenfoot.delay(300);
+    	
     	level++;
+    	removeObject(missionCleared);
     	prepare();
     	
-    	removeObject(missionCleared);
     	showStartScreen=true;
+    }
+    
+    private void gameWin()
+    {
+    	Actor gameWin=new WallBlock();
+    	gameWin.setImage(new GreenfootImage(GAME_WIN));
+    	addObject(gameWin,500,400);
+    	Greenfoot.stop();
     }
     
     private void reloadLevel()
