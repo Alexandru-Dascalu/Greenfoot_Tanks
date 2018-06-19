@@ -3,9 +3,9 @@ import greenfoot.*;
 public class PlayerTurret extends Turret
 {
 	private static final int DEFAULT_MOUSE_X=200;
-    private static final int DEFAULT_MOUSE_Y=200;
+   	private static final int DEFAULT_MOUSE_Y=200;
     
-    private static final int SHELLS_ALLOWED=6;
+    	private static final int SHELLS_ALLOWED=6;
 	private static TargetLine[] targetLines;
 	private static MouseInfo lastMouseInfo;
 	
