@@ -53,9 +53,7 @@ public class Turret extends Actor
     @Override
     protected void addedToWorld(World world)
     {
-    	TankWorld tankWorld=(TankWorld) world;
-    	Target tankTarget=tankWorld.getTankTarget();
-    	turnTowards(tankTarget.getX(),tankTarget.getY());
+    	setRotation(tank.getRotation());
     }
     
     public void deleteTurret()
