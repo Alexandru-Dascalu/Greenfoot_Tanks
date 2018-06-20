@@ -5,7 +5,7 @@ public class PlayerTurret extends Turret
 	private static final int DEFAULT_MOUSE_X = 200;
 	private static final int DEFAULT_MOUSE_Y = 200;
 	
-    private static final int SHELLS_ALLOWED=6;
+    	private static final int SHELLS_ALLOWED=6;
 	private static TargetLine[] targetLines;
 	
 	public PlayerTurret(Tank tank)
@@ -57,17 +57,24 @@ public class PlayerTurret extends Turret
 	}
   
 	public TargetLine[] getTargetLines()
-    {
-    	return targetLines;
-    }
+    	{
+    		return targetLines;
+   	 }
+	
+	protected void addedToWorld(World world)
+	{
+		TankWorld tankWorld=(TankWorld) world;
+		Target target=tankWorld.getTankTarget();
+		turnTowards(target.getX(),target.getY());
+	}
 	
 	public void deleteTurret()
 	{
 		World world= getWorld();
 		for(TargetLine tl: targetLines)
-    	{
+    		{
     		world.removeObject(tl);
-    	}
+    		}
 		
 		super.deleteTurret();
 	}
