@@ -9,7 +9,7 @@ import java.util.List;
 public class TankWorld extends World
 {
     private final Target tankTarget;
-    private final PlayerTank playerTank;
+    private PlayerTank playerTank;
     private Cursor customCursor;
     private JPanel panel;
     
@@ -30,7 +30,6 @@ public class TankWorld extends World
     {    
         super(1000, 800, 1,true);
         tankTarget=new Target();
-        playerTank=new PlayerTank(900,200);
         level=1;
         playerLives=3;
         showStartScreen=true;
@@ -110,6 +109,7 @@ public class TankWorld extends World
     	
     	addObject(tankTarget,200,200);
         
+        playerTank=new PlayerTank(900,200);
         addObject(playerTank,900,200);
         
         BrownTank enemyTank=new BrownTank(300,500);
