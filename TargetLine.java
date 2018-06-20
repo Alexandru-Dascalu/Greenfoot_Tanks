@@ -9,13 +9,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class TargetLine extends Actor
 {
 	public static final int NR_LINES=9;
-	private static Turret PLAYER_TURRET;
+	private static PlayerTurret PLAYER_TURRET;
 	private static Target PLAYER_TARGET;
 	//private static int lastNumber=0;
 	
 	private final int number;
 	
-	public TargetLine(Turret playerTurret, Target playerTarget, int number)
+	public TargetLine(PlayerTurret playerTurret, Target playerTarget, int number)
 	{
 		PLAYER_TURRET=playerTurret;
 		PLAYER_TARGET=playerTarget;

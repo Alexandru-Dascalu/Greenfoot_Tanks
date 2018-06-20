@@ -75,7 +75,15 @@ public class PlayerTank extends Tank
 	
 	private boolean mmbClicked()
 	{
-		return (Greenfoot.mouseClicked(null) && lastMouseInfo.getButton()==2);
+		if(lastMouseInfo!=null)
+		{
+			return (Greenfoot.mouseClicked(null) && lastMouseInfo.getButton()==2);
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 	
 	private boolean lmbClicked()
@@ -111,8 +119,8 @@ public class PlayerTank extends Tank
 	@Override
 	public boolean isMoving()
 	{
-		boolean isMoving = Greenfoot.isKeyDown("w") || Greenfoot.isKeyDown("s") || Greenfoot.isKeyDown("a")
-				|| Greenfoot.isKeyDown("d");
+		boolean isMoving = Greenfoot.isKeyDown("w") || Greenfoot.isKeyDown("s") 
+				|| Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d");
 
 		return isMoving;
 	}
