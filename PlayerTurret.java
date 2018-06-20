@@ -2,20 +2,15 @@ import greenfoot.*;
 
 public class PlayerTurret extends Turret
 {
-	private static final int DEFAULT_MOUSE_X=200;
-   	private static final int DEFAULT_MOUSE_Y=200;
-    
-    	private static final int SHELLS_ALLOWED=6;
-	private static TargetLine[] targetLines;
-	private static MouseInfo lastMouseInfo;
+	private static final int DEFAULT_MOUSE_X = 200;
+	private static final int DEFAULT_MOUSE_Y = 200;
 	
-	private long lmbPressStart;
+    private static final int SHELLS_ALLOWED=6;
+	private static TargetLine[] targetLines;
 	
 	public PlayerTurret(Tank tank)
 	{
 		super(tank);
-		lastMouseInfo=null;
-		lmbPressStart=0;
 		
 		TankWorld world=getWorldOfType(TankWorld.class);
 		targetLines=new TargetLine[TargetLine.NR_LINES];
@@ -30,131 +25,36 @@ public class PlayerTurret extends Turret
 	}
 	
 	public void aim()
-    {
-       MouseInfo mouse=Greenfoot.getMouseInfo();
-        
-       if(mouse!=null)
-       {
-           lastMouseInfo=mouse;
-       }
-       
-       int mouseX, mouseY;
-       
-       if(lastMouseInfo==null)
-       {
-           mouseX=DEFAULT_MOUSE_X;
-           mouseY=DEFAULT_MOUSE_Y;
-       }
-       else
-       {
-           mouseX=lastMouseInfo.getX();
-           mouseY=lastMouseInfo.getY();
-       }
-        
-       this.turnTowards(mouseX,mouseY);
-       
-      /* if(mouse!=null)
-       {
-    	   double deltaX=mouseX-getX();
-    	   double deltaY=mouseY-getY();
-    	   double hypotenuse=Math.sqrt(deltaX*deltaX+deltaY*deltaY);
-    	   
-    	   double angle=Math.toDegrees(Math.asin(deltaX/hypotenuse));
-    	   System.out.println("Real angle: "+angle);
-    	   System.out.println("After aiming: "+getRotation());
-       }*/
-       TankWorld tankWorld=(TankWorld)this.getWorld();
-       tankWorld.getTankTarget().setLocation(mouseX,mouseY);
-    }
-	
-	public void fire()
-    {
-       MouseInfo mouse=Greenfoot.getMouseInfo();
-       World world= getWorld();
-       
-       if(mouse!=null)
-       {
-           lastMouseInfo=mouse;
-       }
-       
-       if(lastMouseInfo!=null)
-       {
-    	   TankWorld tankWorld=(TankWorld) getWorld();
-           if(lmbClicked() && liveShells<SHELLS_ALLOWED)
-           {
-        	   int rotation=this.getRotation();
-        	   //System.out.println("Before firing:"+rotation);
-        	   Shell tankShell=new Shell(rotation, tank, getShellX(), getShellY());
-        	   liveShells++;
-           }
-           else if(mmbClicked())
-           {
-        	   LandMine mine=new LandMine(tank);
-         	   world.addObject(mine, getX(), getY());
-           }
-       }
-    }
-    
-    private boolean lmbClicked()
-    {
-    	MouseInfo mouse=Greenfoot.getMouseInfo();
-    	
-    	if(mouse!=null)
-    	{
-    		lastMouseInfo=mouse;
-    	}
-    	
-    	if(lmbPressStart!=0)
-    	{
-    		long currentTime=System.currentTimeMillis();
-    		
-    		if(currentTime<=lmbPressStart+165 && Greenfoot.mouseClicked(null) && lastMouseInfo.getButton()==1)
-    		{
-    			lmbPressStart=0;
-    			return true;
-    		}
-    		else if(currentTime>lmbPressStart+165 && Greenfoot.mouseClicked(null))
-    		{
-    			lmbPressStart=0;
-    		}
-    	}
-    	else
-    	{
-    		if(Greenfoot.mousePressed(null) && lastMouseInfo.getButton()==1)
-    		{
-    			lmbPressStart=System.currentTimeMillis();
-    		}
-    	}
-    	
-    	return false;
-    }
-    
-    private boolean mmbClicked()
-    {
-    	TankWorld world=getWorldOfType(TankWorld.class);
-    
-    	if(Greenfoot.mouseClicked(world.getTankTarget()) && lastMouseInfo.getButton()==2)
-    	{
-    		return true;
-    	}
-    	else
-    	{
-    		return false;
-    	}
-    }
-    
-	public int getMouseButton()
 	{
-		if(lastMouseInfo!=null)
+		int mouseX, mouseY;
+		MouseInfo mouseInfo=((PlayerTank)tank).getMouseInfo();
+		
+		if (mouseInfo == null)
 		{
-			return lastMouseInfo.getButton();
-		}
+			mouseX = DEFAULT_MOUSE_X;
+			mouseY = DEFAULT_MOUSE_Y;
+		} 
 		else
 		{
-			return 0;
+			mouseX = mouseInfo.getX();
+			mouseY = mouseInfo.getY();
 		}
+
+		this.turnTowards(mouseX, mouseY);
+
+		TankWorld tankWorld = (TankWorld) this.getWorld();
+		tankWorld.getTankTarget().setLocation(mouseX, mouseY);
 	}
-	
+
+	public void fire()
+	{
+		if (liveShells < SHELLS_ALLOWED)
+		{
+			liveShells++;
+			super.fire();
+		} 
+	}
+  
 	public TargetLine[] getTargetLines()
     {
     	return targetLines;
