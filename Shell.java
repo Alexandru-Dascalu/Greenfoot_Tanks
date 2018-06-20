@@ -6,6 +6,7 @@ public class Shell extends Actor
     private static final int SHELL_SPEED=6;
     public static final int TIMES_ALLOWED_TO_BOUNCE=1;
     private final static int PI_RADIANS=180;
+    private static final int LOOK_AHEAD=11;
     
     private int timesBounced;
     private Tank parentTank;
@@ -95,41 +96,14 @@ public class Shell extends Actor
     	{
     		return true;
     	}
+    	else if(getOneObjectAtOffset(getXOffset(),getYOffset(),WallBlock.class)
+    			!=null)
+    	{
+    		return true;
+    	}
     	else
     	{
-    		int xDirection, yDirection;
-        	int rotation=getRotation();
-        	
-        	if(rotation>90 && rotation<270)
-        	{
-        		xDirection=-1;
-        	}
-        	else
-        	{
-        		xDirection=1;
-        	}
-        	
-        	if(rotation<180)
-        	{
-        		yDirection=1;
-        	}
-        	else
-        	{
-        		yDirection=-1;
-        	}
-        	
-	    	if(getOneObjectAtOffset(xDirection*SHELL_SPEED,0,WallBlock.class)!=null)
-	    	{
-	    		return true;
-	    	}
-	    	else if(getOneObjectAtOffset(0,yDirection*SHELL_SPEED,WallBlock.class)!=null)
-	    	{
-	    		return true;
-	    	}
-	    	else
-	    	{
-	    		return false;
-	    	}
+    		return false;
     	}
     }
     
@@ -140,40 +114,72 @@ public class Shell extends Actor
     
     private void bounce()
     {
+    	String quadrant="";
     	
-    	int xDirection, yDirection;
-    	int rotation=getRotation();
-    	
-    	if(rotation>90 && rotation<270)
+    	WallBlock wallBlock=(WallBlock)getOneObjectAtOffset(getXOffset(),
+    			getYOffset(),WallBlock.class);
+    	if(wallBlock!=null)
     	{
-    		xDirection=-1;
+    		quadrant=wallBlock.getQuadrant(this.getX(), this.getY());
     	}
     	else
     	{
-    		xDirection=1;
+    		if(getX()==0)
+    		{
+    			quadrant="left";
+    		}
+    		else if(getX()==999)
+    		{
+    			quadrant="right";
+    		}
+    		else if(getY()==0)
+    		{
+    			quadrant="top";
+    		}
+    		else if(getY()==799)
+    		{
+    			quadrant="bottom";
+    		}
     	}
     	
-    	if(rotation<180)
-    	{
-    		yDirection=1;
-    	}
-    	else
-    	{
-    		yDirection=-1;
-    	}
-    	
-    	if((getX()==0 || getX()==999) || getOneObjectAtOffset(xDirection*SHELL_SPEED,0,WallBlock.class)!=null)
+    	if(quadrant.equals("left") || quadrant.equals("right"))
     	{
     		int newDirection=getMirroredVertically(getRotation());
     		setRotation(newDirection);
     	}
-    	else if((getY()==0 || getY()==799) || getOneObjectAtOffset(0,yDirection*SHELL_SPEED,WallBlock.class)!=null)
+    	else if(quadrant.equals("top") || quadrant.equals("bottom"))
     	{
     		int newDirection=getMirroredHorizontally(getRotation());
     		setRotation(newDirection);
     	}
     	
     	timesBounced++;
+    }
+    
+    private int getXOffset()
+    {
+    	double rotation=Math.toRadians(getRotation());
+    	int xOffset=(int) Math.round(LOOK_AHEAD*Math.cos(rotation));
+    	
+    	if(xOffset==0)
+    	{
+    		xOffset=(int)Math.signum(rotation);
+    	}
+    	
+    	return xOffset;
+    }
+    
+    private int getYOffset()
+    {
+    	double rotation=Math.toRadians(getRotation());
+    	int yOffset=(int) Math.round(LOOK_AHEAD*Math.sin(rotation));
+    	
+    	if(yOffset==0)
+    	{
+    		yOffset=(int)Math.signum(rotation);
+    	}
+    	
+    	return yOffset;
     }
     
     private int getMirroredVertically(int direction)
