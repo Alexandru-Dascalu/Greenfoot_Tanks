@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=LivesMeter
+comment1.params=
+comment1.target=int\ getNewData()
+comment2.params=
+comment2.target=java.lang.String\ getShapeImage()
+comment3.params=
+comment3.target=java.lang.String\ getText()
+comment4.params=
+comment4.target=int\ getTextXPos()
+comment5.params=
+comment5.target=int\ getTextYPos()
+numComments=6
