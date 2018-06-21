@@ -1,9 +1,0 @@
-#BlueJ class context
-comment0.target=BrownTurret
-comment1.params=brownTank
-comment1.target=BrownTurret(BrownTank)
-comment2.params=
-comment2.target=void\ act()
-comment3.params=
-comment3.target=void\ aim()
-numComments=4
