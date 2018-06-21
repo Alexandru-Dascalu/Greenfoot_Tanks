@@ -232,7 +232,7 @@ public class TankWorld extends World
     
     public void removeObject(Shell shell)
     {
-    	shell.getTank().getTurret().decLiveShells();
+    	shell.getParentTank().getTurret().decLiveShells();
     	super.removeObject(shell);
     }
     
