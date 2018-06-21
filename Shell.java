@@ -31,14 +31,14 @@ public class Shell extends Actor
     private static final int SHELL_SPEED=6;
     
     /**The number of times the shell is allowed to bounce off a wall.The value
-     *  is {@value 1}, because the shell image is 10 by 11 pixels.*/
+     *  is {@value 1}.*/
     public static final int TIMES_ALLOWED_TO_BOUNCE=1;
     
     /**The number of degrees in <i>pi</i> (or arround 3.14) radians.*/
     private final static int PI_RADIANS=180;
     
     /**The average distance at which the shell looks ahead to check if it will
-     * hit a wall. The value is{@value 11}.*/
+     * hit a wall. The value is {@value 11}, because the shell image is 10 by 11 pixels.*/
     private static final int LOOK_AHEAD=11;
     
     /**The number of times the shell has bounced off a wall so far.*/
