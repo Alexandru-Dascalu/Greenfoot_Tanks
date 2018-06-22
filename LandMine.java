@@ -12,13 +12,17 @@ public class LandMine extends Actor
 	private static final int COUNT_DOWN=12500;
 	private static final int START_FLASHING=8000;
 	private static final int FLASH_INTERVAL=500;
-	private static final int EXPLOSION_RANGE=80;
+	private static final int EXPLOSION_RANGE=100;
 	
 	private final long creationTime;
+	private Tank parentTank;
+	private boolean destroyParent;
 	
-	public LandMine()
+	public LandMine(Tank parentTank)
 	{
 		creationTime=System.currentTimeMillis();
+		this.parentTank=parentTank;
+		destroyParent=false;
 	}
 	
     /**
@@ -34,7 +38,8 @@ public class LandMine extends Actor
     		flashRed();
     	}
     	
-        if(currentTime>creationTime+COUNT_DOWN)
+        if((currentTime>creationTime+COUNT_DOWN) || hitByShell() || 
+        		steppedOnByTank())
         {
         	explode();
         }
@@ -84,5 +89,33 @@ public class LandMine extends Actor
     	}
     	
     	getWorld().removeObject(this);
+    }
+    
+    private boolean hitByShell()
+    {
+    	return !getIntersectingObjects(Shell.class).isEmpty();
+    }
+    
+    private boolean steppedOnByTank()
+    {
+    	List<Tank> tanks=getIntersectingObjects(Tank.class);
+    	
+    	if(!tanks.contains(parentTank))
+    	{
+    		destroyParent=true;
+    	}
+    	
+    	if(tanks.size()>1)
+    	{
+    		return true;
+    	}
+    	else if (tanks.size()==1 && tanks.get(0)==parentTank)
+    	{
+    		return destroyParent;
+    	}
+    	else
+    	{
+    		return false;
+    	}
     }
 }
