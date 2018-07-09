@@ -2,8 +2,8 @@ import greenfoot.*;
 
 /**
  * <p><b>File name: </b> Tank.java
- * @version 1.6
- * @since 14.05.2018
+ * @version 1.5
+ * @since 02.05.2018
  * <p><p><b>Last modification date: </b> 09.07.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
@@ -22,9 +22,9 @@ import greenfoot.*;
  * <p>	-1.2 - Made the tank play a sound when moving.
  * <p>	-1.3 - Made the tank generate a simple tank turret on top if it when it
  * is added to the world.
- * <p> -1.4 - Made the tank detect collisions with walls and not move into wall
+ * <p>  -1.4 - Made the tank detect collisions with walls and not move into wall
  * blocks.
- * <p> -1.5 - Modified this class to be a general tank class and moved part of 
+ * <p>  -1.5 - Modified this class to be a general tank class and moved part of 
  * code into the PlayerTank class, which inherits from this.
  */
 
