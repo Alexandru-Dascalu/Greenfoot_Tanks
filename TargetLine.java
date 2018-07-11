@@ -58,82 +58,82 @@ public class TargetLine extends Actor
 		this.number=number;
 	}
 	
-    /**
-     * Act - do whatever the TargetLine wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     * In this case, it ensures the TargetLine has the same orientation as the
-     * player turret and it is in the correct place.
-     */
-	@Override
-    public void act() 
-    {
+   	/**
+     	* Act - do whatever the TargetLine wants to do. This method is called whenever
+     	* the 'Act' or 'Run' button gets pressed in the environment.
+     	* In this case, it ensures the TargetLine has the same orientation as the
+     	* player turret and it is in the correct place.
+     	*/
+     	@Override
+    	public void act() 
+    	{
 		//set the rotation to that of the player turret
-        setRotation(PLAYER_TURRET.getRotation());
+        	setRotation(PLAYER_TURRET.getRotation());
         
-        /*Set the location to the updated coordinates, so that they form an 
-         * interrupted line between the player turret and the target.*/
-        setLocation(getNewX(),getNewY());   
-    }
+        	/*Set the location to the updated coordinates, so that they form an 
+         	* interrupted line between the player turret and the target.*/
+        	setLocation(getNewX(),getNewY());   
+    	}
     
-	/**
-	 * Calculates the new x position the TargetLine should have.
-	 * @return The updated x coordinate this actor should have.
-	 */
-    public int getNewX()
-    {
-    	/*Another method calculates the distance between TargetLine objects, and
-    	 * here we calculated the distance between TargetLine actors on the x axis.*/
-    	int xInterval=(int) (getInterval()*Math.cos(Math.toRadians(PLAYER_TURRET
-         		.getRotation())));
-    	 
-    	/*The new x position should be the turret's x position added with a distance
-    	 * made from the xInterval multiplied by the number of this TargetLine (1 if
-    	 * it is the first TargetLine from the turret, 2 if it is the second, etc.).*/
-    	int xLine=PLAYER_TURRET.getX()+number*xInterval;
-    	return xLine;
-    }
-    
-    /**
-	 * Calculates the new y position the TargetLine should have.
-	 * @return The updated y coordinate this actor should have.
-	 */
-    public int getNewY()
-    {
-    	/*Another method calculates the distance between TargetLine objects, and
-    	 * here we calculated the distance between TargetLine actors on the y axis.*/
-    	 int yInterval=(int) (getInterval()*Math.sin(Math.toRadians(PLAYER_TURRET
-         		.getRotation())));
-    	 
-    	 /*The new y position should be the turret's x position added with a distance
-     	 * made from the yInterval multiplied by the number of this TargetLine (1 if
-     	 * it is the first TargetLine from the turret, 2 if it is the second, etc.).*/
-    	 int yLine=PLAYER_TURRET.getY()+number*yInterval;
-    	 return yLine;
-    }
-    
-    /**
-     * Calculates the distance that should be between TragetLine actors. This
-     * distance increases proportionally with the distance between the turret
-     * and the player target.
-     * @return The updated interval distance between TargetLine actors.
-     */
-    private int getInterval()
-    {
-    	/*Calculate the length of the legs of the imaginary right-angled triangle 
-    	 * whose hypotenuse is the distance between the turret and the player 
-    	 * target. */
-    	int leg1=PLAYER_TARGET.getX()-PLAYER_TURRET.getX();
-        int leg2=PLAYER_TARGET.getY()-PLAYER_TURRET.getY();
-        
-        /*Calculate the distance between the turret and the target using 
-         * Pythagora's theorem.*/
-        int distance = (int)Math.sqrt((leg1 * leg1) + (leg2 * leg2));
-        
-        /*The interval is a tenth (or NR_LINES+1, because there are no TargetLine
-        * objects at either end of the imaginary line, so there is one more space
-        * than the number of TargetLine objects) of the distance between the
-        * turret and target.*/
-        int interval=distance/(NR_LINES+1);
-        return interval;
-    }
-}
+	    /**
+	    * Calculates the new x position the TargetLine should have.
+	    * @return The updated x coordinate this actor should have.
+	    */
+	    public int getNewX()
+	    {
+		/*Another method calculates the distance between TargetLine objects, and
+		 * here we calculated the distance between TargetLine actors on the x axis.*/
+		int xInterval=(int) (getInterval()*Math.cos(Math.toRadians(PLAYER_TURRET
+				.getRotation())));
+
+		/*The new x position should be the turret's x position added with a distance
+		 * made from the xInterval multiplied by the number of this TargetLine (1 if
+		 * it is the first TargetLine from the turret, 2 if it is the second, etc.).*/
+		int xLine=PLAYER_TURRET.getX()+number*xInterval;
+		return xLine;
+	    }
+
+	    /**
+	    * Calculates the new y position the TargetLine should have.
+	    * @return The updated y coordinate this actor should have. 
+	    */
+	    public int getNewY()
+	    {
+		/*Another method calculates the distance between TargetLine objects, and
+		 * here we calculated the distance between TargetLine actors on the y axis.*/
+		 int yInterval=(int) (getInterval()*Math.sin(Math.toRadians(PLAYER_TURRET
+				.getRotation())));
+
+		 /*The new y position should be the turret's x position added with a distance
+		 * made from the yInterval multiplied by the number of this TargetLine (1 if
+		 * it is the first TargetLine from the turret, 2 if it is the second, etc.).*/
+		 int yLine=PLAYER_TURRET.getY()+number*yInterval;
+		 return yLine;
+	    }
+
+	    /**
+	     * Calculates the distance that should be between TragetLine actors. This
+	     * distance increases proportionally with the distance between the turret
+	     * and the player target.
+	     * @return The updated interval distance between TargetLine actors.
+	     */
+		private int getInterval()
+	    {
+		/*Calculate the length of the legs of the imaginary right-angled triangle 
+		 * whose hypotenuse is the distance between the turret and the player 
+		 * target. */
+		int leg1=PLAYER_TARGET.getX()-PLAYER_TURRET.getX();
+		int leg2=PLAYER_TARGET.getY()-PLAYER_TURRET.getY();
+
+		/*Calculate the distance between the turret and the target using 
+		 * Pythagora's theorem.*/
+		int distance = (int)Math.sqrt((leg1 * leg1) + (leg2 * leg2));
+
+		/*The interval is a tenth (or NR_LINES+1, because there are no TargetLine
+		* objects at either end of the imaginary line, so there is one more space
+		* than the number of TargetLine objects) of the distance between the
+		* turret and target.*/
+		int interval=distance/(NR_LINES+1);
+		return interval;
+	    }
+	}
