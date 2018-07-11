@@ -5,7 +5,7 @@ import java.util.List;
  * <p><b>File name: </b> Shell.java
  * @version 1.3
  * @since 14.05.2018
- * <p><p><b>Last modification date: </b> 20.06.2018
+ * <p><p><b>Last modification date: </b> 11.07.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -22,8 +22,8 @@ import java.util.List;
  * <p>	-1.1 - Made the shell bounce.
  * <p>	-1.2 - The shell now destroys tanks and other shells it hits.
  * <p>	-1.3 - Changed the way the shell bounces so that it relies on code in the 
- *  WallBlock class to detect in what quadrant of the block the shell hits. Now the
- *  shells bounce more naturally.
+ * WallBlock class to detect in what quadrant of the block the shell hits. Now the
+ * shells bounce more naturally.
  */
 public class Shell extends Actor
 {
