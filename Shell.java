@@ -53,6 +53,12 @@ public class Shell extends Actor
      * we do not want.*/
     private boolean destroyParent;
     
+    /**The correct x position of the shell, represented by a real number.*/
+    private double realX;
+    
+    /**The correct x position of the shell, represented by a real number.*/
+    private double realY;
+    
     /**
      * Makes a new shell at the given coordinates and with the rotation given.
      * @param rotation The rotation of the new shell, the same as the rotation 
@@ -76,6 +82,41 @@ public class Shell extends Actor
         world.addObject(this, x, y);
     }
     
+    /**
+     * Moves this shell by approximately the distance given as a parameter
+     * in the direction it is currently facing. Overrides the default one so that
+     * errors do not accumulate over time dues to the fact in Greenfoot actor
+     * position is represented by integers and not real numbers. Since before
+     * with each call of the method the rounding to the nearest integers would
+     * add over time, we store the correct coordinates as doubles and set the 
+     * location to a rounded integer of these values, precision is not lost 
+     * with each call of this method. Makes the shells actually move how they
+     * should move, not with deviations like before.
+     * @param distance The distance the shell will be moved in it's current 
+     * direction.
+     */
+    @Override
+    public void move(int distance)
+    {
+    	//calculate the rotation of the shell in radians
+	double radians = Math.toRadians(getRotation());
+	
+	/*Calculate the distance the shell should move by in each axis.*/
+	double dx = Math.cos(radians) * distance;
+	double dy = Math.sin(radians) * distance;
+	
+	//update the real x and y coordinates of the shell
+	realX+=dx;
+	realY+=dy;
+	
+	/*A world in Greenfoot is made up of finite cells, so positions can only
+    	 * be integers. So we round to the nearest integers the value of the real
+    	 * coordinates and set the location of the shell to these numbers.*/
+	int tempX=(int) Math.round(realX);
+	int tempY=(int) Math.round(realY);
+	setLocation(tempX, tempY);
+	}
+	
     /**
      * Act - do whatever the Shell wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -300,8 +341,9 @@ public class Shell extends Actor
     	 * with a radius of 6. After the rounding, the offset might be less than 
     	 * that, which means the image of the shell will intersect with the wall 
     	 * by the time a hit is detected. We do not want the shell to intersect 
-    	 * the wall block, so if it is less than 6 we change to either 6 or -6.*/
-    	if(xOffset<6)
+    	 * the wall block, so if it's modulus is less than 6 we change to either 
+    	 * 6 or -6.*/
+    	if(Math.abs(xOffset)<6)
     	{
     		/*We change the offset to either 6 or -6,depending on the cosinus of
     		 * the shell's angle*/
@@ -330,8 +372,9 @@ public class Shell extends Actor
     	 * with a radius of 6. After the rounding, the offset might be less than 
     	 * that, which means the image of the shell will intersect with the wall 
     	 * by the time a hit is detected. We do not want the shell to intersect 
-    	 * the wall block, so if it is less than 6 we change to either 6 or -6.*/
-    	if(yOffset<6)
+    	 * the wall block, so if it's modulus is less than 6 we change to either 
+    	 * 6 or -6.*/
+    	if(Math.abs(yOffset)<6)
     	{
     		/*We change the offset to either 6 or -6,depending on the sinus of
     		 * the shell's angle*/
