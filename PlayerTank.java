@@ -253,6 +253,30 @@ public class PlayerTank extends Tank
 		return isMoving;
 	}
 	
+	/**Method reloads this tank into the game world to prepare it for another start
+	 * of the current level. Overloaded the method from the Tank class because
+	 * player tanks need to be readded to the world after they have been removed
+	 * and we need a reference to the world as an argument. Using addObject does
+	 * not work because that does not reset the real number values of the x and y
+	 * coordinates of the tank used for accurate movement. */
+	public void reloadTank(TankWorld world)
+	{
+		/*Check if the tank is in a game world to avoid exceptions.*/
+		if(world!=null)
+		{
+			/*Reset the real number values of the tank's position.*/
+			realX=startX;
+			realY=startY;
+			
+			/*Place the tank and it's turret at it's original position and reset
+			 * their orientation.*/
+			world.addObject(this, startX, startY);
+			world.addObject(tankTurret, startX, startY);
+			setRotation(180);
+			tankTurret.setRotation(180);
+		}
+	}
+	
 	/**Getter for the MouseInfo object of the player's tank. Needed so that the
 	 * player turret can access the location of the cursor an know where to aim.
 	 * @return The latest information about the mouse this tank tracks.*/
