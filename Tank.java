@@ -506,7 +506,8 @@ public class Tank extends Actor
 	}
 	
 	/**Method reloads this tank into the game world to prepare it for another start
-	 * of the current level. */
+	 * of the current level, meaning it resets the position and orientation of this
+	 * tank and it's turret. */
 	public void reloadTank()
 	{
 		TankWorld world=getWorldOfType(TankWorld.class);
@@ -514,6 +515,10 @@ public class Tank extends Actor
 		/*Check if the tank is in a game world to avoid exceptions.*/
 		if(world!=null)
 		{
+			/*Reset the real number values of the tank's position.*/
+			realX=startX;
+			realY=startY;
+			
 			/*Place the tank and it's turret at it's original position and reset
 			 * their orientation.*/
 			setLocation(startX,startY);
