@@ -153,8 +153,8 @@ public class BrownTurret extends Turret
 		{
 			/*Greenfoot Worlds work in integers not real numbers, so we approximate
 			 * to the closest integer bigger than the real offsets*/
-			int xOffset=(int) Math.ceil(xRealOffset);
-			int yOffset=(int) Math.ceil(yRealOffset);
+			int xOffset=(int) Math.round(xRealOffset);
+			int yOffset=(int) Math.round(yRealOffset);
 			
 			/*Get the Player Tank, Brown Tank and WallBlock located at the point we 
 			 * are checking*/
@@ -164,6 +164,7 @@ public class BrownTurret extends Turret
 					BrownTank.class);
 			WallBlock wall=(WallBlock) getOneObjectAtOffset(xOffset,yOffset,
 					WallBlock.class);
+			
 			/*We check if there is a Brown Tank at the point.*/
 			if(brownTank!=null)
 			{
@@ -192,12 +193,47 @@ public class BrownTurret extends Turret
 			 * or it stops it's search.*/
 			else if(wall!=null)
 			{
-				/*Check if the line of sight can bounce again*/
+				/*Check if the line of sight can bounce again.*/
 				if(bounces<Shell.TIMES_ALLOWED_TO_BOUNCE)
 				{
-					/*If it can, we get the diagonal quarter of the wall block where 
-					 * the point at which we checked is located(which is where the 
-					 * line of sight intersects this wall block).*/
+					/*If it can, we need to find out the exact point where the
+					 * wall starts, since the last point we checked for a wall 
+					 * may already be inside the wall block, creating imprecision
+					 * for the turret targeting.*/
+					
+					/*Reset the offsets to the last point before the wall.*/
+					xRealOffset-=xInterval;
+					xOffset=(int) Math.round(xRealOffset);
+					
+					yRealOffset-=yInterval;
+					yOffset=(int) Math.round(xRealOffset);
+					
+					/*Starting from the the last point before the wall, we check
+					 * points at an interval of 1 cell/pixel to find the exact
+					 * point the wall starts. Therefore, the temporary intervals
+					 * we use for this are the intervals we used so far, divided
+					 * by the detect interval.*/
+					double xTempInterval=xInterval/DETECT_INTERVAL;
+					double yTempInterval=yInterval/DETECT_INTERVAL;
+					
+					/*While there is no wall at the point we are checking at, 
+					 * increase the offset with the value of the temporary offsets.
+					 * The loop will thus terminate when we reach a point on the
+					 * surface of the wall block.*/
+					while(getOneObjectAtOffset(xOffset,yOffset,WallBlock.class)
+							==null)
+					{
+						xRealOffset+=xTempInterval;
+						yRealOffset+=yTempInterval;
+						
+						/*Recalculate the integer approximations so that the loop
+						 * condition will check a new point for the wall.*/
+						xOffset=(int) Math.round(xRealOffset);
+						yOffset=(int) Math.round(yRealOffset);
+					}
+					
+					/*We get the diagonal quarter of the wall block where 
+					 * where the line of sight intersects this wall block.*/
 					String quadrant=wall.getQuadrant(getX()+xOffset, getY()+yOffset);
 					
 					/*We change the direction of the line of sight accordingly.*/
