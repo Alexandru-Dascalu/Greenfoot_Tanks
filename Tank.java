@@ -30,9 +30,6 @@ import greenfoot.*;
 
 public class Tank extends Actor
 {
-	/**The tank turret of this tank. By default it is a simple turret.*/
-	protected Turret tankTurret;
-	
 	/**The file name of the sound that will play when the tank moves.*/
 	protected static final String DRIVING_SOUND_NAME="tank_moving_1.wav";
 	
@@ -53,6 +50,9 @@ public class Tank extends Actor
 	 * For the current image the value is {@value}.*/
 	protected final static double ANGLE=43.85423781591219;
 	
+	/**The tank turret of this tank. By default it is a simple turret.*/
+	protected Turret tankTurret;
+	
 	/**The starting x position of the tank in the world. Needed so we know where
 	 * to put the tank when the level is reloaded.*/
 	protected final int startX;
@@ -60,6 +60,12 @@ public class Tank extends Actor
 	/**The starting y position of the tank in the world. Needed so we know where
 	 * to put the tank when the level is reloaded.*/
 	protected final int startY;
+	
+	/**The correct x position of the tank, represented by a real number.*/
+	private double realX;
+	
+	/**The correct x position of the tank, represented by a real number.*/
+	private double realY;
 	
 	/**
 	 * Makes a new tank object.
@@ -75,6 +81,8 @@ public class Tank extends Actor
 		 * the sound object of this tank.*/
 		this.startX=startX;
 		this.startY=startY;
+		realX=startX;
+		realY=startY;
 		drivingSound = new GreenfootSound(DRIVING_SOUND_NAME);
 	}
 	
@@ -87,6 +95,41 @@ public class Tank extends Actor
 		this.tankTurret = new Turret(this);
 	}
 	
+	/**
+     * Moves this tank by approximately the distance given as a parameter
+     * in the direction it is currently facing. Overrides the default one so that
+     * errors do not accumulate over time dues to the fact in Greenfoot actor
+     * position is represented by integers and not real numbers. Since before
+     * with each call of the method the rounding to the nearest integers would
+     * add over time, we store the correct coordinates as doubles and set the 
+     * location to a rounded integer of these values, precision is not lost 
+     * with each call of this method. Makes the tanks actually move how they
+     * should move, not with deviations like before.
+     * @param distance The distance the tank will be moved in it's current 
+     * direction.
+     */
+    @Override
+    public void move(int distance)
+	{
+    	//calculate the rotation of the tank in radians
+    	double radians = Math.toRadians(getRotation());
+    	
+    	/*Calculate the distance the tank should move by in each axis.*/
+    	double dx = Math.cos(radians) * distance;
+    	double dy = Math.sin(radians) * distance;
+    	
+    	//update the real x and y coordinates of the tank
+    	realX+=dx;
+    	realY+=dy;
+    	
+    	/*A world in Greenfoot is made up of finite cells, so positions can only
+    	 * be integers. So we round to the nearest integers the value of the real
+    	 * coordinates and set the location of the tank to these numbers.*/
+    	int tempX=(int) Math.round(realX);
+    	int tempY=(int) Math.round(realY);
+    	setLocation(tempX, tempY);
+	}
+    
 	/**
 	 * Act - do whatever the Tank wants to do. This method is called whenever the
 	 * 'Act' or 'Run' button gets pressed in the environment. In this case, this
