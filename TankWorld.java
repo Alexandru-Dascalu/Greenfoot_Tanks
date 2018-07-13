@@ -314,7 +314,7 @@ public class TankWorld extends World
     	
     	/*Re-add the player tank to it's original place, reset the location of the
     	 * tank target and show the display for the (re)start of this level.*/
-    	addObject(playerTank,900,200);
+    	playerTank.reloadTank(this);
     	tankTarget.setLocation(200, 200);
     	showStartScreen();
     }
