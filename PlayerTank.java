@@ -29,10 +29,12 @@ public class PlayerTank extends Tank
 	* mouse button must be released so that a click may be detected.*/
 	private static final int CLICK_TIME_WINDOW=165;
 	
+	private static final int SPEED=2;
+	
 	/**The last information about the state of the mouse we have.*/
-    	private MouseInfo lastMouseInfo;
+    private MouseInfo lastMouseInfo;
     
-    	/**The system time in milliseconds when the left mouse button has last been 
+    /**The system time in milliseconds when the left mouse button has last been 
 	* pressed. Used to ensure that a shell is only fired when the player quickly
 	* clicks the left mouse button.*/
 	private long leftMBPressStart;
@@ -74,6 +76,7 @@ public class PlayerTank extends Tank
 		updateMouseInfo();
 		
 		moveAndTurn();
+		pushOtherTanks();
 		playSound();
 		
 		tankTurret.aim();
@@ -103,7 +106,6 @@ public class PlayerTank extends Tank
 		{
 			/*If it should move, move the tank and it's turret.*/
 			move(2);
-			tankTurret.setLocation(this.getX(), this.getY());
 		}
 
 		/*Check if the tank should move backwards. It should only if it there is
@@ -112,7 +114,6 @@ public class PlayerTank extends Tank
 		{
 			/*If it should move, move the tank and it's turret.*/
 			move(-2);
-			tankTurret.setLocation(this.getX(), this.getY());
 		}
 
 		/*Check if the tank should turn left. It should only if it there is
@@ -251,6 +252,21 @@ public class PlayerTank extends Tank
 				|| Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d");
 
 		return isMoving;
+	}
+	
+	protected boolean isMovingForward()
+	{
+		return Greenfoot.isKeyDown("w");
+	}
+	
+	protected boolean isMovingBackward()
+	{
+		return Greenfoot.isKeyDown("s");
+	}
+	
+	public int getSpeed()
+	{
+		return SPEED;
 	}
 	
 	/**Method reloads this tank into the game world to prepare it for another start
