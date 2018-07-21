@@ -42,9 +42,13 @@ public class Tank extends Actor
 	 * the value is {@value}.*/
 	protected final static double HALF_DIAGONAL=35.362409;
 	
-	/**The length of half of the long side of the tank. Currently, the tank's 
+	/**The length of the long side of the tank. Currently, the tank's 
 	 * image is 51 by 49 pixels, so the value is {@value}.*/
-	protected static final double HALF_LENGTH=25.5;
+	protected static final double LENGTH=51;
+	
+	/**The length of the short side of the tank. Currently, the tank's 
+	 * image is 51 by 49 pixels, so the value is {@value}.*/
+	protected static final double WIDTH=49;
 	
 	/**The angle in degrees between the length of the tank and it's diagonal.
 	 * For the current image the value is {@value}.*/
@@ -62,10 +66,10 @@ public class Tank extends Actor
 	protected final int startY;
 	
 	/**The correct x position of the tank, represented by a real number.*/
-	private double realX;
+	protected double realX;
 	
 	/**The correct x position of the tank, represented by a real number.*/
-	private double realY;
+	protected double realY;
 	
 	/**
 	 * Makes a new tank object.
@@ -128,7 +132,27 @@ public class Tank extends Actor
     	int tempX=(int) Math.round(realX);
     	int tempY=(int) Math.round(realY);
     	setLocation(tempX, tempY);
+    	
+    	if(tankTurret!=null && tankTurret.getWorld()!=null)
+    	{
+    		tankTurret.setLocation(tempX, tempY);
+    	}
 	}
+    
+    public void move(double dx, double dy)
+    {
+    	realX+=dx;
+    	realY+=dy;
+    	
+    	int tempX=(int) Math.round(realX);
+    	int tempY=(int) Math.round(realY);
+    	setLocation(tempX, tempY);
+    	
+    	if(tankTurret!=null && tankTurret.getWorld()!=null)
+    	{
+    		tankTurret.setLocation(tempX, tempY);
+    	}
+    }
     
 	/**
 	 * Act - do whatever the Tank wants to do. This method is called whenever the
@@ -140,6 +164,7 @@ public class Tank extends Actor
 	public void act()
 	{
 		playSound();
+		pushOtherTanks();
 		
 		tankTurret.aim();
 		tankTurret.fire();
@@ -271,6 +296,16 @@ public class Tank extends Actor
 	{
 		return true;
 	}
+	
+	protected boolean isMovingForward()
+	{
+		return true;
+	}
+	
+	protected boolean isMovingBackward()
+	{
+		return false;
+	}
 
 	/**
 	 * Method returns the approximate distance (or offset) between the x position
@@ -282,7 +317,7 @@ public class Tank extends Actor
 	 * @return The distance between the x position of the tank and the x position 
 	 * of the point given in the string argument.
 	 */
-	private int getXOffset(String point)
+	public int getXOffset(String point)
 	{
 		//the offset that will be calculated and returned.
 		int xOffset;
@@ -302,7 +337,7 @@ public class Tank extends Actor
 				/*The offset is the length the projection of half of the diagonal
 				 * of the tank on the horizontal axis, so we multiply it with the
 				 * cosine of the degree and round to the nearest higher integer.*/
-				xOffset = (int) Math.ceil(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
+				xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
 				break;
 				
 			case "front":
@@ -312,7 +347,7 @@ public class Tank extends Actor
 				/*The offset is the length of the projection of half of the length
 				 * of the tank on the horizontal axis, so we multiply it with the
 				 * cosine of the degree and round to the nearest higher integer.*/
-				xOffset=(int) Math.ceil(HALF_LENGTH*Math.cos(Math.toRadians((int)degree)));
+				xOffset=(int) Math.round((LENGTH/2)*Math.cos(Math.toRadians((int)degree)));
 				break;
 				
 			case "front left":
@@ -325,7 +360,7 @@ public class Tank extends Actor
 				/*The offset is the length the projection of half of the diagonal
 				 * of the tank on the horizontal axis, so we multiply it with the
 				 * cosine of the degree and round to the nearest higher integer.*/
-				xOffset = (int) Math.ceil(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
+				xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
 				break;
 
 			case "back left":
@@ -334,7 +369,7 @@ public class Tank extends Actor
 				 * make the same calculations as for the front right corner
 				 * and change the offset to it's opposite.*/
 				degree = ANGLE+getRotation();
-				xOffset = (int) Math.ceil(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
+				xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
 				xOffset= -xOffset;
 				break;
 				
@@ -344,7 +379,7 @@ public class Tank extends Actor
 				 * tank's centre, so we make the same calculations as for the
 				 * front point and change the offset to it's opposite.*/
 				degree=getRotation();
-				xOffset= (int) Math.ceil(HALF_LENGTH*Math.cos(Math.toRadians((int)degree)));
+				xOffset= (int) Math.round((LENGTH/2)*Math.cos(Math.toRadians((int)degree)));
 				xOffset= -xOffset;
 				break;
 				
@@ -354,7 +389,7 @@ public class Tank extends Actor
 				 * make the same calculations as for the front left corner
 				 * and change the offset to it's opposite.*/
 				degree=getRotation()-ANGLE;
-				xOffset = (int) Math.ceil(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
+				xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
 				xOffset= -xOffset;
 				break;
 				
@@ -378,7 +413,7 @@ public class Tank extends Actor
 	 * @return The distance between the y position of the tank and the y position 
 	 * of the point given in the string argument.
 	 */
-	private int getYOffset(String point)
+	public int getYOffset(String point)
 	{
 		//the offset that will be calculated and returned.
 		int yOffset;
@@ -408,7 +443,7 @@ public class Tank extends Actor
 				/*The offset is the length of the projection of half of the length
 				 * of the tank on the vertical axis, so we multiply it with the
 				 * sine of the degree and round to the nearest higher integer.*/
-				yOffset=(int) Math.ceil(HALF_LENGTH*Math.sin(Math.toRadians((int)degree)));
+				yOffset=(int) Math.ceil((LENGTH/2)*Math.sin(Math.toRadians((int)degree)));
 				break;
 				
 			case "front left":
@@ -440,7 +475,7 @@ public class Tank extends Actor
 				 * tank's centre, so we make the same calculations as for the
 				 * front point and change the offset to it's opposite.*/
 				degree=getRotation(); 
-				yOffset= (int) Math.ceil(HALF_LENGTH*Math.sin(Math.toRadians((int)degree)));
+				yOffset= (int) Math.ceil((LENGTH/2)*Math.sin(Math.toRadians((int)degree)));
 				yOffset= -yOffset;
 				break;
 				
@@ -464,6 +499,34 @@ public class Tank extends Actor
 		return yOffset;
 	}
 	
+	public String getContactCorner(Tank otherTank)
+	{
+		String corner=null;
+		
+		if((Tank)getOneObjectAtOffset(getXOffset("front left"),getYOffset("front"
+				+ " left"),Tank.class)==otherTank) 
+		{
+			corner="front left";
+		}
+		else if((Tank)getOneObjectAtOffset(getXOffset("front right"),getYOffset
+				("front right"),Tank.class)==otherTank)
+		{
+			corner="front right";
+		}
+		else if((Tank)getOneObjectAtOffset(getXOffset("back left"),getYOffset
+				("back left"),Tank.class)==otherTank)
+		{
+			corner="back left";
+		}
+		else if((Tank)getOneObjectAtOffset(getXOffset("back right"),getYOffset
+				("back right"),Tank.class)==otherTank)
+		{
+			corner="back right";
+		}
+		
+		return corner;
+	}
+	
 	/**Make the tank play a sound if it is moving.*/
 	protected void playSound()
 	{
@@ -485,6 +548,188 @@ public class Tank extends Actor
 		}
 	}
 	
+	protected void pushOtherTanks()
+	{
+		Tank otherTank= (Tank) getOneIntersectingObject(Tank.class);
+
+		if(otherTank!=null && isMoving())
+		{
+			String corner=getContactCorner(otherTank);
+			String quadrant=null;
+			//System.out.println(corner);
+			if(corner!=null)
+			{	
+				quadrant=otherTank.getQuadrant(getX()+getXOffset(corner),
+						getY()+getYOffset(corner));
+				double dx=0;
+				double dy=0;
+				
+				if(quadrant.equals("front") || quadrant.equals("back"))
+				{
+					if(isMovingForward() && (corner.equals("front left") || 
+						corner.equals("front right")))
+					{
+						dx=getSpeed()*Math.cos(Math.toRadians(getRotation()));
+					}
+					else if(isMovingBackward() && (corner.equals("back left") 
+						|| corner.equals("back right")))
+					{
+						dx=-(getSpeed()*Math.cos(Math.toRadians(getRotation())));
+					}
+				}
+				else
+				{
+					if(isMovingForward() && (corner.equals("front left") || 
+							corner.equals("front right")))
+					{
+						dy=getSpeed()*Math.sin(Math.toRadians(getRotation()));
+					}
+					else if(isMovingBackward() && (corner.equals("back left") 
+						|| corner.equals("back right")))
+					{
+						dy=-(getSpeed()*Math.sin(Math.toRadians(getRotation())));
+					}
+				}
+				
+				otherTank.move(dx, dy);
+			}
+			else
+			{
+				corner=otherTank.getContactCorner(this);
+				
+				//System.out.println("corner "+corner);
+				if(corner!=null)
+				{
+					quadrant=getQuadrant(otherTank.getX()+otherTank.getXOffset(corner),
+							otherTank.getY()+otherTank.getYOffset(corner));	
+				}
+				else
+				{
+					//System.out.println("here is the problem!");
+					if((Tank)getOneObjectAtOffset(getXOffset("front"),
+							getYOffset("front"),Tank.class)==otherTank)
+					{
+						quadrant="front";
+					}
+					else
+					{
+						quadrant="back";
+					}
+				}
+				
+				double dx=0;
+				double dy=0;
+				/*System.out.println(quadrant);
+				System.out.println("rotation"+getRotation());
+				System.out.println("tank posiont: "+this.getX()+" "+this.getY());
+				System.out.println("otherTank "+otherTank.getXOffset(corner)+" "+otherTank.getYOffset(corner));*/
+				if(isMovingForward() && quadrant.equals("front"))
+				{
+					dx=getSpeed()*Math.cos(Math.toRadians(getRotation()));
+					//System.out.println(dx);
+					dy=getSpeed()*Math.sin(Math.toRadians(getRotation()));
+					//System.out.println(dy);
+				}
+				else if(isMovingBackward() && quadrant.equals("back"))
+				{
+					dx=-(getSpeed()*Math.cos(Math.toRadians(getRotation())));
+					//System.out.println(dx);
+					dy=-(getSpeed()*Math.sin(Math.toRadians(getRotation())));
+					//System.out.println(dy);
+				}
+				
+				otherTank.move(dx, dy);
+			}
+		}
+	}
+	
+	/**
+	 * Calculates what diagonal quadrant of this tank a point with the
+	 * given coordinates is in. It also applies to points outside the tank
+	 * (the quadrants start from the centre of this tank and their 
+	 * imaginary edges extend up to the world's boundary.)
+	 * @param x The x coordinate of the point.
+	 * @param y The y coordinate of the point.
+	 * @return A string representing the diagonal quadrant the point is in :
+	 * "top", "bottom", "left or"right".
+	 */
+    public String getQuadrant(int x, int y)
+    {
+    	/*We need the slope of the diagonals of the rectangle shape of the tank,
+    	 * which is either WIDTH/LENGTH or -WIDTH/LENGTH.*/
+    	double diag1Angle=normalizeAngle(ANGLE+getRotation());
+    	double diag1Slope=Math.tan(Math.toRadians(diag1Angle));
+    	
+    	double diag2Angle=normalizeAngle(getRotation()-ANGLE);
+    	double diag2Slope=Math.tan(Math.toRadians(diag2Angle));
+    	
+    	/*Calculate the x and y coordinates of the top left corner of this block.*/
+    	double topLeftCornerX=getX()+getXOffset("back left");
+    	double topLeftCornerY=getY()+getYOffset("back left");
+    	
+    	/*A matrix that holds the names of the 4 quadrants.*/
+    	String[][] quadrants= { {"left","front"}, {"back","right"} };
+    	
+    	/*An array that will be set to one of the rows of the matrix, based  on
+    	 * if the given point is above or below the diagonal that points to the
+    	 * lower left.*/
+    	String[] temp;
+    	
+    	/*The result of this computation. It will be set to one of the values in
+    	 * the temp array, based on if the given point is above or below the 
+    	 * diagonal that points to the upper right.*/
+    	String quadrant;
+    	
+    	/*We narrow down the possible results by seeing if the given point is 
+    	 * above or below the diagonal that points to the lower left. We check
+    	 * this using analytical geometry and the formula of y-y' =m*(x-x') .
+    	 * Where m is the slope of the diagonal.*/
+    	double leftMember=y-topLeftCornerY;
+    	double rightMember=diag1Slope*(x-topLeftCornerX);
+    	if((leftMember<=rightMember && (diag1Angle<=90 || diag1Angle>=270))
+    			|| (leftMember>rightMember && (diag1Angle>90 && diag1Angle<270)))
+    	{
+    		/*If the left side of the equation is smaller or equal to the right
+    		 * side, then the point is above the diagonal (not under it, because
+    		 * in Greenfoot the y axis is from top to bottom.)*/
+    		temp=quadrants[0];
+    	}
+    	/*If the left side of the equation is greater than the right side, then 
+    	 * the point is under the diagonal.*/
+    	else
+    	{
+    		temp=quadrants[1];
+    	}
+    	
+    	double deltaY=(HALF_DIAGONAL*Math.sin(Math.toRadians(2*ANGLE)))/
+    			(Math.sin(Math.PI/2+Math.toRadians(getRotation()-ANGLE)));
+    	leftMember=y-topLeftCornerY-deltaY;
+    	rightMember=diag2Slope*(x-topLeftCornerX);
+    	/*We find the quadrant by seeing if the given point is above or below 
+    	 * the diagonal that points to the upper right. We check this using 
+    	 * analytical geometry and the formula of y-y' =m*(x-x') .
+    	 * Where m is the slope of the diagonal (which now is negative, unlike
+    	 * that of the first diagonal). We take into account this diagonal starts
+    	 * lower by the length of the block's side than the first, hence the 
+    	 * '-SIDE' in the left part.*/
+    	if((leftMember<=rightMember && (diag2Angle<=90 || diag2Angle>=270))
+    			|| (leftMember>rightMember && (diag2Angle>90 && diag2Angle<270)))
+    	{
+    		/*If the left side of the equation is smaller or equal to the right
+    		 * side, then the point is above the diagonal (not under it, because
+    		 * in Greenfoot the y axis is from top to bottom.)*/
+    		quadrant=temp[0];
+    	}
+    	/*If the left side of the equation is greater than the right side, then 
+    	 * the point is under the diagonal.*/
+    	else
+    	{
+    		quadrant=temp[1];
+    	}
+    	
+    	return quadrant;
+    }
+    
 	/**
 	 * Getter for the turret of this tank.
 	 * @return A reference to this tank's turret.
@@ -492,6 +737,11 @@ public class Tank extends Actor
 	public Turret getTurret()
 	{
 		return tankTurret;
+	}
+	
+	public int getSpeed()
+	{
+		return 0;
 	}
 	
 	/**Deletes this tank and it's turret along with any other associated actors
@@ -526,5 +776,17 @@ public class Tank extends Actor
 			setRotation(180);
 			tankTurret.setRotation(180);
 		}
+	}
+	
+	private static double normalizeAngle(double angle)
+	{	
+		double normalizedAngle=angle%360;;
+		
+		if(normalizedAngle<0)
+		{
+			normalizedAngle+=360;
+		}
+		
+		return normalizedAngle;
 	}
 }
