@@ -46,6 +46,16 @@ public class BrownTank extends Tank
 		return false;
 	}
 	
+	protected boolean isMovingForward()
+	{
+		return false;
+	}
+	
+	protected boolean isMovingBackward()
+	{
+		return false;
+	}
+	
 	/**
 	 * Overrides the superclass addedToWorld method so that a Brown Turret will be 
 	 * placed on this tank not a simple Turret object.
