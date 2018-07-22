@@ -72,7 +72,9 @@ public class Shell extends Actor
     	setRotation(rotation);
     	timesBounced=0;
         parentTank=parent;
-        
+        realX=x;
+	realY=y;
+	
         /*if the shell intersects it's parent tank, we do not that tank to be 
          *destroyed immediately*/
         destroyParent=false;
