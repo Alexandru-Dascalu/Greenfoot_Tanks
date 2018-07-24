@@ -2,9 +2,9 @@ import greenfoot.*;
 
 /**
  * <p><b>File name: </b> PlayerTank.java
- * @version 1.2
+ * @version 1.3
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 05.07.2018
+ * <p><b>Last modification date: </b> 24.07.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -21,6 +21,7 @@ import greenfoot.*;
  * <p>	-1.2 - Encapsulated mouse tracking into this class. The tank detects a
  * mouse click and then tells the turret to fire or lays a mine , depending on
  * the mouse button clicked.
+ * <p>	-1.3 - Changed the class so player tanks can push other tanks it encounters.
  */
 
 public class PlayerTank extends Tank
@@ -29,6 +30,8 @@ public class PlayerTank extends Tank
 	* mouse button must be released so that a click may be detected.*/
 	private static final int CLICK_TIME_WINDOW=165;
 	
+	/**The distance measured in cell-size units by which this tank moves each 
+	 * time it acts. It's value is {@value}.*/
 	private static final int SPEED=2;
 	
 	/**The last information about the state of the mouse we have.*/
@@ -105,7 +108,7 @@ public class PlayerTank extends Tank
 		if (Greenfoot.isKeyDown("w") && canMoveForwards())
 		{
 			/*If it should move, move the tank and it's turret.*/
-			move(2);
+			move(SPEED);
 		}
 
 		/*Check if the tank should move backwards. It should only if it there is
@@ -113,7 +116,7 @@ public class PlayerTank extends Tank
 		if (Greenfoot.isKeyDown("s") && canMoveBackwards())
 		{
 			/*If it should move, move the tank and it's turret.*/
-			move(-2);
+			move(-SPEED);
 		}
 
 		/*Check if the tank should turn left. It should only if it there is
@@ -254,16 +257,32 @@ public class PlayerTank extends Tank
 		return isMoving;
 	}
 	
+	/**
+	 * Checks if the tank is moving forward.
+	 * @return True if the "w" key is pressed, false if not.
+	 */
+	@Override
 	protected boolean isMovingForward()
 	{
 		return Greenfoot.isKeyDown("w");
 	}
 	
+	/**
+	 * Checks if the tank is moving backward.
+	 * @return True if the "s" key is pressed, false if not.
+	 */
+	@Override
 	protected boolean isMovingBackward()
 	{
 		return Greenfoot.isKeyDown("s");
 	}
 	
+	/**
+	 * The speed of this tank, meaning the distance in cells that the tank moves
+	 * each time the move(int) method is called.
+	 * @return 	The speed of this tank.
+	 */
+	@Override
 	public int getSpeed()
 	{
 		return SPEED;
