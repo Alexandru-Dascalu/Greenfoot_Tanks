@@ -2,9 +2,9 @@ import greenfoot.*;
 
 /**
  * <p><b>File name: </b> Tank.java
- * @version 1.5
+ * @version 1.6
  * @since 02.05.2018
- * <p><p><b>Last modification date: </b> 09.07.2018
+ * <p><p><b>Last modification date: </b> 24.07.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -26,6 +26,7 @@ import greenfoot.*;
  * blocks.
  * <p>  -1.5 - Modified this class to be a general tank class and moved part of 
  * code into the PlayerTank class, which inherits from this.
+ * <p>	-1.6 - Modified this class so tanks can push each other while moving.
  */
 
 public class Tank extends Actor
@@ -139,17 +140,29 @@ public class Tank extends Actor
     	}
 	}
     
+     /**
+     * Moves this tank on each axis by the distances given. Makes sure rounding 
+     * errors do not accumulate.
+     * @param dx The distance the tank will be moved horizontally.
+     * @param dy The distance the tank will be moved vertically.
+     */
     public void move(double dx, double dy)
     {
+    	//update the real x and y coordinates of the tank
     	realX+=dx;
     	realY+=dy;
     	
+    	/*A world in Greenfoot is made up of finite cells, so positions can only
+    	 * be integers. So we round to the nearest integers the value of the real
+    	 * coordinates and set the location of the tank to these numbers.*/
     	int tempX=(int) Math.round(realX);
     	int tempY=(int) Math.round(realY);
     	setLocation(tempX, tempY);
     	
+    	/*Check if this tank has a turret placed in the world.*/
     	if(tankTurret!=null && tankTurret.getWorld()!=null)
     	{
+    		//If so, also move the turret by the same distances
     		tankTurret.setLocation(tempX, tempY);
     	}
     }
@@ -297,15 +310,28 @@ public class Tank extends Actor
 		return true;
 	}
 	
+	/**
+	 * Checks if the tank is moving forward.
+	 * @return True if the tank is moving forward, false if not. Because most 
+	 * enemy tanks move continuously, this method always returns true unless 
+	 * overridden.
+	 */
 	protected boolean isMovingForward()
 	{
 		return true;
 	}
 	
+	/**
+	 * Checks if the tank is moving backward.
+	 * @return True if the tank is moving backward, false if not. Because most 
+	 * enemy tanks move forward continuously, this method always returns false
+	 * unless overridden.
+	 */
 	protected boolean isMovingBackward()
 	{
 		return false;
 	}
+
 
 	/**
 	 * Method returns the approximate distance (or offset) between the x position
@@ -499,25 +525,50 @@ public class Tank extends Actor
 		return yOffset;
 	}
 	
+	/**
+	 * Locates what corner of this tank is touched by the other tank given as a 
+	 * parameter.
+	 * @param otherTank Any other tank actor.
+	 * @return A string representing the corner that is touched by the given tank,
+	 * or null if that tank does not touch a corner of this tank.
+	 */
 	public String getContactCorner(Tank otherTank)
 	{
+		//Check if the parameter tank is the same as this tank.
+		if(otherTank==this)
+		{
+			/*If it is, return null since we are looking if a different tank 
+			 * touches one of the corners of this tank, so it should be a 
+			 * different tank.*/
+			return null;
+		}
+		
+		//the string representing the result
 		String corner=null;
 		
+		/*We use the getXOffset and getYOffset methods to calculate the distance 
+		 * between the tank's corners and it's centre, check if the other tank
+		 * intersects those coordinates and set the corner variable accordingly.*/
+		
+		/*Check if the other tank intersects the front left corner of this tank.*/
 		if((Tank)getOneObjectAtOffset(getXOffset("front left"),getYOffset("front"
 				+ " left"),Tank.class)==otherTank) 
 		{
 			corner="front left";
 		}
+		/*Check if the other tank intersects the front right corner of this tank.*/
 		else if((Tank)getOneObjectAtOffset(getXOffset("front right"),getYOffset
 				("front right"),Tank.class)==otherTank)
 		{
 			corner="front right";
 		}
+		/*Check if the other tank intersects the back left corner of this tank.*/
 		else if((Tank)getOneObjectAtOffset(getXOffset("back left"),getYOffset
 				("back left"),Tank.class)==otherTank)
 		{
 			corner="back left";
 		}
+		/*Check if the other tank intersects the back right corner of this tank.*/
 		else if((Tank)getOneObjectAtOffset(getXOffset("back right"),getYOffset
 				("back right"),Tank.class)==otherTank)
 		{
@@ -548,98 +599,168 @@ public class Tank extends Actor
 		}
 	}
 	
+	/**
+	 * Checks if this tank should other tanks while it moves and calculates the 
+	 * x and y distances by which the other tanks should be moved.
+	 */
 	protected void pushOtherTanks()
 	{
+		/*Get an instance of another tank which intersects this tank.*/
 		Tank otherTank= (Tank) getOneIntersectingObject(Tank.class);
 
+		/*This tank needs to push other tanks if it intersects another tank
+		 * and if it is moving and .*/
 		if(otherTank!=null && isMoving())
 		{
-			String corner=getContactCorner(otherTank);
-			String quadrant=null;
-			//System.out.println(corner);
+			/*If it needs to push another tank, we determine how the other tank
+			 * needs to be moved, based on how Wii Tanks works. There are 2 basic
+			 * cases : when this tank touches one of the other tank's sides 
+			 * with one of it's corners, in which case the other tank must be 
+			 * moved both vertically and horizontally, and when the other tank
+			 * touches one of this tank's sides with one of it's corners, or 
+			 * when this tank touches with one of it's sides one of the sides 
+			 * of the other tank, in which case the other tank must be moved 
+			 * only along one axis. We will decide the case using the getContactCorner
+			 * method and the string variable corner.*/
+			
+			//Represents the corner that one of the tanks will touch the other with.
+			String corner=null;
+			
+			/*Represents the diagonal quadrant (or side in this case) of one the two 
+			 * tanks where the other's contact corner is located.*/
+			String side=null;
+			
+			//The distance on the x axis the other tank should be moved
+			double dx=0;
+			
+			//The distance on the y axis the other tank should be moved
+			double dy=0;
+			
+			//See if this tank touches the other tank with one of it's corners
+			corner=getContactCorner(otherTank);
 			if(corner!=null)
 			{	
-				quadrant=otherTank.getQuadrant(getX()+getXOffset(corner),
+				/*If it does, find out what diagonal quadrant (or side) of the other
+				 * tank is touched by this tank's corner touches.*/
+				side=otherTank.getQuadrant(getX()+getXOffset(corner),
 						getY()+getYOffset(corner));
-				double dx=0;
-				double dy=0;
 				
-				if(quadrant.equals("front") || quadrant.equals("back"))
+				/*Calculate the distances the other tank should be moved by based
+				 * on what side of it is touched by this tank.*/
+				if(side.equals("front") || side.equals("back"))
 				{
+					/*If the other tank is touched on it's front or back sides, it
+					 * should be moved horizontally. Check if this tank pushes the
+					 * other tank with it's front, by seeing if it touches the other
+					 * tank with one of it's front corners and if it also moves forward.*/
 					if(isMovingForward() && (corner.equals("front left") || 
 						corner.equals("front right")))
 					{
+						/*If so, the distance the other tank should be moved by 
+						 * is the x axis component of this tank's movement vector.*/
 						dx=getSpeed()*Math.cos(Math.toRadians(getRotation()));
 					}
+					/*Check if this tank pushes the other tank with it's back, by 
+					 * seeing if it touches the other tank with one of it's back
+					 * corners and if it also moves backward.*/
 					else if(isMovingBackward() && (corner.equals("back left") 
 						|| corner.equals("back right")))
 					{
+						/*If so, the distance the other tank should be moved by 
+						 * is the x axis component of this tank's movement vector.
+						 * The opposite value to the above conditional block since
+						 * the tank moves backwards.*/
 						dx=-(getSpeed()*Math.cos(Math.toRadians(getRotation())));
 					}
 				}
+				/*Else, if the other tank is touched on it's right or left sides,
+				 * it should be moved vertically.*/ 
 				else
 				{
+					//Check if this tank pushes the other tank with it's front.
 					if(isMovingForward() && (corner.equals("front left") || 
 							corner.equals("front right")))
 					{
+						/*If so, the distance the other tank should be moved by 
+						 * is the y axis component of this tank's movement vector.*/
 						dy=getSpeed()*Math.sin(Math.toRadians(getRotation()));
 					}
+					//Check if this tank pushes the other tank with it's back.
 					else if(isMovingBackward() && (corner.equals("back left") 
 						|| corner.equals("back right")))
 					{
+						/*If so, the distance the other tank should be moved by 
+						 * is the y axis component of this tank's movement vector.
+						 * The opposite value to the above conditional block since
+						 * the tank moves backwards.*/
 						dy=-(getSpeed()*Math.sin(Math.toRadians(getRotation())));
 					}
 				}
-				
-				otherTank.move(dx, dy);
 			}
+			/*Else, we need to decide if the other tank touches this tank with
+			 * one of it's corners or if this tank with one of it's sides touches
+			 * one of the other tank's sides.*/
 			else
 			{
+				//Get the corner of the other tank that touches this tank.
 				corner=otherTank.getContactCorner(this);
 				
-				//System.out.println("corner "+corner);
+				/*Check if the other tank touches a side of this tank with 
+				 * one of it's corners.*/
 				if(corner!=null)
 				{
-					quadrant=getQuadrant(otherTank.getX()+otherTank.getXOffset(corner),
+					/*If it does, get the side of this tank that is touched by
+					 * the other tanks' corner.*/
+					side=getQuadrant(otherTank.getX()+otherTank.getXOffset(corner),
 							otherTank.getY()+otherTank.getYOffset(corner));	
 				}
+				//If not, see what side of this tank pushes a side of the other tank
 				else
 				{
-					//System.out.println("here is the problem!");
+					/*Check if this tank pushes a side of the other tank with 
+					 * it's front side.*/
 					if((Tank)getOneObjectAtOffset(getXOffset("front"),
 							getYOffset("front"),Tank.class)==otherTank)
 					{
-						quadrant="front";
+						side="front";
 					}
+					/*Else, this tank must push a side of the other tank with 
+					 * it's back, since that is the only possible case left.*/
 					else
 					{
-						quadrant="back";
+						side="back";
 					}
 				}
 				
-				double dx=0;
-				double dy=0;
-				/*System.out.println(quadrant);
-				System.out.println("rotation"+getRotation());
-				System.out.println("tank posiont: "+this.getX()+" "+this.getY());
-				System.out.println("otherTank "+otherTank.getXOffset(corner)+" "+otherTank.getYOffset(corner));*/
-				if(isMovingForward() && quadrant.equals("front"))
+				/*Check if this tank pushes the other tank with it's front side. 
+				 * Which is only if the front side of this tank touches the other 
+				 * tank and if this tank is moving forward.*/
+				if(isMovingForward() && side.equals("front"))
 				{
+					/*If so, the distances the other tank should be moved by 
+					 * are the x and y axis components of this tank's movement 
+					 * vector.*/
 					dx=getSpeed()*Math.cos(Math.toRadians(getRotation()));
-					//System.out.println(dx);
+					
 					dy=getSpeed()*Math.sin(Math.toRadians(getRotation()));
-					//System.out.println(dy);
 				}
-				else if(isMovingBackward() && quadrant.equals("back"))
+				/*Else, check if this tank pushes the other tank with it's back
+				 * side. Which is only if the back side of this tank touches
+				 * the other tank and if this tank is moving backward.*/
+				else if(isMovingBackward() && side.equals("back"))
 				{
+					/*If so, the distances the other tank should be moved by 
+					 * are the x and y axis components of this tank's movement 
+					 * vector. The opposite values to the above conditional 
+					 * block since the tank moves backward.*/
 					dx=-(getSpeed()*Math.cos(Math.toRadians(getRotation())));
-					//System.out.println(dx);
+					
 					dy=-(getSpeed()*Math.sin(Math.toRadians(getRotation())));
-					//System.out.println(dy);
-				}
-				
-				otherTank.move(dx, dy);
+				}	
 			}
+			
+			//move the other tank by the distances established
+			otherTank.move(dx, dy);
 		}
 	}
 	
@@ -647,7 +768,8 @@ public class Tank extends Actor
 	 * Calculates what diagonal quadrant of this tank a point with the
 	 * given coordinates is in. It also applies to points outside the tank
 	 * (the quadrants start from the centre of this tank and their 
-	 * imaginary edges extend up to the world's boundary.)
+	 * imaginary edges extend up to the world's boundary.) Takes into account 
+	 * the rotation of this tank.
 	 * @param x The x coordinate of the point.
 	 * @param y The y coordinate of the point.
 	 * @return A string representing the diagonal quadrant the point is in :
@@ -655,17 +777,32 @@ public class Tank extends Actor
 	 */
     public String getQuadrant(int x, int y)
     {
-    	/*We need the slope of the diagonals of the rectangle shape of the tank,
-    	 * which is either WIDTH/LENGTH or -WIDTH/LENGTH.*/
+    	/*From here on, diag1 or diagonal 1 refers to the diagonal between the 
+    	 * back left corner of the tank and the front right corner. Diag2 or 
+    	 * diagonal 2 refers to the diagonal connecting the back right corner
+    	 * of the tank and the front left corner.*/
+    	
+    	//the angle between diagonal 1 and the horizontal axis
     	double diag1Angle=normalizeAngle(ANGLE+getRotation());
+    	
+    	//the slope of diagonal 1, which is the tangent of diag1Angle
     	double diag1Slope=Math.tan(Math.toRadians(diag1Angle));
     	
+    	//the angle between diagonal 2 and the horizontal axis
     	double diag2Angle=normalizeAngle(getRotation()-ANGLE);
+    	
+    	//the slope of diagonal 2, which is the tangent of diag2Angle
     	double diag2Slope=Math.tan(Math.toRadians(diag2Angle));
     	
-    	/*Calculate the x and y coordinates of the top left corner of this block.*/
-    	double topLeftCornerX=getX()+getXOffset("back left");
-    	double topLeftCornerY=getY()+getYOffset("back left");
+    	/*We have to take into account the position of this tank and it's rotation,
+    	 * so imagine we translate the tank so that it's back left corner is in
+    	 * the top left corner of the world. This is the reference so in the 
+    	 * analytical geometry equations we will subtract to coordinates of the
+    	 * back left corner of this tank.*/
+    	
+    	/*Calculate the x and y coordinates of the back left corner of this block.*/
+    	double backLeftCornerX=getX()+getXOffset("back left");
+    	double backLeftCornerY=getY()+getYOffset("back left");
     	
     	/*A matrix that holds the names of the 4 quadrants.*/
     	String[][] quadrants= { {"left","front"}, {"back","right"} };
@@ -684,44 +821,63 @@ public class Tank extends Actor
     	 * above or below the diagonal that points to the lower left. We check
     	 * this using analytical geometry and the formula of y-y' =m*(x-x') .
     	 * Where m is the slope of the diagonal.*/
-    	double leftMember=y-topLeftCornerY;
-    	double rightMember=diag1Slope*(x-topLeftCornerX);
+    	
+    	//the left member of the equation
+    	double leftMember=y-backLeftCornerY;
+    	
+    	//the right member of this equation
+    	double rightMember=diag1Slope*(x-backLeftCornerX);
+    	
+    	/*Depending on the rotation of the tank, the left and front quadrants
+    	 * might be above diagonal 1, or under it, so we take it into account.*/
     	if((leftMember<=rightMember && (diag1Angle<=90 || diag1Angle>=270))
     			|| (leftMember>rightMember && (diag1Angle>90 && diag1Angle<270)))
     	{
-    		/*If the left side of the equation is smaller or equal to the right
-    		 * side, then the point is above the diagonal (not under it, because
-    		 * in Greenfoot the y axis is from top to bottom.)*/
+    		 /*We check if the point is above diagonal 1 and diag1Angle is not
+    		  * between 90 and 270, or if the point is under diagonal 1 and between
+    		  * 90 and 270. If so, it is in either the left or front quadrants.*/
     		temp=quadrants[0];
     	}
-    	/*If the left side of the equation is greater than the right side, then 
-    	 * the point is under the diagonal.*/
+    	/*Else, it is in the back or right quadrants of the tank.*/
     	else
     	{
     		temp=quadrants[1];
     	}
     	
-    	double deltaY=(HALF_DIAGONAL*Math.sin(Math.toRadians(2*ANGLE)))/
+    	/*After we translate the tank so that the back left corner is in the top 
+    	 * left corner of the world, the second diagonal starts from a different
+    	 * point on the y axis than diagonal 1. We have to take this into account,
+    	 * and we will have to subtract this distance between the top left corner
+    	 * of the world and the place where the second diagonal intersects the y axis.
+    	 * This distance is diag2YStart. We find this length using sine theory.
+    	 * We can see a triangle between the y axis and the 2 diagonals is formed.
+    	 * We know the angle between diagonals and the angle between diag2 and the
+    	 * y axis. diag2YStart is the side opposite the angle between diagonals, 
+    	 * and half of diag1 is the side opposite the angle between diag2 and the
+    	 * y axis.*/
+    	double diag2YStart=(HALF_DIAGONAL*Math.sin(Math.toRadians(2*ANGLE)))/
     			(Math.sin(Math.PI/2+Math.toRadians(getRotation()-ANGLE)));
-    	leftMember=y-topLeftCornerY-deltaY;
-    	rightMember=diag2Slope*(x-topLeftCornerX);
+    	
+    	//the left member of the equation
+    	leftMember=y-backLeftCornerY-diag2YStart;
+    	
+    	//the right member of this equation
+    	rightMember=diag2Slope*(x-backLeftCornerX);
+    	
     	/*We find the quadrant by seeing if the given point is above or below 
-    	 * the diagonal that points to the upper right. We check this using 
-    	 * analytical geometry and the formula of y-y' =m*(x-x') .
-    	 * Where m is the slope of the diagonal (which now is negative, unlike
-    	 * that of the first diagonal). We take into account this diagonal starts
-    	 * lower by the length of the block's side than the first, hence the 
-    	 * '-SIDE' in the left part.*/
+    	 * the diagonal 2. We check this using analytical geometry and the 
+    	 * formula of y-y' =m*(x-x'). Where m is the slope of diagonal 2.
+    	 * Depending on the rotation of the tank, the left and back quadrants
+    	 * might be above diagonal 2, or under it, so we take it into account.*/
     	if((leftMember<=rightMember && (diag2Angle<=90 || diag2Angle>=270))
     			|| (leftMember>rightMember && (diag2Angle>90 && diag2Angle<270)))
     	{
-    		/*If the left side of the equation is smaller or equal to the right
-    		 * side, then the point is above the diagonal (not under it, because
-    		 * in Greenfoot the y axis is from top to bottom.)*/
+    		/*We check if the point is above diagonal 2 and diag2Angle is not
+    		  * between 90 and 270, or if the point is under diagonal 2 and between
+    		  * 90 and 270. If so, it is in either the left or back quadrants.*/
     		quadrant=temp[0];
     	}
-    	/*If the left side of the equation is greater than the right side, then 
-    	 * the point is under the diagonal.*/
+    	/*Else, it is in the front or right quadrants of the tank.*/
     	else
     	{
     		quadrant=temp[1];
@@ -739,6 +895,12 @@ public class Tank extends Actor
 		return tankTurret;
 	}
 	
+	/**
+	 * The speed of this tank, meaning the distance in cells that the tank moves
+	 * each time the move(int) method is called.
+	 * @return 0, unless overridden, since a default tank does not have a specific 
+	 * speed. This method should always be overridden.
+	 */
 	public int getSpeed()
 	{
 		return 0;
@@ -778,12 +940,21 @@ public class Tank extends Actor
 		}
 	}
 	
+	/**
+	 * Normalises the value of an angle in degrees. Meaning it brings the value 
+	 * of angle into an equivalent value between 0 and 359.
+	 * @param angle The angle that will be normalised.
+	 * @return The normalised value of the angle.
+	 */
 	private static double normalizeAngle(double angle)
 	{	
+		//Use mod division to bring it to a value between -359 and 359.
 		double normalizedAngle=angle%360;;
 		
+		//Check if the value is negative.
 		if(normalizedAngle<0)
 		{
+			//If it is, make it an equivalent positiv value.
 			normalizedAngle+=360;
 		}
 		

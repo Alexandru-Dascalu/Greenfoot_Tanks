@@ -2,9 +2,9 @@ import greenfoot.*;
 
 /**
  * <p><b>File name: </b> BrownTank.java
- * @version 1.1
+ * @version 1.2
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 21.06.2018
+ * <p><b>Last modification date: </b> 24.07.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -19,6 +19,7 @@ import greenfoot.*;
  * <p>	-1.0 - Created the class.
  * <p>	-1.1 - Added an explicit constructor to set the x and y values of it's 
  * starting position.
+ * <p>	-1.2 - Changed the class so brown tanks can e pushed by other tanks.
  */
 
 public class BrownTank extends Tank
@@ -39,6 +40,7 @@ public class BrownTank extends Tank
 	 * Overrides the default isMoving method because a Brown Tank is a very basic
 	 * enemy and it does not move at all, unless pushed by another tank. This 
 	 * method returns false always.
+	 * @return false.
 	 */
 	@Override
 	public boolean isMoving()
@@ -46,12 +48,12 @@ public class BrownTank extends Tank
 		return false;
 	}
 	
+	/**
+	 * Checks if the tank is moving forward.
+	 * @return False, because this type of the tank is stationary.
+	 */
+	@Override
 	protected boolean isMovingForward()
-	{
-		return false;
-	}
-	
-	protected boolean isMovingBackward()
 	{
 		return false;
 	}
