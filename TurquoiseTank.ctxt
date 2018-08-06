@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=TurquoiseTank
+comment1.params=startX\ startY
+comment1.target=TurquoiseTank(int,\ int)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ generatePath()
+comment4.params=
+comment4.target=int\ getSpeed()
+comment5.params=world
+comment5.target=void\ addedToWorld(greenfoot.World)
+numComments=6
