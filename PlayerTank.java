@@ -1,322 +1,484 @@
-import greenfoot.*;
+import greenfoot.*;  
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Toolkit;
+import javax.swing.*;
+import greenfoot.core.WorldHandler;
+import java.util.List;
 
 /**
- * <p><b>File name: </b> PlayerTank.java
- * @version 1.3
- * @since 07.06.2018
- * <p><b>Last modification date: </b> 24.07.2018
+ * <p><b>File name: </b> TankWorld.java
+ * @version 1.6
+ * @since 02.05.2018
+ * <p><p><b>Last modification date: </b> 07.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
  * 
  * <p><b>Purpose: </b>
- * <p> This class models a player tank for a Greenfoot recreation of 
- * the Wii Tanks game for the Nintendo Wii. It is a tank controller by the player.
- * The player can drive the tank, fire shells and lay mines.
+ * <p> This class models a game world for a Greenfoot recreation of the Wii Tanks 
+ * game for the Nintendo Wii. This game world is where all actors are placed, it
+ * provides a tank target for the player, supports multiple levels displays
+ * messages when a level is loaded or reloaded, when a mission is failed or 
+ * cleared or when the player beats the game or loses.
  * 
  * <p><b>Version History</b>
  * <p>	-1.0 - Created the class.
- * <p>	-1.1 - Encapsulated the turret actions of firing and aiming into this classes,
- * meaning the aim() and fire() methods are called by the tank's act() method.
- * <p>	-1.2 - Encapsulated mouse tracking into this class. The tank detects a
- * mouse click and then tells the turret to fire or lays a mine , depending on
- * the mouse button clicked.
- * <p>	-1.3 - Changed the class so player tanks can push other tanks it encounters.
+ * <p>	-1.1 - Added a player tank target.
+ * <p>	-1.2 - Made the mouse cursor to not show up next to the target.
+ * <p>	-1.3 - Added external walls to the world.
+ * <p>  -1.4 - Added code so that a message is displayed at the start of a level,
+ * and appropriate messages are displayed when the mission is cleared or failed.
+ * <p>  -1.5 - Made the game world support multiple levels and added a message for 
+ * when the last level is beaten.
+ * <p>	-1.6 - Added a graph of points in the world that are used to find the 
+ * shortest path between a moving enemy tank and a selected point.
  */
 
-public class PlayerTank extends Tank
+public class TankWorld extends World
 {
-	/**The time in milliseconds from the start of a mouse press by which the 
-	* mouse button must be released so that a click may be detected.*/
-	private static final int CLICK_TIME_WINDOW=165;
-	
-	/**The distance measured in cell-size units by which this tank moves each 
-	 * time it acts. It's value is {@value}.*/
-	private static final int SPEED=2;
-	
-	/**The last information about the state of the mouse we have.*/
-    private MouseInfo lastMouseInfo;
+	/**The file name of the image displayed when the player dies.*/
+    private static final String MISSION_FAILED="mission_failed.png";
     
-    /**The system time in milliseconds when the left mouse button has last been 
-	* pressed. Used to ensure that a shell is only fired when the player quickly
-	* clicks the left mouse button.*/
-	private long leftMBPressStart;
+    /**The file name of the image displayed when the player dies and there are 0
+     * available player lives left.*/
+    private static final String GAME_OVER="game_over.png";
+    
+    /**The file name of the image displayed when the player defeats all enemies 
+     * in a level.*/
+    private static final String MISSION_CLEARED="mission_cleared.png";
+    
+    /**The file name of the image displayed when the player beats the final level.*/
+    private static final String GAME_WIN="game_Win.png";
+    
+    /**The horizontal length of the world. It's value is {@value}. Public so the
+     * graph of points enemy tanks pass through is generated correctly based on
+     * the size of the world.*/
+    public static final int LENGTH=1000;
+    
+    /**The vertical width of the world. It's value is {@value}.Public so the
+     * graph of points enemy tanks pass through is generated correctly based on
+     * the size of the world.*/
+    public static final int WIDTH=800;
+    
+    private Graph worldGraph;
+    
+	/**The tank target display used by the player and moved using the mouse.*/
+    private final Target tankTarget;
+    
+    /**The player tank of this game world.*/
+    private PlayerTank playerTank;
+    
+    /**A transparent custom cursor used to hide the mouse cursor when the mouse is
+     * in the game world.*/
+    private Cursor customCursor;
+    
+    /**A JPanel used to hide the mouse cursor when the mouse is in the game world.*/
+    private JPanel panel;
+    
+    /**The number of the current level of the game the player is in.*/
+    private int level;
+    
+    /**The number of enemy tanks left in the current level.*/
+    private int enemyTanks;
+    
+    /**The number of lives the player has left.*/
+    private int playerLives;
+    
+    /**
+     * Makes a new TankWorld game world and initialises it's variables. 
+     */
+    public TankWorld()
+    {    
+    	/*make a new TankWorld world, which is always 1000x800 pixels with the 
+    	 * cells being one pixels.It is also bounded so actors can not move 
+    	 * outside the world.*/
+        super(LENGTH, WIDTH, 1,true);
+        
+        //make a new tank target for this game world
+        tankTarget=new Target();
+        
+        //the game has not started so the level is 0
+        level=0;
+        
+        //the player has 3 lives in the beginning
+        playerLives=3;
+        
+        /*Makes a custom transparent cursor to use to hide the default mouse cursor.*/
+        hideCursor();
+    }
 
-	/**
-	* Make a new player tank object.
-	* @param startX The starting x coordinate in the world for this tank.
-	* @param startY The starting x coordinate in the world for this tank.
-	*/
-	public PlayerTank(int startX, int startY)
-	{
-		super(startX,startY);
-		lastMouseInfo=null;
-		leftMBPressStart=0;
-	}
-	
-	/**
-	 * Prepares the player tank for the beginning of the game. Sets the correct
-	 * starting orientation and gives this player tank a PlayerTurret.
-	 */
-	@Override
-	protected void addedToWorld(World world)
-	{
-		this.setRotation(180);
-		tankTurret=new PlayerTurret(this);
-	}
-	
-	/**
-	 * Method called by Greenfoot at each timestep to make the actor do what it
-	 * is supposed to do. In this case, it allows the player to move the tank, aim
-	 * and fire the turret, lay mines and it makes the tank play sound if it moves.
-	 */
-	@Override
-	public void act()
-	{
-		/*in order to be able to detect left and middle mouse button clicks and 
-		 *aim the turret, we need to have latest information about the state of 
-		 *the mouse*/
-		updateMouseInfo();
-		
-		moveAndTurn();
-		pushOtherTanks();
-		playSound();
-		
-		tankTurret.aim();
-		
-		/*Only tell the turret to fire if the left mouse button has been clicked.*/
-		if(leftMBClicked()) 
-		{
-			tankTurret.fire();
-		}
-		
-		/*Check if the player has clicked the middle mouse button in order to 
-		 * lay a mine.*/
-		if(middleMBClicked())
-		{
-			layMine();
-		}
-	}
-	
-	/**
-	 * Makes the tank move in accordance with the player's keystrokes.
-	 */
-	private void moveAndTurn()
-	{
-		/*Check if the tank should move forwards. It should only if it there is
-		 * no wall in front of it and if the player presses "w".*/
-		if (Greenfoot.isKeyDown("w") && canMoveForwards())
-		{
-			/*If it should move, move the tank and it's turret.*/
-			move(SPEED);
-		}
-
-		/*Check if the tank should move backwards. It should only if it there is
-		 * no wall behind it and if the player presses "s".*/
-		if (Greenfoot.isKeyDown("s") && canMoveBackwards())
-		{
-			/*If it should move, move the tank and it's turret.*/
-			move(-SPEED);
-		}
-
-		/*Check if the tank should turn left. It should only if it there is
-		 * no wall in the way and if the player presses "a".*/
-		if (Greenfoot.isKeyDown("a") && canTurnLeft())
-		{
-			/*If it should turn, turn the tank and not also the turret (it should
-			 * always face the player target).*/
-			turn(-2);
-		}
-
-		/*Check if the tank should turn right. It should only if it there is
-		 * no wall in the way and if the player presses "d".*/
-		if (Greenfoot.isKeyDown("d") && canTurnRight())
-		{
-			/*If it should turn, turn the tank and not also the turret (it should
-			 * always face the player target).*/
-			turn(2);
-		}
-	}
-	
-	/**Updates the last known state of the mouse. Necessary in order to detect
-	 * left and middle mouse button clicks and to aim the turret.*/
-	private void updateMouseInfo()
-	{
-		/*getMouseInfo() returns a MouseInfo object with the latest information
-		 * about the mouse, or null if the mouse has not been moved or clicked.*/
-		MouseInfo mouse=Greenfoot.getMouseInfo();
-	        
-		/*Only update mouse info if the mouse has been used since the last tome
-		 * this method was called.*/
-		if(mouse!=null)
-		{
-			lastMouseInfo=mouse;
-		} 
-	}
-	
-	/**Makes the tank lay down a land mine.*/
-	private void layMine()
-	{
-		World world= getWorld();
-		
-		//make a new land mine and put it in the game world
-		LandMine mine=new LandMine(this);
-		world.addObject(mine, getX(), getY());
-	}
-	
-	/**Detects whether the middle mouse button has been clicked.*/
-	private boolean middleMBClicked()
-	{
-		/*Check if lastMouseInfo is not null to avoid a NullPointerException.
-		 * LastMouseInfo is null only if the mouse has not been in the game 
-		 * world so far.*/
-		if(lastMouseInfo!=null)
-		{
-			/*If it is no null, the middle mouse button has been pressed if the 
-			 * a mouse button has been pressed and released and if that button
-			 * was the second mouse button.*/
-			return (Greenfoot.mouseClicked(null) && lastMouseInfo.getButton()==2);
-		}
-		/*If it is null, the middle mouse button can not have been clicked.*/
-		else
-		{
-			return false;
-		}
-		
-	}
-	
-	/**Detects whether the left mouse button has been clicked.*/
-	private boolean leftMBClicked()
-	{
-		/*Check if lastMouseInfo is not null to avoid a NullPointerException.
-		 * LastMouseInfo is null only if the mouse has not been in the game 
-		 * world so far.*/
-		if(lastMouseInfo!=null)
-		{
-			/*By left mouse button click, we mean that the left mouse button 
-			 * has been pressed and then released right after (in this case it
-			 * must be realeased within 165 milliseconds from when the mouse press
-			 * started).
-			 * 
-			 * We check if we are currently tracking a mouse press.*/
-			if(leftMBPressStart!=0)
-	    	{
-	    		long currentTime=System.currentTimeMillis();
-	    		
-	    		/*If we are tracking a mouse press, we check if the left MB has 
-	    		 * been released shortly after the press started.*/
-	    		if(currentTime<=leftMBPressStart+CLICK_TIME_WINDOW && Greenfoot.mouseClicked(null)
-	    				&& lastMouseInfo.getButton()==1)
-	    		{
-	    			/*If it has been released shortly after the press started, we
-	    			 * we reset the last start time of a left MB press and return
-	    			 * true.*/
-	    			leftMBPressStart=0;
-	    			return true;
-	    		}
-	    		/*Else, if the left mouse button has been released, but long after
-	    		 * the press started, we just reset the last start time of a left
-	    		 * mouse button press.*/
-	    		else if(currentTime>leftMBPressStart+CLICK_TIME_WINDOW && Greenfoot.mouseClicked(null))
-	    		{
-	    			leftMBPressStart=0;
-	    		}
-	    	}
-			/*If we are not currently tracking a mouse press, we check if the 
-			 * left mouse button has been pressed (changed from a non-pressed
-			 * state to being pressed.)*/
-	    	else
-	    	{
-	    		if(Greenfoot.mousePressed(null) && lastMouseInfo.getButton()==1)
-	    		{
-	    			/*If the left mouse button has just been pressed, we change
-	    			 * the start of the last left mouse button press to the current
-	    			 * time.*/
-	    			leftMBPressStart=System.currentTimeMillis();
-	    		}
-	    	}
-		}
-		
-		/*If it has not returned true so far, the left mouse button has not
-		 * been clicked.*/
-		return false;
-	}
-
-	/**
-	 * Overrides the default isMoving method because a Player Tank only moves when
-	 * the player presses one of the WASD keyboard keys.
-	 */
-	@Override
-	public boolean isMoving()
-	{
-		/*The player tank moves only if the player is pressing W,A,S or D keys
-		 * on the keyboard.*/
-		boolean isMoving = Greenfoot.isKeyDown("w") || Greenfoot.isKeyDown("s") 
-				|| Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d");
-
-		return isMoving;
-	}
-	
-	/**
-	 * Checks if the tank is moving forward.
-	 * @return True if the "w" key is pressed, false if not.
-	 */
-	@Override
-	protected boolean isMovingForward()
-	{
-		return Greenfoot.isKeyDown("w");
-	}
-	
-	/**
-	 * Checks if the tank is moving backward.
-	 * @return True if the "s" key is pressed, false if not.
-	 */
-	@Override
-	protected boolean isMovingBackward()
-	{
-		return Greenfoot.isKeyDown("s");
-	}
-	
-	/**
-	 * The speed of this tank, meaning the distance in cells that the tank moves
-	 * each time the move(int) method is called.
-	 * @return 	The speed of this tank.
-	 */
-	@Override
-	public int getSpeed()
-	{
-		return SPEED;
-	}
-	
-	/**Method reloads this tank into the game world to prepare it for another start
-	 * of the current level. Overloaded the method from the Tank class because
-	 * player tanks need to be readded to the world after they have been removed
-	 * and we need a reference to the world as an argument. Using addObject does
-	 * not work because that does not reset the real number values of the x and y
-	 * coordinates of the tank used for accurate movement. */
-	public void reloadTank(TankWorld world)
-	{
-		/*Check if the tank is in a game world to avoid exceptions.*/
-		if(world!=null)
-		{
-			/*Reset the real number values of the tank's position.*/
-			realX=startX;
-			realY=startY;
-			
-			/*Place the tank and it's turret at it's original position and reset
-			 * their orientation.*/
-			world.addObject(this, startX, startY);
-			world.addObject(tankTurret, startX, startY);
-			setRotation(180);
-			tankTurret.setRotation(180);
-		}
-	}
-	
-	/**Getter for the MouseInfo object of the player's tank. Needed so that the
-	 * player turret can access the location of the cursor an know where to aim.
-	 * @return The latest information about the mouse this tank tracks.*/
-	public MouseInfo getMouseInfo()
-	{
-		return lastMouseInfo;
-	}
+    /**Ensures that the first level is initiated and that the mouse cursor is hidden
+     * when the mouse is in the world.*/
+    @Override
+    public void act()
+    {
+    	/*If the game has just started, set the level to level 1 and load it.*/
+    	if(level==0)
+    	{
+    		level++;
+    		prepare();
+    	}
+    	
+    	//hide the mouse cursor
+        panel.setCursor(customCursor);
+    }
+    
+    /**Creates a transparent mouse cursor used to cover and hide the mouse cursor
+     * while the mouse is over the game world, so that it does not overlap the 
+     * player target.*/
+    private void hideCursor()
+    {
+    	/*I am not an expert on Java Swing, so this is just code I copied from
+    	 * https://www.greenfoot.org/topics/821 and made changes for it to
+    	 * work for this project.*/
+    	Toolkit toolkit=Toolkit.getDefaultToolkit();
+        Point defaultPoint=new Point(0,0);
+        GreenfootImage emptyImage= new GreenfootImage(5,5);
+        customCursor=toolkit.createCustomCursor(emptyImage.getAwtImage(),defaultPoint,
+            "Target");
+        panel=WorldHandler.getInstance().getWorldCanvas(); 
+    }
+   
+    /**Prepares the world for the start of a new level, based on the value of the
+     * level class variable. It removes all actors in the current world, adds
+     * actors for the next level and updates the displays for the number of enemies
+     * and the number of player lives left.*/
+    private void prepare()
+    {
+    	//get a list of all actors currently in the world
+    	List<Actor> actors=getObjects(null);
+    	
+    	//remove every actor from the world
+    	for(Actor a: actors)
+    	{
+    		removeObject(a);
+    	}
+    	
+    	/*We use a switch statement to call the appropiate method to prepare
+    	 * the world for that specific level, or to display the message for
+    	 * winning the game if the last level has been won.*/
+    	switch(level)
+    	{
+    		case 1:
+    			prepareLevel1();
+    			break;
+    		/*If the last level has been cleared, then the level counter has been
+    		 * incremented beyond the number of levels in the game, so it will
+    		 * resort to calling the method that display the game win message and 
+    		 * stop the game.*/
+    		default:
+    			gameWin();
+    			return;
+    	}
+    	
+    	/*Re-add the display elements for the number of player lives and 
+    	 * update it.*/
+    	LivesMeter livesMeter=new LivesMeter();
+        addObject(livesMeter,100,25);
+        livesMeter.act();
+        
+        /*Re-add the display elements for the number of enemy tanks and update it.*/
+        EnemyCount enemyCount=new EnemyCount();
+        addObject(enemyCount,500,23);
+        enemyCount.act();
+        
+        worldGraph=new Graph(this);
+        
+        /*Show the updated start screen for the new level.*/
+        showStartScreen();
+    }
+    
+    /**
+     * Prepare the world for the start of the first level.
+     * That is: create the initial objects and add them to the world.
+     */
+    private void prepareLevel1()
+    {
+    	//add the walls along the edges of the game world
+    	addExternalWalls();
+    	
+    	/*Add other walls in the level.*/
+    	WallBlock wallBlock1=new WallBlock();
+    	addObject(wallBlock1,370,360);
+    	WallBlock wallBlock2=new WallBlock();
+    	addObject(wallBlock2,430,360);
+    	WallBlock wallBlock3=new WallBlock();
+    	addObject(wallBlock3,490,360);
+    	WallBlock wallBlock4=new WallBlock();
+    	addObject(wallBlock4,550,360);
+    	WallBlock wallBlock5=new WallBlock();
+    	addObject(wallBlock5,610,360);
+    	WallBlock wallBlock6=new WallBlock();
+    	addObject(wallBlock6,670,360);
+    	
+    	//add the player tank target
+    	addObject(tankTarget,200,200);
+        
+    	//make a player tank and add it to the world.
+        playerTank=new PlayerTank(900,200);
+        addObject(playerTank,900,200);
+        
+        /*make enemy tanks, add to the world and set number of enemy tanks 
+         * accordingly.*/
+        BrownTank enemy1=new BrownTank(300,500);
+        addObject(enemy1, 300, 500);
+        
+        TurquoiseTank enemy2=new TurquoiseTank(500 ,550);
+        addObject(enemy2, 500, 550);
+        enemyTanks=2;
+    }
+    
+    /**Shows the updated start screen display for the start of this level.
+     * It displays the current level number and the number of remaining enemy
+     * tanks (this method is also called after a level is reloaded.).*/
+    private void showStartScreen()
+    {
+    	//make an updated start screen and add it in the middle of the world.
+    	StartScreen levelStart=new StartScreen(this);
+    	addObject(levelStart,LENGTH/2,WIDTH/2);
+    	
+    	/*Display the screen for a bit and stop the game meanwhile. Then remove it
+    	 * and stop the game for a bit to allow the player to see the layout of
+    	 * the level before the game starts.*/
+    	Greenfoot.delay(50);
+    	removeObject(levelStart);
+    	Greenfoot.delay(50);
+    }
+    
+    /**Displays a message for the player telling him he cleared this level for
+     * a bit then removes it and calls the prepare method to load the next level.*/
+    private void missionCleared()
+    {
+    	/*We just need to display an image that always is the same, but we need to 
+    	 * remove it so we make an actor and set it's image to the display. And we
+    	 * use a wall block actor because they do not override any Actor methods, 
+    	 * so if it is casted as an Actor it will behave as a basic actor (Actor 
+    	 * is an abstract class so we can not use it directly).*/
+    	Actor missionCleared=new WallBlock();
+    	
+    	//set the image to be a display showing the mission has been cleared
+    	missionCleared.setImage(new GreenfootImage(MISSION_CLEARED));
+    	
+    	//add the display, stop the game for a bit, then remove it
+    	addObject(missionCleared,LENGTH/2,WIDTH/2);
+    	Greenfoot.delay(300);
+    	removeObject(missionCleared);
+    	
+    	//increment the level counter and load the next level.
+    	level++;
+    	prepare();
+    }
+    
+    /**Displays a message that the player has beaten the game and stops the 
+     * game indefinitely.*/
+    private void gameWin()
+    {
+    	/*We just need to display an image that always is the same. We use a wall
+    	 * block actor because they do not override any Actor methods, so if it 
+    	 * is casted as an Actor it will behave as a basic actor (Actor  is an
+    	 * abstract class so we can not use it directly).*/
+    	Actor gameWin=new WallBlock();
+    	
+    	/*set the image to a display that congratulates the player, add it to the 
+    	 * world and stop the game until the player resets the program.*/
+    	gameWin.setImage(new GreenfootImage(GAME_WIN));
+    	addObject(gameWin,LENGTH/2,WIDTH/2);
+    	Greenfoot.stop();
+    }
+    
+    /**Reload the level if the player tank has been destroyed but there are player
+     *  lives left. This means the player tank is re-added to the world and enemy
+     *  tanks that have not been destroyed are put back at their original place
+     *  in the world.*/
+    private void reloadLevel()
+    {
+    	/*Make the display that tells the player the mission has been failed, add 
+    	 * it, stop the game for a bit then remove it.*/
+    	Actor missionFail=new WallBlock();
+    	missionFail.setImage(new GreenfootImage(MISSION_FAILED));
+    	addObject(missionFail,LENGTH/2,WIDTH/2);
+    	Greenfoot.delay(300);
+    	removeObject(missionFail);
+    	
+    	/*We need to place tanks back at their original place and remove any remaining
+    	 * shells and mines, so we get lists of each.*/
+    	List<Tank> tanks=getObjects(Tank.class);
+    	List<Shell> shells=getObjects(Shell.class);
+    	List<LandMine> mines=getObjects(LandMine.class);
+    	
+    	//remove all land mines
+    	for(LandMine lm: mines)
+    	{
+    		removeObject(lm);
+    	}
+    	
+    	//remove all shells still in the world
+    	for(Shell s: shells)
+    	{
+    		removeObject(s);
+    	}
+    	
+    	//put remaining enemy tanks in their original place
+    	for(Tank t: tanks)
+    	{
+    		t.reloadTank();
+    	}
+    	
+    	/*Reload the player tank to it's original place, reset the location of the
+    	 * tank target and show the display for the (re)start of this level.*/
+    	playerTank.reloadTank(this);
+    	tankTarget.setLocation(200, 200);
+    	showStartScreen();
+    }
+    
+    /**Displays a message that the player has lost the game because it has no 
+     * remaining lives left, then stops the game indefinitely.*/
+    private void gameOver()
+    {
+    	/*Make the display telling the player the game is over, put it in the 
+    	 * world and stop the game.*/
+    	Actor gameOver=new WallBlock();
+    	gameOver.setImage(new GreenfootImage(GAME_OVER));
+    	addObject(gameOver,LENGTH/2,WIDTH/2);
+    	Greenfoot.stop();
+    }
+    
+    /**Adds the wall blocks on the edges of the game world.*/
+    private void addExternalWalls()
+    {
+    	/*Add the wall blocks on the left and right edges of the world. The blocks
+    	 * are strictly in the world, so i starts from half of the side of block
+    	 * and ends at 830, which is the width of this game world plus half of the 
+    	 * side of the block (we add it to make sure we fill in all gaps even if 
+    	 * the entire block does not fir i the game world). It is incremented
+    	 * by the value of the side of the block, so blocks are put side by side
+    	 * until the edge of the world is reached.*/
+    	for(int i=(WallBlock.SIDE/2);i<WIDTH+WallBlock.SIDE/2;i+=WallBlock.SIDE)
+    	{
+    		/*make 2 new blocks, one for the left edge and one for the right edge
+    		 * and add them to the world.*/
+    		WallBlock wall=new WallBlock();
+    		addObject(wall,WallBlock.SIDE/2,i);
+    		wall=new WallBlock();
+    		addObject(wall,LENGTH-(WallBlock.SIDE/2),i);
+    	}
+    
+    	/*Do the same thing and add the blocks on th top and bottom edges of the 
+    	 * world. i starts from 1.5*WallBlock.SIDE because there are already wall
+    	 * blocks in the corners of the world, so we start a bit more to the right.*/
+    	for(int i=(int)(WallBlock.SIDE*1.5);i<LENGTH;i+=WallBlock.SIDE)
+    	{
+    		/*make 2 new blocks, one for the bottomedge and for the top edge
+    		 * and add them to the world.*/
+    		WallBlock wall=new WallBlock();
+    		addObject(wall,i,WallBlock.SIDE/2);
+    		wall=new WallBlock();
+    		addObject(wall,i,WIDTH-(WallBlock.SIDE/2));
+    	}
+    }
+    
+    /**
+     * Getter for the player tank target.
+     * @return A reference to the tank target used by the player to aim.
+     */
+    public Target getTankTarget()
+    {
+        return tankTarget;
+    }
+    
+    /**
+     * Getter for the number of player lives left.
+     * @return The number of lives the player has left.
+     */
+    public int getPlayerLives()
+    {
+    	return playerLives;
+    }
+    
+    /**
+     * Getter for number of the current level.
+     * @return The current level of the game.
+     */
+    public int getLevel()
+    {
+    	return level;
+    }
+    
+    /**
+     * Getter for number of enemy tanks left.
+     * @return The number of enemy tanks remaining in the level.
+     */
+    public int getNrEnemyTanks()
+    {
+    	return enemyTanks;
+    }
+    
+    public PlayerTank getPlayerTank()
+    {
+    	return playerTank;
+    }
+    
+    public Graph getWorldGraph()
+    {
+    	return worldGraph;
+    }
+    
+    /**Overloads the default removeObject method. This is so that when a shell
+     * is removed, the counter of live shells of that shell's parent tank is
+     * decremented, then the shell is removed from the game world.
+     * @param shell The shell that is to be removed.*/
+    public void removeObject(Shell shell)
+    {
+    	//decrement the counter of shells in the parent tank's turret
+    	shell.getParentTank().getTurret().decLiveShells();
+    	
+    	//now we can remove the shell safely using the default method
+    	super.removeObject(shell);
+    }
+    
+    /**
+     * Overloads the default removeObject method. This is so that when a tank is
+     * removed from the world, we can decide if the mission has been cleared, failed
+     * or if the game is over completely.
+     * @param tank The tank that is to be removed.
+     */
+    public void removeObject(Tank tank)
+    {
+    	/*Call the tank's delete method so that it's turret is also removed.*/
+    	tank.deleteTank();
+    	
+    	/*Check if the removed tank was a player tank.*/
+    	if(tank.getClass()==PlayerTank.class)
+    	{
+    		/*If it is, we decrement the number of player lives left and see if
+    		 * we reload the level or stop the game.*/
+    		playerLives--;
+    		
+    		/*Check if there are any player lives left.*/
+    		if(playerLives>0)
+    		{
+    			//if so, reload the current level.
+    			reloadLevel();
+    		}
+    		//else, the game is over
+    		else
+    		{
+    			gameOver();
+    		}
+    	}
+    	/*If it is an enemy tank instead, we decrement the number of enemy tanks 
+    	 * and check if the level has been cleared.*/
+    	else
+    	{
+    		enemyTanks--;
+    		
+    		/*Checks if all enemy tanks have been destroyed.*/
+    		if(enemyTanks==0)
+    		{
+    			//if so, the mission has been cleared.
+    			missionCleared();
+    		}
+    	}
+    }
 }
