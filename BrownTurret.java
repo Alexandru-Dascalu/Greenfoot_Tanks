@@ -2,9 +2,9 @@ import greenfoot.*;
 
 /**
  * <p><b>File name: </b> BrownTurret.java
- * @version 1.3
+ * @version 1.4
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 21.06.2018
+ * <p><b>Last modification date: </b> 07.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -25,8 +25,8 @@ import greenfoot.*;
  * line to it.
  * <p>	-1.3 - Made the turret's line of sight bounce off walls as many times
  * as the shells it fires do.
+ * <p>	-1.4 - Made the aiming of the turret more accurate.
  */
-
 public class BrownTurret extends Turret
 {
 	/**The approximate length in cells(pixels) between points on the line of
