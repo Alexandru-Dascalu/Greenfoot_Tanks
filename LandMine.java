@@ -1,11 +1,11 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 import java.util.List;
 
 /**
  * <p><b>File name: </b> Shell.java
- * @version 1.2
+ * @version 1.3
  * @since 04.06.2018
- * <p><b>Last modification date: </b> 10.06.2018
+ * <p><b>Last modification date: </b> 07.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -23,6 +23,10 @@ import java.util.List;
  * <p>	-1.1 - Made the mine explode and destroy walls, tanks, shells, mines in
  * it's vicinity. It also explodes when hit by a shell.
  * <p>	-1.2 - The mine now also explodes when stepped on by a tank.
+ * <p.	-1.3 - Fixed some bugs relating to exceptions appearing after a tank was
+ *  destroyed by a landmine and as a result the level was cleared or reloaded. 
+ *  Also fixed a bug that made the landmine not explode when being stepped on 
+ *  by enemy tanks.
  */
 
 public class LandMine extends Actor
@@ -133,20 +137,16 @@ public class LandMine extends Actor
     	 * TankWorld has overloaded removeObject methods for them, and we need 
     	 * these objects to be casted as Tanks or shells for this to work. So we make 4
     	 * different lists for the types of actors we need to remove, since we need
-    	 * to treat shells and tanks differently.*/
-    	List<Tank> destroyedTanks=getObjectsInRange(EXPLOSION_RANGE, Tank.class);
+    	 * to treat shells and tanks differently. We make a list for tanks later since 
+    	 * we do that after making sure the player tank has benn removed if needed. 
+    	 * Because if an explosion destroys the player tank and the last remaining enemy
+    	 * tank, this ensures the world knows the player lost and reloads the level.*/
     	List<Shell> destroyedShells=getObjectsInRange(EXPLOSION_RANGE, Shell.class);
     	List<WallBlock> destroyedWalls=getObjectsInRange(EXPLOSION_RANGE, WallBlock.class);
     	List<LandMine> destroyedMines=getObjectsInRange(EXPLOSION_RANGE, LandMine.class);
     	
     	//we need a reference to the world of type TankWorld
     	TankWorld world=getWorldOfType(TankWorld.class);
-    	
-    	/*Remove each tank in the radius with the overloaded removeObject method.*/
-    	for(Tank t: destroyedTanks)
-    	{
-    		world.removeObject(t);
-    	}
     	
     	/*Remove each shell in the radius with the overloaded removeObject method.*/
     	for(Shell s: destroyedShells)
@@ -166,8 +166,31 @@ public class LandMine extends Actor
     		world.removeObject(lm);
     	}
     	
-    	//finally, remove this land mine from the world
-    	getWorld().removeObject(this);
+    	/*Get a list that contains the player tank if it is in range and remove it if needed.*/
+    	List<PlayerTank> playerTank=getObjectsInRange(EXPLOSION_RANGE, PlayerTank.class);
+    	for(PlayerTank p: playerTank)
+    	{
+    		world.removeObject(p);
+    		
+    		/*If the player tank was destroyed, the overloaded removeObject() method
+    		 * reloads the level. Since then this landmine has been removed by the 
+    		 * reloadLevel() method and all other enemy tanks have been reset, we 
+    		 * terminate the execution of this method to avoid exceptions caused 
+    		 * by this land mine already not being in the world.*/
+    		return;
+    	}
+    	
+    	/*Remove each tank in the radius with the overloaded removeObject method.*/
+    	List<Tank> destroyedTanks=getObjectsInRange(EXPLOSION_RANGE, Tank.class);
+    	for(Tank t: destroyedTanks)
+    	{
+    		world.removeObject(t);
+    	}
+    	
+    	
+    	//remove this land mine from the world
+    	world.removeObject(this);
+    	
     }
     
     /**
@@ -209,7 +232,7 @@ public class LandMine extends Actor
     	}
     	/*If only one tank steps on the mine, we need to check if it is the parent
     	 * or not.*/
-    	else if (tanks.size()==1 && tanks.get(0)==parentTank)
+    	else if (tanks.size()==1)
     	{
     		/*If it is just the parent tank, it should only explode if destroyParent
     		 * is true.*/
