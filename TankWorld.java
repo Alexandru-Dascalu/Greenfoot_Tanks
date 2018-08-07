@@ -8,9 +8,9 @@ import java.util.List;
 
 /**
  * <p><b>File name: </b> TankWorld.java
- * @version 1.5
+ * @version 1.6
  * @since 02.05.2018
- * <p><p><b>Last modification date: </b> 11.07.2018
+ * <p><p><b>Last modification date: </b> 07.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -31,6 +31,8 @@ import java.util.List;
  * and appropriate messages are displayed when the mission is cleared or failed.
  * <p>  -1.5 - Made the game world support multiple levels and added a message for 
  * when the last level is beaten.
+ * <p>	-1.6 - Added a graph of points in the world that are used to find the 
+ * shortest path between a moving enemy tank and a selected point.
  */
 
 public class TankWorld extends World
@@ -49,11 +51,17 @@ public class TankWorld extends World
     /**The file name of the image displayed when the player beats the final level.*/
     private static final String GAME_WIN="game_Win.png";
     
-    /**The horizontal length of the world. It's value is {@value}.*/
-    private static final int LENGTH=1000;
+    /**The horizontal length of the world. It's value is {@value}. Public so the
+     * graph of points enemy tanks pass through is generated correctly based on
+     * the size of the world.*/
+    public static final int LENGTH=1000;
     
-    /**The vertical width of the world. It's value is {@value}.*/
-    private static final int WIDTH=800;
+    /**The vertical width of the world. It's value is {@value}.Public so the
+     * graph of points enemy tanks pass through is generated correctly based on
+     * the size of the world.*/
+    public static final int WIDTH=800;
+    
+    private Graph worldGraph;
     
 	/**The tank target display used by the player and moved using the mouse.*/
     private final Target tankTarget;
@@ -175,6 +183,8 @@ public class TankWorld extends World
         addObject(enemyCount,500,23);
         enemyCount.act();
         
+        worldGraph=new Graph(this);
+        
         /*Show the updated start screen for the new level.*/
         showStartScreen();
     }
@@ -211,9 +221,12 @@ public class TankWorld extends World
         
         /*make enemy tanks, add to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemyTank=new BrownTank(300,500);
-        addObject(enemyTank, 300, 500);
-        enemyTanks=1;
+        BrownTank enemy1=new BrownTank(300,500);
+        addObject(enemy1, 300, 500);
+        
+        TurquoiseTank enemy2=new TurquoiseTank(500 ,550);
+        addObject(enemy2, 500, 550);
+        enemyTanks=2;
     }
     
     /**Shows the updated start screen display for the start of this level.
@@ -312,7 +325,7 @@ public class TankWorld extends World
     		t.reloadTank();
     	}
     	
-    	/*Re-add the player tank to it's original place, reset the location of the
+    	/*Reload the player tank to it's original place, reset the location of the
     	 * tank target and show the display for the (re)start of this level.*/
     	playerTank.reloadTank(this);
     	tankTarget.setLocation(200, 200);
@@ -399,6 +412,16 @@ public class TankWorld extends World
     public int getNrEnemyTanks()
     {
     	return enemyTanks;
+    }
+    
+    public PlayerTank getPlayerTank()
+    {
+    	return playerTank;
+    }
+    
+    public Graph getWorldGraph()
+    {
+    	return worldGraph;
     }
     
     /**Overloads the default removeObject method. This is so that when a shell
