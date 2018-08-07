@@ -4,7 +4,7 @@ import greenfoot.*;
  * <p><b>File name: </b> PlayerTurret.java
  * @version 1.2
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 06.07.2018
+ * <p><b>Last modification date: </b> 07.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -127,7 +127,6 @@ public class PlayerTurret extends Turret
 		if (liveShells < SHELLS_ALLOWED)
 		{
 			//If it has not, fire a shell.
-			liveShells++;
 			super.fire();
 		} 
 	}
@@ -140,12 +139,19 @@ public class PlayerTurret extends Turret
 	{
 		//remove all the target line actors associated with this player turret.
 		World world= getWorld();
-		for(TargetLine tl: targetLines)
-    	{
-    		world.removeObject(tl);
-    	}
 		
-		//call superclass method which simply removes this turret from the game world
-		super.deleteTurret();
+		/*Check if the world is not null, since this method may be called after
+    	 * the turret is already not in the world after the level has ended because all
+    	 * remaining enemies were destroyed by the land mine explosion.*/
+		if(world!=null)
+		{
+			for(TargetLine tl: targetLines)
+	    	{
+	    		world.removeObject(tl);
+	    	}
+			
+			//call superclass method which simply removes this turret from the game world
+			super.deleteTurret();
+		}
 	}
 }
