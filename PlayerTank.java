@@ -2,9 +2,9 @@ import greenfoot.*;
 
 /**
  * <p><b>File name: </b> PlayerTank.java
- * @version 1.3
+ * @version 1.4
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 24.07.2018
+ * <p><b>Last modification date: </b> 07.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -22,6 +22,8 @@ import greenfoot.*;
  * mouse click and then tells the turret to fire or lays a mine , depending on
  * the mouse button clicked.
  * <p>	-1.3 - Changed the class so player tanks can push other tanks it encounters.
+ * <p>	-1.4 - Added a method that calculates the distance between the point at the 
+ * given coordinates and this tank.
  */
 
 public class PlayerTank extends Tank
@@ -318,5 +320,15 @@ public class PlayerTank extends Tank
 	public MouseInfo getMouseInfo()
 	{
 		return lastMouseInfo;
+	}
+	
+	public double getDistanceFrom(int x, int y)
+	{
+		 int xDistance=x-this.getX();
+		 int yDistance=y-this.getY();
+		 
+		 double distance=Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
+		 
+		 return distance;
 	}
 }
