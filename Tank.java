@@ -4,7 +4,7 @@ import greenfoot.*;
  * <p><b>File name: </b> Tank.java
  * @version 1.6
  * @since 02.05.2018
- * <p><p><b>Last modification date: </b> 24.07.2018
+ * <p><p><b>Last modification date: </b> 07.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
