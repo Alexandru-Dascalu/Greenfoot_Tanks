@@ -29,8 +29,8 @@ import greenfoot.*;
 
 public class BrownTurret extends Turret
 {
-	/**The approximate length between points on the line of sight where we check
-	 * if the player is there. It's value is {@value}.*/
+	/**The approximate length in cells(pixels) between points on the line of
+	 * sight where we check if the player is there. It's value is {@value}.*/
 	private static final int DETECT_INTERVAL=10;
 	
 	/**The cooldown period in miliseconds after firing which the turret will not 
@@ -62,7 +62,7 @@ public class BrownTurret extends Turret
 	 * Makes a new Brown Turret on the Brown Tank given as an argument.
 	 * @param brownTank The Brown Tank on which this Turret will pe placed.
 	 */
-	public BrownTurret(BrownTank brownTank)
+	public BrownTurret(Tank brownTank)
 	{
 		super(brownTank);
 		
@@ -94,7 +94,6 @@ public class BrownTurret extends Turret
 				 * of live shells in the world fired by this turret.*/
 				super.fire();
 				lastFiring=System.currentTimeMillis();
-				liveShells++;
 			}
 		}
 	}
