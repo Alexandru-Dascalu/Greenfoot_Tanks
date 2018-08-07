@@ -128,6 +128,13 @@ public class Turret extends Actor
     public void deleteTurret()
     {
     	World world=getWorld();
-    	world.removeObject(this);
+    	
+    	/*Check if the world is not null, since this method may be called after
+    	 * the turret is not in the world after the level has ended because all
+    	 * remaining enemies were destroyed by the land mine explosion.*/
+    	if(world!=null)
+    	{
+    		world.removeObject(this);
+    	}
     }
 }
