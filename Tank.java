@@ -72,6 +72,18 @@ public class Tank extends Actor
 	/**The correct x position of the tank, represented by a real number.*/
 	protected double realY;
 	
+	protected int targetRotation;
+	
+	protected int turnDirection;
+	
+	protected boolean isMoving;
+	
+	protected boolean isMovingForward;
+	
+	protected boolean isMovingBackward;
+	
+	protected LinkedList<GraphPoint> path;
+	
 	/**
 	 * Makes a new tank object.
 	 * @param startX The starting x position of the tank in the world.
@@ -88,6 +100,14 @@ public class Tank extends Actor
 		this.startY=startY;
 		realX=startX;
 		realY=startY;
+		targetRotation=0;
+		turnDirection=0;
+		
+		isMoving=false;
+		isMovingForward=false;
+		isMovingBackward=false;
+		
+		path=null;
 		drivingSound = new GreenfootSound(DRIVING_SOUND_NAME);
 	}
 	
@@ -167,6 +187,70 @@ public class Tank extends Actor
     	}
     }
     
+	public void generatePath()
+    {
+    	
+    }
+    
+    public void followPath()
+    {
+    	GraphPoint nextPoint;
+    	try
+    	{
+    		nextPoint=path.getFirst();
+    	}
+    	catch(NoSuchElementException | NullPointerException e)
+    	{
+    		nextPoint=null;
+    	}
+    	
+    	if(nextPoint!=null)
+    	{
+	    	if(getX()==nextPoint.getX() && getY()==nextPoint.getY())
+	    	{
+	    		path.removeFirst();
+	    	}
+	    	else
+	    	{
+	    		double theta=Math.toDegrees(Math.atan2(nextPoint.getY()-getY(), nextPoint.getX()-getX()));
+	    		targetRotation=(int)Math.round(normalizeAngle(theta));
+	    		
+	    		if(getRotation()==targetRotation)
+	    		{
+	    			move(this.getSpeed());
+	    			turnDirection=0;
+	    			isMoving=true;
+	    			isMovingForward=true;
+	    		}
+	    		else
+	    		{
+	    			if(turnDirection==0)
+	    			{
+	    				int clockwiseDiff=(int)normalizeAngle(targetRotation-getRotation());
+	        			
+	        			int counterClockwiseDiff=(int)normalizeAngle(getRotation()-targetRotation);
+	        			
+	        			if(clockwiseDiff<=counterClockwiseDiff)
+	        			{
+	        				turnDirection=1;
+	        			}
+	        			else
+	        			{
+	        				turnDirection=-1;
+	        			}
+	    			}
+	    			
+	    			isMoving=true;
+	    			turn(turnDirection);
+	    		}
+	    	}
+    	}
+    	else
+    	{
+    		path=null;
+    	}
+    }
+    
 	/**
 	 * Act - do whatever the Tank wants to do. This method is called whenever the
 	 * 'Act' or 'Run' button gets pressed in the environment. In this case, this
@@ -178,6 +262,13 @@ public class Tank extends Actor
 	{
 		playSound();
 		pushOtherTanks();
+		
+		generatePath();
+		
+		if(path!=null)
+		{
+			followPath();
+		}
 		
 		tankTurret.aim();
 		tankTurret.fire();
@@ -318,7 +409,7 @@ public class Tank extends Actor
 	 */
 	protected boolean isMovingForward()
 	{
-		return true;
+		return isMovingForward;
 	}
 	
 	/**
@@ -329,7 +420,7 @@ public class Tank extends Actor
 	 */
 	protected boolean isMovingBackward()
 	{
-		return false;
+		return isMovingBackward;
 	}
 
 
