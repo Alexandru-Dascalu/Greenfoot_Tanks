@@ -59,7 +59,7 @@ public class TurquoiseTank extends Tank
 	    	
 	    	if(potentialTarget!=null)
 	    	{
-	    		if(world.getPlayerTank().getDistanceFrom(targetX, targetY)>100)
+	    		if(world.getPlayerTank().getDistanceFrom(targetX, targetY)>150)
 	    		{
 	    			target=potentialTarget;
 	    		}
