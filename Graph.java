@@ -12,7 +12,6 @@ public class Graph
 {
     private GraphPoint[][] pointMatrix;
 
-    private TankWorld world;
     private int matrixLength;
     private int matrixWidth;
     
@@ -21,7 +20,6 @@ public class Graph
      */
     public Graph(TankWorld tankWorld)
     {
-    	world=tankWorld;
     	matrixLength=(TankWorld.LENGTH-2*WallBlock.SIDE)/GraphPoint.INTERVAL+1;
     	
     	matrixWidth=(TankWorld.WIDTH-2*WallBlock.SIDE)/GraphPoint.INTERVAL+1;
