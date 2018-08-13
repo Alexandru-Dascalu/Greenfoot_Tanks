@@ -134,9 +134,6 @@ public class Graph
     
     private GraphPoint getSourcePoint(int startX, int startY)
     {
-    	GraphPoint source=new GraphPoint(startX, startY);
-    	source.setDistance(0);
-    	
     	startX-=WallBlock.SIDE;
     	startY-=WallBlock.SIDE;
     	
@@ -144,21 +141,9 @@ public class Graph
     	int columnIndex=startX/GraphPoint.INTERVAL;
     	
     	GraphPoint approximateSource=pointMatrix[rowIndex][columnIndex];
+    	approximateSource.setDistance(0);
     	
-    	source.addOneWayNeighbour(approximateSource.getNeighbour("upper left")
-    			, "upper left");
-    	source.addOneWayNeighbour(approximateSource.getNeighbour("upper")
-    			, "upper");
-    	source.addOneWayNeighbour(approximateSource.getNeighbour("upper right")
-    			, "upper right");
-    	source.addOneWayNeighbour(approximateSource.getNeighbour("left"), "left");
-    	source.addOneWayNeighbour(approximateSource.getNeighbour("right"), "right");
-    	source.addOneWayNeighbour(approximateSource.getNeighbour("lower left")
-    			, "lower left");
-    	source.addOneWayNeighbour(approximateSource.getNeighbour("lower"), "lower");
-    	source.addOneWayNeighbour(approximateSource.getNeighbour("lower right")
-    			, "lower right");
-    	return source;
+    	return approximateSource;
     }
     
     private LinkedList<GraphPoint> getPath(GraphPoint target)
@@ -171,7 +156,6 @@ public class Graph
     		path.addFirst(current);
     		current=current.getBestPrevious();
     	}
-    	path.addFirst(current);
     	
     	return path;
     }
