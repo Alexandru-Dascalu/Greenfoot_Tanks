@@ -19,7 +19,7 @@ import greenfoot.*;
  * <p>	-1.0 - Created the class.
  * <p>	-1.1 - Added an explicit constructor to set the x and y values of it's 
  * starting position.
- * <p>	-1.2 - Changed the class so brown tanks can e pushed by other tanks.
+ * <p>	-1.2 - Changed the class so brown tanks can be pushed by other tanks.
  */
 
 public class BrownTank extends Tank
