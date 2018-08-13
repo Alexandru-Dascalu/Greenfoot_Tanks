@@ -4,7 +4,7 @@ public class TurquoiseTank extends MobileEnemyTank
 {
     private static final int SPEED=1;
     
-    private final int MAX_TURN_SPEED=2;
+    private static final int MAX_TURN_SPEED=2;
     
     public TurquoiseTank(int startX, int startY)
     {
