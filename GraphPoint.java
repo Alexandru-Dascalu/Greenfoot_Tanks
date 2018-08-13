@@ -197,50 +197,6 @@ public class GraphPoint implements Comparable<GraphPoint>
     	}
     }
     
-    public void addOneWayNeighbour(GraphPoint neighbour, String location) 
-    		throws IllegalArgumentException
-    {
-    	switch(location)
-    	{
-    		case "upper left":
-    			neighbours[0]=neighbour;
-    			
-    			break;
-    		case "upper":
-    			neighbours[1]=neighbour;
-    			
-    			break;
-    		case "upper right":
-    			neighbours[2]=neighbour;
-    			
-    			break;
-    		case "left":
-    			neighbours[3]=neighbour;
-    			
-    			break;
-    		case "right":
-    			neighbours[4]=neighbour;
-    			
-    			break;
-    		case "lower left":
-    			neighbours[5]=neighbour;
-    			
-    			break;
-    		case "lower":
-    			neighbours[6]=neighbour;
-    			
-    			break;
-    		case "lower right":
-    			neighbours[7]=neighbour;
-    			
-    			break;
-    		default:
-    			throw new IllegalArgumentException("The location string argument"
-    					+ " has a value that is not one of: upper left, upper, "
-    					+ "upper right, left, right, lower left, lower or lower right.");
-    	}
-    }
-    
     public void reset()
     {
     	bestPrevious=null;
