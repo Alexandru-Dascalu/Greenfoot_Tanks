@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=TurquoiseTurret
+comment1.params=tank
+comment1.target=TurquoiseTurret(Tank)
+comment1.text=\r\n\ Makes\ a\ new\ Turquoise\ Turret\ on\ the\ Tank\ given\ as\ an\ argument.\r\n\ @param\ tank\ The\ tank\ on\ which\ this\ Turret\ will\ be\ placed.\r\n
+comment2.params=
+comment2.target=void\ aim()
+comment3.params=
+comment3.target=int\ getFireCooldown()
+comment4.params=
+comment4.target=int\ getLiveShellLimit()
+numComments=5
