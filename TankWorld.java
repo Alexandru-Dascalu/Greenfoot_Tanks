@@ -155,6 +155,9 @@ public class TankWorld extends World
     		removeObject(a);
     	}
     	
+    	//add the walls along the edges of the game world
+    	addExternalWalls();
+    	
     	/*We use a switch statement to call the appropiate method to prepare
     	 * the world for that specific level, or to display the message for
     	 * winning the game if the last level has been won.*/
@@ -167,6 +170,9 @@ public class TankWorld extends World
     		 * incremented beyond the number of levels in the game, so it will
     		 * resort to calling the method that display the game win message and 
     		 * stop the game.*/
+    		case 2:
+    			prepareLevel2();
+    			break;
     		default:
     			gameWin();
     			return;
@@ -195,22 +201,20 @@ public class TankWorld extends World
      */
     private void prepareLevel1()
     {
-    	//add the walls along the edges of the game world
-    	addExternalWalls();
-    	
     	/*Add other walls in the level.*/
-    	WallBlock wallBlock1=new WallBlock();
-    	addObject(wallBlock1,370,360);
-    	WallBlock wallBlock2=new WallBlock();
-    	addObject(wallBlock2,430,360);
-    	WallBlock wallBlock3=new WallBlock();
-    	addObject(wallBlock3,490,360);
-    	WallBlock wallBlock4=new WallBlock();
-    	addObject(wallBlock4,550,360);
-    	WallBlock wallBlock5=new WallBlock();
-    	addObject(wallBlock5,610,360);
-    	WallBlock wallBlock6=new WallBlock();
-    	addObject(wallBlock6,670,360);
+    	addObject(new WallBlock(),370,260);
+    	addObject(new WallBlock(),430,260);
+    	addObject(new WallBlock(),490,260);
+    	addObject(new WallBlock(),550,260);
+    	addObject(new WallBlock(),610,260);
+    	addObject(new WallBlock(),670,260);
+    	
+    	addObject(new WallBlock(),230,450);
+    	addObject(new WallBlock(),290,450);
+    	addObject(new WallBlock(),350,450);
+    	addObject(new WallBlock(),410,450);
+    	addObject(new WallBlock(),470,450);
+    	addObject(new WallBlock(),530,450);
     	
     	//add the player tank target
     	addObject(tankTarget,200,200);
@@ -221,11 +225,44 @@ public class TankWorld extends World
         
         /*make enemy tanks, add to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemy1=new BrownTank(300,500);
-        addObject(enemy1, 300, 500);
+        BrownTank enemy1=new BrownTank(300,600);
+        addObject(enemy1, 300, 600);
         
-        TurquoiseTank enemy2=new TurquoiseTank(500 ,550);
-        addObject(enemy2, 500, 550);
+        BrownTank enemy2=new BrownTank(400,350);
+        addObject(enemy2, 400, 350);
+        enemyTanks=2;
+    }
+    
+    private void prepareLevel2()
+    {
+    	/*Add other walls in the level.*/
+    	addObject(new WallBlock(),200,230);
+    	addObject(new WallBlock(),200,290);
+    	addObject(new WallBlock(),200,350);
+    	addObject(new WallBlock(),200,410);
+    	addObject(new WallBlock(),200,470);
+    	
+    	addObject(new WallBlock(),260,470);
+    	addObject(new WallBlock(),320,470);
+    	addObject(new WallBlock(),380,470);
+    	addObject(new WallBlock(),440,470);
+    	addObject(new WallBlock(),500,470);
+    	addObject(new WallBlock(),560,470);
+    	
+    	//add the player tank target
+    	addObject(tankTarget,200,200);
+        
+    	//make a player tank and add it to the world.
+        playerTank=new PlayerTank(900,200);
+        addObject(playerTank,900,200);
+        
+        /*make enemy tanks, add to the world and set number of enemy tanks 
+         * accordingly.*/
+        BrownTank enemy1=new BrownTank(300,550);
+        addObject(enemy1, 300,550);
+        
+        TurquoiseTank enemy2=new TurquoiseTank(600,600);
+        addObject(enemy2, 600,600);
         enemyTanks=2;
     }
     
