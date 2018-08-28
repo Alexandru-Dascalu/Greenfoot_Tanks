@@ -27,6 +27,6 @@ public class TurquoiseTank extends MobileEnemyTank
     protected void addedToWorld(World world)
     {
     	this.setRotation(270);
-    	tankTurret=new BrownTurret(this);
+    	tankTurret=new TurquoiseTurret(this);
     }
 }
