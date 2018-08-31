@@ -615,7 +615,7 @@ public class Tank extends Actor
 		Tank otherTank= (Tank) getOneIntersectingObject(Tank.class);
 
 		/*This tank needs to push other tanks if it intersects another tank
-		 * and if it is moving and .*/
+		 * and if it is moving.*/
 		if(otherTank!=null && isMoving())
 		{
 			/*If it needs to push another tank, we determine how the other tank
