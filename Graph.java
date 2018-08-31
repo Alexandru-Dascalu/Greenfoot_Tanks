@@ -211,8 +211,23 @@ public class Graph
     	int columnIndex=startX/GraphPoint.INTERVAL;
     	
     	GraphPoint approximateSource=pointMatrix[rowIndex][columnIndex];
-    	approximateSource.setDistance(0);
-    	
+	    
+	if (approximateSource == null)
+	{
+		outerLoop: for (int i = -1; i <= 1; i++)
+		{
+			for (int j = -1; j <= 1; j++)
+			{
+				if (pointMatrix[rowIndex + i][columnIndex + j] != null)
+				{
+					approximateSource = pointMatrix[rowIndex + i][columnIndex + j];
+					break outerLoop;
+				}
+			}
+		}
+	 }
+	approximateSource.setDistance(0);
+	    
     	return approximateSource;
     }
     
