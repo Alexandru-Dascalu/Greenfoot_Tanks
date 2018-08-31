@@ -194,6 +194,11 @@ public class MobileEnemyTank extends Tank
     
     private boolean canMoveWhileTurning(GraphPoint nextPoint)
     {
+    	if(!canMoveForwards())
+    	{
+    		return false;
+    	}
+	
     	double radians=Math.toRadians(getRotation());
     	
     	double dx = Math.cos(radians) * getSpeed();
