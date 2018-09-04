@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=BrownTank
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ BrownTank.java\r\n\ @version\ 1.2\r\n\ @since\ 07.06.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 24.07.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ brown\ enemy\ tank\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ the\ most\ basic\ enemy\ tank,\r\n\ and\ is\ a\ subclass\ of\ the\ Tank\ class.\ It\ differs\ from\ a\ normal\ Tank\ because\r\n\ it\ does\ not\ move\ and\ it\ has\ a\ turret\ of\ the\ class\ BrownTurret.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n\ <p>\t-1.1\ -\ Added\ an\ explicit\ constructor\ to\ set\ the\ x\ and\ y\ values\ of\ it's\ \r\n\ starting\ position.\r\n\ <p>\t-1.2\ -\ Changed\ the\ class\ so\ brown\ tanks\ can\ be\ pushed\ by\ other\ tanks.\r\n
+comment1.params=startX\ startY
+comment1.target=BrownTank(int,\ int)
+comment1.text=\r\n\ Makes\ a\ new\ Brown\ Tank,\ with\ it's\ start\ x\ and\ y\ coordinates\ the\ ones\ given\r\n\ as\ arguments.\r\n\ @param\ startX\ The\ starting\ x\ coordinate\ of\ this\ tank.\r\n\ @param\ startY\ The\ starting\ y\ coordinate\ of\ this\ tank.\r\n
+comment2.params=
+comment2.target=boolean\ isMoving()
+comment2.text=\r\n\ Overrides\ the\ default\ isMoving\ method\ because\ a\ Brown\ Tank\ is\ a\ very\ basic\r\n\ enemy\ and\ it\ does\ not\ move\ at\ all,\ unless\ pushed\ by\ another\ tank.\ This\ \r\n\ method\ returns\ false\ always.\r\n\ @return\ false.\r\n
+comment3.params=
+comment3.target=boolean\ isMovingForward()
+comment3.text=\r\n\ Checks\ if\ the\ tank\ is\ moving\ forward.\r\n\ @return\ False,\ because\ this\ type\ of\ the\ tank\ is\ stationary.\r\n
+comment4.params=world
+comment4.target=void\ addedToWorld(greenfoot.World)
+comment4.text=\r\n\ Overrides\ the\ superclass\ addedToWorld\ method\ so\ that\ a\ Brown\ Turret\ will\ be\ \r\n\ placed\ on\ this\ tank\ not\ a\ simple\ Turret\ object.\r\n
+numComments=5

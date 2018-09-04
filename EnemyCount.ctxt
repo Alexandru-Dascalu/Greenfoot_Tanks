@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=EnemyCount
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ EnemyTank.java\r\n\ @version\ 1.0\r\n\ @since\ 13.06.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 14.06.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ UI\ display\ for\ the\ number\ of\ enemies\ in\ the\ level\ for\ \r\n\ a\ Greenfoot\ recreation\ of\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ has\ an\r\n\ image\ over\ which\ a\ text\ is\ displayed\ ,\ showing\ the\ number\ of\ enemy\ tanks\ still\r\n\ currently\ in\ the\ level.\ When\ an\ enemy\ is\ destroyed\ or\ the\ level\ is\ reloaded\r\n\ or\ changed,\ the\ counter\ updates\ accordingly.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ a\ counter\ for\ the\ number\ of\ enemy\ tanks.\r\n
+comment1.params=
+comment1.target=int\ getNewData()
+comment1.text=Overrides\ the\ default\ method\ so\ that\ the\ updated\ data\ displays\ the\ new\r\nnumber\ of\ enemy\ tanks\ in\ the\ level.
+comment2.params=
+comment2.target=java.lang.String\ getShapeImage()
+comment2.text=\r\n\ Returns\ the\ correct\ name\ of\ the\ image\ file\ for\ the\ enemy\ count,\ so\ that\r\n\ the\ correct\ image\ will\ be\ displayed.\r\n\ @return\ The\ name\ of\ the\ image\ file\ for\ the\ enemy\ counter\ UI\ display.\r\n
+comment3.params=
+comment3.target=java.lang.String\ getText()
+comment3.text=\r\n\ Returns\ the\ correct\ text\ to\ be\ displayed\ on\ the\ enemy\ count\ UI\ element.\r\n\ @return\ The\ text\ to\ be\ displayed\ on\ the\ image\ of\ the\ enemy\ counter.\r\n
+comment4.params=
+comment4.target=int\ getTextXPos()
+comment4.text=\r\n\ Returns\ the\ correct\ x\ coordinate\ where\ the\ updated\ text\ should\ be\ displayed.\r\n\ @return\ The\ x\ coordinate\ where\ the\ \r\n
+comment5.params=
+comment5.target=int\ getTextYPos()
+comment5.text=\r\n\ Returns\ the\ correct\ y\ coordinate\ where\ the\ updated\ text\ should\ be\ displayed.\r\n\ @return\ The\ y\ coordinate\ where\ the\ \r\n
+numComments=6

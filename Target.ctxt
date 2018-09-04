@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Target
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ Target.java\r\n\ @version\ 1.0\r\n\ @since\ 10.05.2018\r\n\ <p><p><b>Last\ modification\ date\:\ </b>\ 11.07.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ player\ target\ for\ a\ Greenfoot\ recreation\ of\ the\ Wii\ \r\n\ Play\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ a\ target\ that\ is\ moved\ with\ the\r\n\ mouse\ (code\ for\ that\ is\ in\ the\ PlayerTurret\ class)\ to\ help\ the\ player\ aim.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n
+comment1.params=
+comment1.target=void\ act()
+comment1.text=\r\n\ Act\ -\ do\ whatever\ the\ Target\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n\ The\ target\ is\ just\ there\ to\ be\ moved\ by\ the\ player's\ turret,\ so\ by\ itself\r\n\ it\ does\ nothing.\r\n
+numComments=2

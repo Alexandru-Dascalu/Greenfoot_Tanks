@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=PlayerTurret
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ PlayerTurret.java\r\n\ @version\ 1.2\r\n\ @since\ 07.06.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 07.08.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ player\ turret\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ aims\ depending\ on\ the\ movement\ of\r\n\ the\ player's\ mouse\ and\ fires\ when\ told\ to\ by\ the\ tank\ it\ is\ installed\ on.s\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n\ <p>\t-1.1\ -\ Encapsulated\ the\ turret\ actions\ of\ firing\ and\ aiming\ into\ the\r\n\ tank\ class,\ and\ made\ the\ necessary\ changes\ here.\r\n\ <p>\t-1.2\ -\ Encapsulated\ mouse\ tracking\ in\ the\ player\ tank\ class\ and\ made\ the\ \r\n\ necessary\ changes\ here.\r\n
+comment1.params=tank
+comment1.target=PlayerTurret(Tank)
+comment1.text=\r\n\ Makes\ a\ new\ PlayerTurret\ on\ top\ of\ the\ tank\ actor\ given\ as\ a\ parameter.\r\n\ @param\ tank\ The\ parent\ tank\ of\ this\ turret,\ on\ top\ of\ which\ it\ will\ be\r\n\ placed.\r\n
+comment2.params=world
+comment2.target=void\ addedToWorld(greenfoot.World)
+comment2.text=\r\n\ Once\ the\ turret\ is\ added\ to\ the\ game\ world,\ it\ makes\ sure\ the\ turret\ is\r\n\ facing\ the\ location\ of\ the\ player\ target.\r\n\ @param\ world\ The\ world\ in\ which\ the\ turret\ was\ added.\r\n
+comment3.params=
+comment3.target=void\ aim()
+comment3.text=\r\n\ Makes\ the\ turret\ aim\ towards\ the\ player\ target.\r\n
+comment4.params=
+comment4.target=void\ fire()
+comment4.text=\r\n\ Makes\ the\ turret\ fire\ the\ shell\ if\ the\ limit\ of\ live\ shells\ currently\ in\r\n\ the\ game\ world\ has\ not\ been\ reached.\r\n
+comment5.params=
+comment5.target=void\ deleteTurret()
+comment5.text=\r\n\ Removes\ the\ turret\ and\ the\ target\ line\ actors\ from\ it's\ game\ world.\r\n
+numComments=6

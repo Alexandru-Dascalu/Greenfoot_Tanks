@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=TargetLine
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ TargetLine.java\r\n\ \r\n\ @version\ 1.1\r\n\ @since\ 01.06.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 11.07.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ \r\n\ <p>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>This\ class\ models\ a\ target\ line\ for\ a\ Greenfoot\ recreation\ of\ the\ Wii\r\n\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ a\ small\ segment\ of\ an\r\n\ interrupted\ line\ between\ the\ player's\ turret\ and\ the\ player\ target.\r\n\ It\ moves\ when\ the\ player\ target\ and\ the\ turret\ move\ and\ has\ the\ same\r\n\ rotation\ as\ the\ turret.\ There\ are\ a\ set\ number\ of\ these\ actors,\ and\r\n\ the\ distance\ between\ each\ one\ increases\ when\ the\ distance\ between\ the\r\n\ player\ turret\ and\ the\ target.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\ -1.0\ -\ Created\ the\ class.\r\n\ <p>\ -1.1\ -\ Fixed\ a\ bug\ that\ would\ make\ the\ target\ lines\ be\ placed\ in\ the\r\n\ wrong\ place\ if\ the\ game\ was\ reset\ inside\ Greenfoot.\r\n
+comment1.params=playerTurret\ playerTarget\ number
+comment1.target=TargetLine(PlayerTurret,\ Target,\ int)
+comment1.text=\r\n\ Makes\ a\ new\ TargetLine\ actor\ for\ the\ turret\ and\ target\ given.\r\n\ \r\n\ @param\ playerTurret\ The\ player's\ turret\ that\ this\ TargetLine\ will\ be\ aligned\ with.\r\n\ @param\ playerTarget\ The\ player's\ target\ that\ this\ TargetLine\ will\ be\ aligned\ with.\r\n\ @param\ number\ The\ number\ of\ this\ TargetLine\ object\ in\ the\ line\ between\ the\r\n\ turret\ and\ the\ target.\r\n
+comment2.params=
+comment2.target=void\ act()
+comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ TargetLine\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\ In\ this\ case,\ it\r\n\ ensures\ the\ TargetLine\ has\ the\ same\ orientation\ as\ the\ player\ turret\ and\ it\r\n\ is\ in\ the\ correct\ place.\r\n
+comment3.params=
+comment3.target=int\ getNewX()
+comment3.text=\r\n\ Calculates\ the\ new\ x\ position\ the\ TargetLine\ should\ have.\r\n\ \r\n\ @return\ The\ updated\ x\ coordinate\ this\ actor\ should\ have.\r\n
+comment4.params=
+comment4.target=int\ getNewY()
+comment4.text=\r\n\ Calculates\ the\ new\ y\ position\ the\ TargetLine\ should\ have.\r\n\ \r\n\ @return\ The\ updated\ y\ coordinate\ this\ actor\ should\ have.\r\n
+comment5.params=
+comment5.target=int\ getInterval()
+comment5.text=\r\n\ Calculates\ the\ distance\ that\ should\ be\ between\ TragetLine\ actors.\ This\r\n\ distance\ increases\ proportionally\ with\ the\ distance\ between\ the\ turret\ and\r\n\ the\ player\ target.\r\n\ \r\n\ @return\ The\ updated\ interval\ distance\ between\ TargetLine\ actors.\r\n
+numComments=6
