@@ -1,9 +1,7 @@
 #BlueJ class context
 comment0.target=StartScreen
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ StartScreen\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ StartScreen.java\r\n\ @version\ 1.0\r\n\ @since\ 21.06.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 07.07.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ start\ screen\ display\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ displays\ the\ current\ level\ and\ \r\n\ the\ number\ of\ enemy\ tanks\ left\ in\ this\ level.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n
 comment1.params=world
 comment1.target=StartScreen(TankWorld)
-comment2.params=
-comment2.target=void\ act()
-comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ StartScreen\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
-numComments=3
+comment1.text=\r\n\ Makes\ a\ new\ start\ screen\ actor\ for\ the\ current\ level\ of\ the\ given\ world.\r\n\ @param\ world\ The\ world\ for\ which\ this\ start\ screen\ display\ will\ be\ generated.\r\n
+numComments=2

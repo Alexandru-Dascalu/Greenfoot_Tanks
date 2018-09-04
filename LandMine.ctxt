@@ -1,13 +1,22 @@
 #BlueJ class context
 comment0.target=LandMine
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ LandMine\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=
-comment1.target=LandMine()
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ Shell.java\r\n\ @version\ 1.3\r\n\ @since\ 04.06.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 07.08.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ land\ mine\ for\ a\ Greenfoot\ recreation\ of\ the\ Wii\ Tanks\ \r\n\ game\ for\ the\ Nintendo\ Wii.\ It\ explodes\ when\ hit\ by\ stepped\ on\ by\ a\ tank,\ when\r\n\ hit\ by\ a\ shell.\ Otherwise,\ it\ start\ to\ flash\ red\ after\ a\ period\ and\ after\ a\r\n\ while\ it\ explodes\ on\ it's\ own.\ When\ it\ explodes,\ it\ destroys\ tanks,\ shells,\r\n\ wall\ blocks\ and\ othe\ mines\ in\ the\ vicinity.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ a\ land\ mine\ that\ flashes\ red\ after\ a\ perioed\ after\ it\ is\ \r\n\ laid\ down,\ then\ after\ a\ while\ it\ removes\ itself..\r\n\ <p>\t-1.1\ -\ Made\ the\ mine\ explode\ and\ destroy\ walls,\ tanks,\ shells,\ mines\ in\r\n\ it's\ vicinity.\ It\ also\ explodes\ when\ hit\ by\ a\ shell.\r\n\ <p>\t-1.2\ -\ The\ mine\ now\ also\ explodes\ when\ stepped\ on\ by\ a\ tank.\r\n\ <p.\t-1.3\ -\ Fixed\ some\ bugs\ relating\ to\ exceptions\ appearing\ after\ a\ tank\ was\r\n\ \ destroyed\ by\ a\ landmine\ and\ as\ a\ result\ the\ level\ was\ cleared\ or\ reloaded.\ \r\n\ \ Also\ fixed\ a\ bug\ that\ made\ the\ landmine\ not\ explode\ when\ being\ stepped\ on\ \r\n\ \ by\ enemy\ tanks.\r\n
+comment1.params=parentTank
+comment1.target=LandMine(Tank)
+comment1.text=\r\n\ Make\ a\ new\ land\ mine,\ with\ the\ parent\ tank\ being\ the\ one\ given\ in\ the\r\n\ parameter.\ Needed\ because\ the\ mine\ needs\ to\ know\ not\ to\ explode\ right\ after\r\n\ it\ is\ laid\ (when\ it\ overlaps\ it's\ parent\ tank),\ and\ if\ afterwards\ the\ parent\r\n\ tank\ steps\ on\ it,\ to\ explode\ as\ it\ should.\r\n\ @param\ parentTank\ The\ tank\ that\ laid\ this\ mine.\r\n
 comment2.params=
 comment2.target=void\ act()
-comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ LandMine\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ LandMine\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n\ In\ this\ case,\ it\ flashes\ red\ if\ enough\ time\ has\ passed\ and\ it\ explodes\ if\r\n\ a\ tank\ has\ stepped\ on\ it,\ if\ it\ has\ been\ hit\ by\ a\ shell\ or\ if\ it's\ count\r\n\ down\ period\ has\ passed.\r\n
 comment3.params=
 comment3.target=void\ flashRed()
+comment3.text=Makes\ the\ land\ mine\ flash\ red.
 comment4.params=
 comment4.target=void\ explode()
-numComments=5
+comment4.text=Makes\ the\ mine\ explode\ and\ destroy\ tanks,\ mines,\ shells\ and\ walls\ if\ their\r\ncentre\ are\ in\ the\ explosion\ range\ of\ this\ mine.
+comment5.params=
+comment5.target=boolean\ hitByShell()
+comment5.text=\r\n\ Determines\ if\ this\ mine\ has\ just\ been\ hit\ by\ a\ shell.\r\n\ @return\ True\ if\ it\ has\ been\ hit\ by\ a\ shell,\ false\ if\ not.\r\n
+comment6.params=
+comment6.target=boolean\ steppedOnByTank()
+comment6.text=\r\n\ Determines\ if\ the\ mine\ is\ being\ stepped\ on\ by\ a\ tank.\r\n\ @return\ True\ if\ the\ mine\ is\ being\ stepped\ on\ by\ a\ tank,\ false\ if\ not.\r\n
+numComments=7

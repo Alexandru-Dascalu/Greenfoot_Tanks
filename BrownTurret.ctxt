@@ -1,9 +1,16 @@
 #BlueJ class context
 comment0.target=BrownTurret
-comment1.params=brownTank
-comment1.target=BrownTurret(BrownTank)
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ BrownTurret.java\r\n\ @version\ 1.6\r\n\ @since\ 07.06.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 14.08.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ brown\ turret\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ the\ most\ basic\ enemy\r\n\ turret.\ It\ randomly\ turns\ around,\ looking\ for\ the\ player.It's\ line\ of\r\n\ sight\ bounces\ off\ walls\ as\ many\ times\ as\ the\ shells\ it\ fires\ do.\r\n\ If\ it\ detects\ the\ player,\ it\ fires\ a\ shell,\ unless\ it\ already\ has\r\n\ 2\ shells\ fired\ by\ it\ still\ in\ the\ world.\ It\ also\ has\ a\ cooldown\ period,\r\n\ after\ which\ it\ will\ not\ fire\ another\ shell.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n\ <p>\t-1.1\ -\ Made\ the\ random\ turning\ be\ more\ varied.\r\n\ <p>\t-1.2\ -\ Made\ the\ turret\ detect\ the\ enemy\ player\ if\ there\ is\ a\ straight\r\n\ line\ to\ it.\r\n\ <p>\t-1.3\ -\ Made\ the\ turret's\ line\ of\ sight\ bounce\ off\ walls\ as\ many\ times\r\n\ as\ the\ shells\ it\ fires\ do.\r\n\ <p>\t-1.4\ -\ Made\ the\ aiming\ of\ the\ turret\ more\ accurate.\r\n\ <p>\t-1.5\ -\ Moved\ code\ for\ firing\ and\ detecting\ targets\ to\ a\ new\ class\ called\r\n\ EnemyTurret\ that\ is\ the\ supertype\ of\ all\ enemy\ tank\ turrets\ and\ added\ methods\r\n\ to\ allow\ different\ enemy\ turrets\ to\ have\ different\ stats.\r\n\ <p>\t-1.6\ -\ Added\ some\ static\ variables\ and\ getters\ for\ the\ stats\ of\ a\ brown\ \r\n\ turret\ to\ work\ with\ the\ standard\ code\ from\ the\ enemy\ turret\ class.\r\n
+comment1.params=tank
+comment1.target=BrownTurret(Tank)
+comment1.text=\r\n\ Makes\ a\ new\ Brown\ Turret\ on\ the\ tank\ given\ as\ an\ argument.\r\n\ @param\ tank\ The\ tank\ on\ which\ this\ Turret\ will\ be\ placed.\r\n
 comment2.params=
-comment2.target=void\ act()
+comment2.target=void\ aim()
+comment2.text=\r\n\ Randomly\ moves\ the\ turret\ around.\r\n
 comment3.params=
-comment3.target=void\ aim()
-numComments=4
+comment3.target=int\ getFireCooldown()
+comment3.text=Gets\ the\ cool\ down\ period(in\ milliseconds)\ after\ which\ this\ turret\ can\ \r\n\ fire\ another\ shell.\ This\ period\ is\ a\ static\ variable\ and\ is\ the\ same\ for\r\n\ all\ objects\ of\ this\ class.\r\n\ @return\ The\ period\ in\ milliseconds\ after\ which\ this\ turret\ can\ fire\ another\r\nshell.
+comment4.params=
+comment4.target=int\ getLiveShellLimit()
+comment4.text=Gets\ the\ limit\ of\ how\ many\ shells\ fired\ by\ this\ turret\ can\ be\ in\ the\ world\r\n\ at\ the\ same\ time.\ This\ number\ is\ a\ static\ variable\ and\ is\ the\ same\ for\r\n\ all\ objects\ of\ this\ class.\r\n\ @return\ the\ limit\ of\ how\ many\ shells\ fired\ by\ this\ turret\ can\ be\ in\ the\ world\r\nat\ the\ same\ time.
+numComments=5
