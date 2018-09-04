@@ -10,7 +10,7 @@ import java.util.List;
  * <p><b>File name: </b> TankWorld.java
  * @version 1.6
  * @since 02.05.2018
- * <p><p><b>Last modification date: </b> 07.08.2018
+ * <p><p><b>Last modification date: </b> 14.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -166,13 +166,13 @@ public class TankWorld extends World
     		case 1:
     			prepareLevel1();
     			break;
-    		/*If the last level has been cleared, then the level counter has been
-    		 * incremented beyond the number of levels in the game, so it will
-    		 * resort to calling the method that display the game win message and 
-    		 * stop the game.*/
     		case 2:
     			prepareLevel2();
     			break;
+    		/*If the last level has been cleared, then the level counter has been
+        	* incremented beyond the number of levels in the game, so it will
+        	* resort to calling the method that display the game win message and 
+        	* stop the game.*/
     		default:
     			gameWin();
     			return;
@@ -189,6 +189,8 @@ public class TankWorld extends World
         addObject(enemyCount,500,23);
         enemyCount.act();
         
+        /*rebuild the graph used for path finding for the current level that
+         * was loaded.*/
         worldGraph=new Graph(this);
         
         /*Show the updated start screen for the new level.*/
@@ -233,6 +235,10 @@ public class TankWorld extends World
         enemyTanks=2;
     }
     
+    /**
+     * Prepare the world for the start of the first level.
+     * That is: create the initial objects and add them to the world.
+     */
     private void prepareLevel2()
     {
     	/*Add other walls in the level.*/
@@ -451,11 +457,19 @@ public class TankWorld extends World
     	return enemyTanks;
     }
     
+    /**
+     * Getter for the reference to the player tank of this world.
+     * @return The player's tank of this game world.
+     */
     public PlayerTank getPlayerTank()
     {
     	return playerTank;
     }
     
+    /**
+     * Getter for the graph used for path finding by enemy tanks.
+     * @return The reference to the path finding graph of this game world.
+     */
     public Graph getWorldGraph()
     {
     	return worldGraph;
