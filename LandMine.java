@@ -128,25 +128,46 @@ public class LandMine extends Actor
     }
     
     /**Makes the mine explode and destroy tanks, mines, shells and walls if their
-     * center are in the explosion range of this mine.*/
+     * centre are in the explosion range of this mine.*/
     private void explode()
     {
     	/*When we remove a shell, we need to update the live shell counter of it's
     	 * parent tank. When we remove a tank, we need to remove their turret and
     	 * update UI elements, we make need to reload the level, etc. For this, 
     	 * TankWorld has overloaded removeObject methods for them, and we need 
-    	 * these objects to be casted as Tanks or shells for this to work. So we make 4
-    	 * different lists for the types of actors we need to remove, since we need
-    	 * to treat shells and tanks differently. We make a list for tanks later since 
-    	 * we do that after making sure the player tank has benn removed if needed. 
-    	 * Because if an explosion destroys the player tank and the last remaining enemy
-    	 * tank, this ensures the world knows the player lost and reloads the level.*/
+    	 * these objects to be casted as Tanks or shells for this to work.
+    	 * So we make 4 different lists for the types of actors we 
+    	 * need to remove, since we need to treat shells and tanks differently.
+    	 * We make a list for tanks later since we do that after making sure 
+    	 * the player tank has been removed if needed. Because if an explosion
+    	 * destroys the player tank and the last remaining enemy tank, this 
+    	 * ensures the world knows the player lost and reloads the level.*/
     	List<Shell> destroyedShells=getObjectsInRange(EXPLOSION_RANGE, Shell.class);
     	List<WallBlock> destroyedWalls=getObjectsInRange(EXPLOSION_RANGE, WallBlock.class);
     	List<LandMine> destroyedMines=getObjectsInRange(EXPLOSION_RANGE, LandMine.class);
     	
     	//we need a reference to the world of type TankWorld
     	TankWorld world=getWorldOfType(TankWorld.class);
+    	
+    	/*If the player tank is destroyed in the explosion, it does not matter 
+    	 * what else happens, the level is lost and will be reloaded or the 
+    	 * game is over. So we remove the player tank with the overloaded 
+    	 * removeObject method which will also reload the level. Therefore, the 
+    	 * player tank is removed first to avoid removing other actors that will 
+    	 * be removed when the level is reloaded anyway.
+    	 * Get a list that contains the player tank if it is in range and remove it if needed.*/
+    	List<PlayerTank> playerTank=getObjectsInRange(EXPLOSION_RANGE, PlayerTank.class);
+    	for(PlayerTank p: playerTank)
+    	{
+    		world.removeObject(p);
+    		
+    		/*If the player tank was destroyed, the overloaded removeObject() method
+    		 * reloads the level. Since then this landmine has been removed by the 
+    		 * reloadLevel() method and all other enemy tanks have been reset, we 
+    		 * terminate the execution of this method to avoid exceptions caused 
+    		 * by this land mine already not being in the world.*/
+    		return;
+    	}
     	
     	/*Remove each shell in the radius with the overloaded removeObject method.*/
     	for(Shell s: destroyedShells)
@@ -164,20 +185,6 @@ public class LandMine extends Actor
     	for(LandMine lm: destroyedMines)
     	{
     		world.removeObject(lm);
-    	}
-    	
-    	/*Get a list that contains the player tank if it is in range and remove it if needed.*/
-    	List<PlayerTank> playerTank=getObjectsInRange(EXPLOSION_RANGE, PlayerTank.class);
-    	for(PlayerTank p: playerTank)
-    	{
-    		world.removeObject(p);
-    		
-    		/*If the player tank was destroyed, the overloaded removeObject() method
-    		 * reloads the level. Since then this landmine has been removed by the 
-    		 * reloadLevel() method and all other enemy tanks have been reset, we 
-    		 * terminate the execution of this method to avoid exceptions caused 
-    		 * by this land mine already not being in the world.*/
-    		return;
     	}
     	
     	/*Remove each tank in the radius with the overloaded removeObject method.*/
