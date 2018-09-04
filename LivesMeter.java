@@ -1,5 +1,3 @@
-import greenfoot.*;
-
 /**
  * <p><b>File name: </b> LivesMeter.java
  * @version 1.0
