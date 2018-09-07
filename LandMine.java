@@ -111,7 +111,7 @@ public class LandMine extends Actor
     	long timeSinceLaid=System.currentTimeMillis()-creationTime;
     	
     	/*We flash red by changing the image of the mine between an image where
-    	 * the mine's center is red and one where the mine's center is green.
+    	 * the mine's centre is red and one where the mine's centre is green.
     	 * We do this every FLASH_INTERVAL milliseconds.*/
     	if(((timeSinceLaid-START_FLASHING)/FLASH_INTERVAL)%2==0)
     	{
@@ -176,7 +176,8 @@ public class LandMine extends Actor
     		world.removeObject(s);
     	}
     	
-    	/*Remove each wall block in the radius with the default removeObject method.*/
+    	/*Remove each destroyable wall block in the radius with the default 
+    	 * removeObject method.*/
     	for(DestroyableWallBlock dwb: destroyedWalls)
     	{
     		world.removeObject(dwb);
@@ -194,11 +195,9 @@ public class LandMine extends Actor
     	{
     		world.removeObject(t);
     	}
-    	
-    	
+    	   	
     	//remove this land mine from the world
     	world.removeObject(this);
-    	
     }
     
     /**

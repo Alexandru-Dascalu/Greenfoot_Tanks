@@ -1,3 +1,4 @@
 #BlueJ class context
 comment0.target=DestroyableWallBlock
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ DestroyableWallBlock.java\r\n\ @version\ 1.0\r\n\ @since\ 05.09.2018\r\n\ <p><p><b>Last\ modification\ date\:\ </b>\ 07.09.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ destroyable\ wall\ block\ for\ a\ Greenfoot\ recreation\ of\r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ forms\ part\ of\ a\ wall\ that\ \r\n\ obstructs\ the\ path\ of\ tanks\ and\ shell.\ They\ can\ also\ be\ destroyed\ by\ land\ mines.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n
 numComments=1
