@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=RocketShell
+comment1.params=rotation\ parent\ x\ y
+comment1.target=RocketShell(int,\ Tank,\ int,\ int)
+comment2.params=
+comment2.target=int\ getSpeed()
+comment3.params=
+comment3.target=int\ getBounceLimit()
+comment4.params=
+comment4.target=int\ getLookAhead()
+numComments=5
