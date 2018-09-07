@@ -71,7 +71,17 @@ public class Turret extends Actor
     	/*Make a new shell at the end of the turret's gun barrel with the rotation
     	 * of this turret, the turret's tank as it's parent tank. The shell is
     	 * added to the world by it's constructor so nothing else is needed.*/
-    	Shell tankShell=new Shell(this.getRotation(), tank, getShellX(), getShellY());
+    	
+    	if(firesNormalShells())
+    	{
+    		Shell tankShell=new Shell(this.getRotation(), tank, getShellX(), 
+        			getShellY());
+    	}
+    	else
+    	{
+    		RocketShell tankShell=new RocketShell(this.getRotation(), tank, getShellX(), 
+        			getShellY());
+    	}
     	
     	//increment the number of shells in the world fired by this turret
     	liveShells++;
@@ -112,6 +122,11 @@ public class Turret extends Actor
     	int shellY=getY()+(int)(30*Math.sin(Math.toRadians(rotation)));
     	
     	return shellY;
+    }
+    
+    public boolean firesNormalShells()
+    {
+    	return true;
     }
     
     /**Decrements the number of shells in the game world fired by this turret.
