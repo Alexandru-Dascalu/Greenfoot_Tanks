@@ -146,9 +146,9 @@ public class PlayerTurret extends Turret
 		if(world!=null)
 		{
 			for(TargetLine tl: targetLines)
-	    		{
-	    			world.removeObject(tl);
-	    		}
+	    	{
+	    		world.removeObject(tl);
+	    	}
 			
 			//call superclass method which simply removes this turret from the game world
 			super.deleteTurret();

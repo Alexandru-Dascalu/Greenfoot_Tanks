@@ -204,19 +204,13 @@ public class TankWorld extends World
     private void prepareLevel1()
     {
     	/*Add other walls in the level.*/
-    	addObject(new WallBlock(),370,260);
-    	addObject(new WallBlock(),430,260);
-    	addObject(new WallBlock(),490,260);
-    	addObject(new WallBlock(),550,260);
-    	addObject(new WallBlock(),610,260);
-    	addObject(new WallBlock(),670,260);
     	
     	addObject(new WallBlock(),230,450);
     	addObject(new WallBlock(),290,450);
     	addObject(new WallBlock(),350,450);
-    	addObject(new WallBlock(),410,450);
-    	addObject(new WallBlock(),470,450);
-    	addObject(new WallBlock(),530,450);
+    	addObject(new DestroyableWallBlock(),410,450);
+    	addObject(new DestroyableWallBlock(),470,450);
+    	addObject(new DestroyableWallBlock(),530,450);
     	
     	//add the player tank target
     	addObject(tankTarget,200,200);
@@ -248,10 +242,10 @@ public class TankWorld extends World
     	addObject(new WallBlock(),200,410);
     	addObject(new WallBlock(),200,470);
     	
-    	addObject(new WallBlock(),260,470);
-    	addObject(new WallBlock(),320,470);
-    	addObject(new WallBlock(),380,470);
-    	addObject(new WallBlock(),440,470);
+    	addObject(new DestroyableWallBlock(),260,470);
+    	addObject(new DestroyableWallBlock(),320,470);
+    	addObject(new DestroyableWallBlock(),380,470);
+    	addObject(new DestroyableWallBlock(),440,470);
     	addObject(new WallBlock(),500,470);
     	addObject(new WallBlock(),560,470);
     	

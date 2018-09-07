@@ -1,9 +1,36 @@
+/**
+ * <p><b>File name: </b> EnemyTurret.java
+ * @version 1.0
+ * @since 07.06.2018
+ * <p><b>Last modification date: </b> 15.08.2018
+ * @author Alexandru F. Dascalu
+ * <p><b>Copyright: </b>
+ * <p>No copyright.
+ * 
+ * <p><b>Purpose: </b>
+ * <p> This class models an enemy turret for a Greenfoot recreation of 
+ * the Wii Tanks game for the Nintendo Wii. It contains code used by all enemy 
+ * turrets to detect the player tank and fire a shell. It's line of
+ * sight bounces off walls as many times as the shells each type of enemy turret fires.
+ * If it detects the player, it fires a shell, unless it already has
+ * an x amount (depends on the subtype) shells fired by it still in the world. It 
+ * also has a cooldown period, after which it will not fire another shell (each 
+ * subtype has a different value for this period).
+ * 
+ * <p><b>Version History</b>
+ * <p>	-1.0 - Created the class.
+ */
 
 public class EnemyTurret extends Turret
 {
 	/**The approximate length in cells(pixels) between points on the line of
 	 * sight where we check if the player is there. It's value is {@value}.*/
 	private static final int DETECT_INTERVAL=10;
+	
+	/**The number of intervals away from this turret's tank's centre where the 
+	 * search for the target will start, to make sure the search does not stop 
+	 * immediately because it checks a point inside this turret's tank.*/
+	private static final int NR_INTERVALS_FROM_TANK=3;
 	
 	/**A boolean that says whether the turret has finished turning to the last 
 	 * position that has been generated, and whether we need to start another
@@ -24,7 +51,7 @@ public class EnemyTurret extends Turret
 	
 	/**
 	 * Makes a new enemy Turret on the Tank given as an argument.
-	 * @param brownTank The Brown Tank on which this Turret will pe placed.
+	 * @param tank The Tank on which this Turret will pe placed.
 	 */
 	public EnemyTurret(Tank tank)
 	{
@@ -65,7 +92,7 @@ public class EnemyTurret extends Turret
 	/**
 	 * Method detects if the player tank is in the line of fire of this turret.
 	 * @return True if the player tank is in the line of fire of this turret,
-	 * false if not or if the shell would hit this turret's tank before it would
+	 * false if not or if the shell would hit another enemy tank before it would
 	 * hit the player.
 	 */
 	private boolean detectTarget()
@@ -83,17 +110,17 @@ public class EnemyTurret extends Turret
 		
 		/*The x coordinate relative to this turret's position of the point where
 		 * we look for the player. We first start looking at a distance of 
-		 * DETECT_INTERVAL away from the turret, so it is initialised as 3*xInterval,
-		 * so that the first point we check is guaranteed to be outside of this turrets
-		 * tank, so this method does not return false just after starting the search.*/
-		double xRealOffset=3*xInterval;
+		 * DETECT_INTERVAL*NR_INTERVALS_FROM_TANK, so that the first point we check 
+		 * is guaranteed to be outside of this turrets tank, so this method does not 
+		 * return false just after starting the search.*/
+		double xRealOffset=NR_INTERVALS_FROM_TANK*xInterval;
 		
 		/*The y coordinate relative to this turret's position of the point where
-		 * we look for the player.We first start looking at a distance of 
-		 * DETECT_INTERVAL away from the turret, so it is initialised as 3*yInterval,
-		 * so that the first point we check is guaranteed to be outside of this turrets
-		 * tank, so this method does not return false just after starting the search.*/
-		double yRealOffset=3*yInterval;
+		 * we look for the player. We first start looking at a distance of 
+		 * DETECT_INTERVAL*NR_INTERVALS_FROM_TANK, so that the first point we check 
+		 * is guaranteed to be outside of this turrets tank, so this method does not 
+		 * return false just after starting the search.*/		
+		double yRealOffset=NR_INTERVALS_FROM_TANK*yInterval;
 		
 		//says whether to continue looking for the player or stop
 		boolean cont=true;
@@ -143,7 +170,7 @@ public class EnemyTurret extends Turret
 			if(wall!=null)
 			{
 				/*Check if the line of sight can bounce again.*/
-				if(bounces<Shell.TIMES_ALLOWED_TO_BOUNCE)
+				if(bounces<getShellBounceLimit())
 				{
 					/*If it can, we need to find out the exact point where the
 					 * wall starts, since the last point we checked for a wall 
@@ -227,13 +254,30 @@ public class EnemyTurret extends Turret
 		return false;
 	}
 	
+	/**Gets the cool down period(in milliseconds) after which this turret can 
+	 * fire another shell. This period is a static variable and is the same for
+	 * all objects of this class. It returns 0 because this method is meant to 
+	 * be always overriden.
+	 * @return The period in milliseconds after which this turret can fire another
+	 * shell, which is 0, unless overriden.*/
 	public int getFireCooldown()
 	{
 		return 0;
 	}
 	
+	/**Gets the limit of how many shells fired by this turret can be in the world
+	 * at the same time. This number is a static variable and is the same for
+	 * all objects of this class.It returns 0 because this method is meant to 
+	 * be always overriden.
+	 * @return the limit of how many shells fired by this turret can be in the world
+	 * at the same time, which is 0, unless overriden.*/
 	public int getLiveShellLimit()
 	{
 		return 0;
+	}
+	
+	public int getShellBounceLimit()
+	{
+		return Shell.TIMES_ALLOWED_TO_BOUNCE;
 	}
 }
