@@ -2,9 +2,9 @@ import greenfoot.*;
 
 /**
  * <p><b>File name: </b> Tank.java
- * @version 1.7
+ * @version 1.6
  * @since 02.05.2018
- * <p><p><b>Last modification date: </b> 03.09.2018
+ * <p><p><b>Last modification date: </b> 11.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -13,7 +13,7 @@ import greenfoot.*;
  * <p> This class models a general tank for a Greenfoot recreation of the Wii Tanks 
  * game for the Nintendo Wii. By default, it moves, plays a sound when moving
  * and tells it's turret to aim and fire. It is meant to be inherited always and
- * you should not have an actor that is just a Tank object since the class was
+ * you should not have an actor that is just a Tank object since it the class was
  * not meant to be used in this way.
  * 
  * <p><b>Version History</b>
@@ -27,8 +27,6 @@ import greenfoot.*;
  * <p>  -1.5 - Modified this class to be a general tank class and moved part of 
  * code into the PlayerTank class, which inherits from this.
  * <p>	-1.6 - Modified this class so tanks can push each other while moving.
- * <p>	-1.7 - Added a getMaxTurnSpeed() method to be overriden in the player 
- * tank and mobile enemy tanks subclasses.
  */
 
 public class Tank extends Actor
@@ -171,6 +169,10 @@ public class Tank extends Actor
     		tankTurret.setLocation(tempX, tempY);
     	}
     }
+    
+    
+    
+    
     
 	/**
 	 * Act - do whatever the Tank wants to do. This method is called whenever the
@@ -909,19 +911,6 @@ public class Tank extends Actor
 	{
 		return 0;
 	}
-	
-	/**
-	 * Getter The maximum number of degrees by which this tank can turn each 
-	 * time the act() method is called. Used by mobile enemy tanks and the 
-	 * player tank.
-	 * @return 	The maximum turn speed of this type of tank.It returns 0 
-	 * because a default tank does not have a specific turn speed. This method 
-	 * should always be overridden.
-	 */
-    public int getMaxTurnSpeed()
-    {
-    	return 0;
-    }
 	
 	/**Deletes this tank and it's turret along with any other associated actors
 	 * from this game world.*/

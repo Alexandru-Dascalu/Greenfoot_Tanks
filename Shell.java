@@ -34,7 +34,7 @@ public class Shell extends Actor
      *  is {@value}.*/
     public static final int TIMES_ALLOWED_TO_BOUNCE=1;
     
-    /**The number of degrees in <i>pi</i> (or around 3.14) radians.*/
+    /**The number of degrees in <i>pi</i> (or arround 3.14) radians.*/
     private final static int PI_RADIANS=180;
     
     /**The average distance at which the shell looks ahead to check if it will
@@ -128,7 +128,7 @@ public class Shell extends Actor
     @Override
     public void act() 
     {
-    	move(getSpeed());
+    	move(SHELL_SPEED);
       
         /*If the shell has not destroyed any targets and hasn't been removed 
          * from the world as a result, then we can check if it needs to bounce.
@@ -140,7 +140,7 @@ public class Shell extends Actor
 	        if(hitsWall())
 	        {
 	        	//If it has not reached it's number of bounces limit, it bounces.
-	        	if(timesBounced<getBounceLimit())
+	        	if(timesBounced<TIMES_ALLOWED_TO_BOUNCE)
 	        	{
 	        		bounce();
 	        	}
@@ -331,19 +331,19 @@ public class Shell extends Actor
     	 * direction). We get the real value of the x component, and we round it
     	 * and cast it as an integer.*/
     	double rotation=Math.toRadians(getRotation());
-    	int xOffset=(int) Math.round(getLookAhead()*Math.cos(rotation));
+    	int xOffset=(int) Math.round(LOOK_AHEAD*Math.cos(rotation));
     	
     	/*The image of the shell is 10 by 11, so it roughly fits inside a circle 
     	 * with a radius of 6. After the rounding, the offset might be less than 
     	 * that, which means the image of the shell will intersect with the wall 
     	 * by the time a hit is detected. We do not want the shell to intersect 
-    	 * the wall block, so if it's modulus is less than 6 (or LOOK_AHEAD/2+1)
-    	 * we change to either 6 or -6.*/
-    	if(Math.abs(xOffset)<(LOOK_AHEAD/2)+1)
+    	 * the wall block, so if it's modulus is less than 6 we change to either 
+    	 * 6 or -6.*/
+    	if(Math.abs(xOffset)<6)
     	{
     		/*We change the offset to either 6 or -6,depending on the cosinus of
     		 * the shell's angle*/
-    		xOffset=(LOOK_AHEAD/2+1)*(int)Math.signum(Math.cos(rotation));
+    		xOffset=6*(int)Math.signum(Math.cos(rotation));
     	}
     	
     	return xOffset;
@@ -362,7 +362,7 @@ public class Shell extends Actor
     	 * direction). We get the real value of the y component, and we round it
     	 * and cast it as an integer.*/
     	double rotation=Math.toRadians(getRotation());
-    	int yOffset=(int) Math.round(getLookAhead()*Math.sin(rotation));
+    	int yOffset=(int) Math.round(LOOK_AHEAD*Math.sin(rotation));
     	
     	/*The image of the shell is 10 by 11, so it roughly fits inside a circle 
     	 * with a radius of 6. After the rounding, the offset might be less than 
@@ -419,20 +419,5 @@ public class Shell extends Actor
     public Tank getParentTank()
     {
     	return parentTank;
-    }
-    
-    public int getSpeed()
-    {
-    	return SHELL_SPEED;
-    }
-    
-    public int getBounceLimit()
-    {
-    	return TIMES_ALLOWED_TO_BOUNCE;
-    }
-    
-    public int getLookAhead()
-    {
-    	return LOOK_AHEAD;
     }
 }

@@ -166,13 +166,13 @@ public class TankWorld extends World
     		case 1:
     			prepareLevel1();
     			break;
+    		/*If the last level has been cleared, then the level counter has been
+    		 * incremented beyond the number of levels in the game, so it will
+    		 * resort to calling the method that display the game win message and 
+    		 * stop the game.*/
     		case 2:
     			prepareLevel2();
     			break;
-    		/*If the last level has been cleared, then the level counter has been
-        	* incremented beyond the number of levels in the game, so it will
-        	* resort to calling the method that display the game win message and 
-        	* stop the game.*/
     		default:
     			gameWin();
     			return;
@@ -189,8 +189,6 @@ public class TankWorld extends World
         addObject(enemyCount,500,23);
         enemyCount.act();
         
-        /*rebuild the graph used for path finding for the current level that
-         * was loaded.*/
         worldGraph=new Graph(this);
         
         /*Show the updated start screen for the new level.*/
@@ -204,13 +202,19 @@ public class TankWorld extends World
     private void prepareLevel1()
     {
     	/*Add other walls in the level.*/
+    	addObject(new WallBlock(),370,260);
+    	addObject(new WallBlock(),430,260);
+    	addObject(new WallBlock(),490,260);
+    	addObject(new WallBlock(),550,260);
+    	addObject(new WallBlock(),610,260);
+    	addObject(new WallBlock(),670,260);
     	
     	addObject(new WallBlock(),230,450);
     	addObject(new WallBlock(),290,450);
     	addObject(new WallBlock(),350,450);
-    	addObject(new DestroyableWallBlock(),410,450);
-    	addObject(new DestroyableWallBlock(),470,450);
-    	addObject(new DestroyableWallBlock(),530,450);
+    	addObject(new WallBlock(),410,450);
+    	addObject(new WallBlock(),470,450);
+    	addObject(new WallBlock(),530,450);
     	
     	//add the player tank target
     	addObject(tankTarget,200,200);
@@ -229,10 +233,6 @@ public class TankWorld extends World
         enemyTanks=2;
     }
     
-    /**
-     * Prepare the world for the start of the first level.
-     * That is: create the initial objects and add them to the world.
-     */
     private void prepareLevel2()
     {
     	/*Add other walls in the level.*/
@@ -242,12 +242,15 @@ public class TankWorld extends World
     	addObject(new WallBlock(),200,410);
     	addObject(new WallBlock(),200,470);
     	
-    	addObject(new DestroyableWallBlock(),260,470);
-    	addObject(new DestroyableWallBlock(),320,470);
-    	addObject(new DestroyableWallBlock(),380,470);
-    	addObject(new DestroyableWallBlock(),440,470);
+    	addObject(new WallBlock(),260,470);
+    	addObject(new WallBlock(),320,470);
+    	addObject(new WallBlock(),380,470);
+    	addObject(new WallBlock(),440,470);
     	addObject(new WallBlock(),500,470);
     	addObject(new WallBlock(),560,470);
+    	addObject(new WallBlock(),620,470);
+    	addObject(new WallBlock(),680,470);
+    	addObject(new WallBlock(),740,470);
     	
     	//add the player tank target
     	addObject(tankTarget,200,200);
@@ -451,19 +454,11 @@ public class TankWorld extends World
     	return enemyTanks;
     }
     
-    /**
-     * Getter for the reference to the player tank of this world.
-     * @return The player's tank of this game world.
-     */
     public PlayerTank getPlayerTank()
     {
     	return playerTank;
     }
     
-    /**
-     * Getter for the graph used for path finding by enemy tanks.
-     * @return The reference to the path finding graph of this game world.
-     */
     public Graph getWorldGraph()
     {
     	return worldGraph;

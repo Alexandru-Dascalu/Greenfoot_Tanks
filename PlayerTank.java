@@ -4,7 +4,7 @@ import greenfoot.*;
  * <p><b>File name: </b> PlayerTank.java
  * @version 1.4
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 04.09.2018
+ * <p><b>Last modification date: </b> 07.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -35,10 +35,6 @@ public class PlayerTank extends Tank
 	/**The distance measured in cell-size units by which this tank moves each 
 	 * time it acts. It's value is {@value}.*/
 	private static final int SPEED=2;
-	
-	/**The maximum number of degrees by which this tank can turn each time the
-     * act() method is called. It's value is {@value}.*/
-    private static final int MAX_TURN_SPEED=2;
 	
 	/**The last information about the state of the mouse we have.*/
     private MouseInfo lastMouseInfo;
@@ -131,7 +127,7 @@ public class PlayerTank extends Tank
 		{
 			/*If it should turn, turn the tank and not also the turret (it should
 			 * always face the player target).*/
-			turn(-MAX_TURN_SPEED);
+			turn(-2);
 		}
 
 		/*Check if the tank should turn right. It should only if it there is
@@ -140,7 +136,7 @@ public class PlayerTank extends Tank
 		{
 			/*If it should turn, turn the tank and not also the turret (it should
 			 * always face the player target).*/
-			turn(MAX_TURN_SPEED);
+			turn(2);
 		}
 	}
 	
@@ -284,26 +280,15 @@ public class PlayerTank extends Tank
 	}
 	
 	/**
-	 * Getter for the speed of this tank, meaning the distance in cells that 
-	 * the tank move each time the move(int) method is called.
-	 * @return 	The speed of this type of tank tank.
+	 * The speed of this tank, meaning the distance in cells that the tank moves
+	 * each time the move(int) method is called.
+	 * @return 	The speed of this tank.
 	 */
 	@Override
 	public int getSpeed()
 	{
 		return SPEED;
 	}
-	
-	/**
-	 * Getter The maximum number of degrees by which this tank can turn each 
-	 * time the act() method is called.
-	 * @return 	The maximum turn speed of this type of tank.
-	 */
-    @Override
-    public int getMaxTurnSpeed()
-    {
-    	return MAX_TURN_SPEED;
-    }
 	
 	/**Method reloads this tank into the game world to prepare it for another start
 	 * of the current level. Overloaded the method from the Tank class because
@@ -337,21 +322,11 @@ public class PlayerTank extends Tank
 		return lastMouseInfo;
 	}
 	
-	/**
-	 * Calculates the distance between this tank and the point at the given 
-	 * coordinates in the world. Used by enemy tanks to try to not get too close
-	 * to the player tank.
-	 * @param x The x coordinate of the point to which we measure the distance.
-	 * @param y The y coordinate of the point to which we measure the distance.
-	 * @return The distance to that point.
-	 */
 	public double getDistanceFrom(int x, int y)
 	{
-		//calculate the distance on each axis to that point
 		 int xDistance=x-this.getX();
 		 int yDistance=y-this.getY();
 		 
-		 //get the total distance using Pythagora's theorem
 		 double distance=Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
 		 
 		 return distance;

@@ -83,7 +83,7 @@ public class EnemyTurret extends Turret
 			{
 				/*We fire the shell, update lastFiring and increment the counter
 				 * of live shells in the world fired by this turret.*/
-				super.fire();
+				//super.fire();
 				lastFiring=System.currentTimeMillis();
 			}
 		}
@@ -170,7 +170,7 @@ public class EnemyTurret extends Turret
 			if(wall!=null)
 			{
 				/*Check if the line of sight can bounce again.*/
-				if(bounces<getShellBounceLimit())
+				if(bounces<Shell.TIMES_ALLOWED_TO_BOUNCE)
 				{
 					/*If it can, we need to find out the exact point where the
 					 * wall starts, since the last point we checked for a wall 
@@ -274,10 +274,5 @@ public class EnemyTurret extends Turret
 	public int getLiveShellLimit()
 	{
 		return 0;
-	}
-	
-	public int getShellBounceLimit()
-	{
-		return Shell.TIMES_ALLOWED_TO_BOUNCE;
 	}
 }
