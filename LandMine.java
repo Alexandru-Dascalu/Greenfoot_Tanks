@@ -143,7 +143,8 @@ public class LandMine extends Actor
     	 * destroys the player tank and the last remaining enemy tank, this 
     	 * ensures the world knows the player lost and reloads the level.*/
     	List<Shell> destroyedShells=getObjectsInRange(EXPLOSION_RANGE, Shell.class);
-    	List<WallBlock> destroyedWalls=getObjectsInRange(EXPLOSION_RANGE, WallBlock.class);
+    	List<DestroyableWallBlock> destroyedWalls=getObjectsInRange(EXPLOSION_RANGE,
+    			DestroyableWallBlock.class);
     	List<LandMine> destroyedMines=getObjectsInRange(EXPLOSION_RANGE, LandMine.class);
     	
     	//we need a reference to the world of type TankWorld
@@ -176,9 +177,9 @@ public class LandMine extends Actor
     	}
     	
     	/*Remove each wall block in the radius with the default removeObject method.*/
-    	for(WallBlock wb: destroyedWalls)
+    	for(DestroyableWallBlock dwb: destroyedWalls)
     	{
-    		world.removeObject(wb);
+    		world.removeObject(dwb);
     	}
     	
     	/*Remove each wall block in the radius with the default removeObject method.*/
