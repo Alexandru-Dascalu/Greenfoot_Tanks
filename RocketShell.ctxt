@@ -1,11 +1,16 @@
 #BlueJ class context
 comment0.target=RocketShell
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ RocketShell.java\r\n\ @version\ 1.0\r\n\ @since\ 06.09.2018\r\n\ <p><p><b>Last\ modification\ date\:\ </b>\ 07.09.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ tank\ rockets\ shell\ for\ a\ Greenfoot\ recreation\ of\ the\ \r\n\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ moves\ faster\ than\ the\ normal\ \r\n\ shells,\ does\ not\ bounce\ when\ hitting\ a\ wall\ or\ the\ boundary\ of\ the\ world\ and\r\n\ destroys\ tanks\ and\ other\ shells\ that\ it\ hits.\ It\ also\ makes\ landmines\ that\ \r\n\ it\ intersects\ explode,\ but\ that\ is\ handled\ in\ the\ LandMine\ class.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n
 comment1.params=rotation\ parent\ x\ y
 comment1.target=RocketShell(int,\ Tank,\ int,\ int)
+comment1.text=\r\n\ Makes\ a\ new\ rocket\ shell\ at\ the\ given\ coordinates\ and\ with\ the\ rotation\r\n\ given.\r\n\ @param\ rotation\ The\ rotation\ of\ the\ new\ shell,\ the\ same\ as\ the\ rotation\ \r\n\ of\ the\ turret\ that\ fired\ it\ when\ it\ was\ fired.\r\n\ @param\ parent\ The\ tank\ whose\ turret\ fired\ this\ shell.\r\n\ @param\ x\ The\ x\ coordinate\ where\ the\ new\ shell\ will\ be\ put.\r\n\ @param\ y\ The\ y\ coordinate\ where\ the\ new\ shell\ will\ be\ put.\r\n
 comment2.params=
 comment2.target=int\ getSpeed()
+comment2.text=\r\n\ The\ speed\ of\ this\ shell,\ meaning\ the\ distance\ in\ cells\ that\ the\ shell\ moves\r\n\ each\ time\ the\ move(int)\ method\ is\ called.\r\n\ @return\ the\ speed\ of\ this\ type\ of\ shells,\ defined\ by\ a\ static\ constant.\r\n
 comment3.params=
 comment3.target=int\ getBounceLimit()
+comment3.text=\r\n\ Gets\ the\ number\ of\ times\ the\ shell\ is\ allowed\ to\ bounce\ off\ a\ wall.\ We\ \r\n\ have\ this\ method\ despite\ the\ fact\ it\ returns\ a\ public\ constant\ so\ that\ \r\n\ we\ can\ override\ for\ different\ types\ of\ shells.\r\n\ @return\ the\ number\ of\ times\ the\ shell\ is\ allowed\ to\ bounce\ off\ a\ wall.\r\n
 comment4.params=
 comment4.target=int\ getLookAhead()
+comment4.text=\r\n\ Gets\ the\ average\ distance\ at\ which\ the\ shell\ looks\ ahead\ to\ check\ if\ \r\n\ it\ will\ hit\ a\ wall.\r\n\ @return\ the\ average\ distance\ at\ which\ the\ shell\ looks\ ahead\ to\ check\ if\ \r\n\ it\ will\ hit\ a\ wall.\r\n
 numComments=5

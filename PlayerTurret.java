@@ -35,7 +35,7 @@ public class PlayerTurret extends Turret
 	/**The maximum amount of shells this turret has fired that can be in the game
 	 * world at the same time. If the limit is reached, the turret will not fire
 	 * even if it is told to.*/
-    private static final int SHELLS_ALLOWED = 6;
+    private static final int SHELLS_ALLOWED = 5;
     
     /**The array of target line actors that will form a line between the turret
      * and the player tank target.*/

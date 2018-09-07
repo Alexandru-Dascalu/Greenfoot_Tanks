@@ -421,16 +421,33 @@ public class Shell extends Actor
     	return parentTank;
     }
     
+    /**
+	 * The speed of this shell, meaning the distance in cells that the shell moves
+	 * each time the move(int) method is called.
+	 * @return the speed of this type of shells, defined by a static constant.
+	 */
     public int getSpeed()
     {
     	return SHELL_SPEED;
     }
     
+    /**
+     * Gets the number of times the shell is allowed to bounce off a wall. We 
+     * have this method despite the fact it returns a public constant so that 
+     * we can override for different types of shells.
+     * @return the number of times the shell is allowed to bounce off a wall.
+     */
     public int getBounceLimit()
     {
     	return TIMES_ALLOWED_TO_BOUNCE;
     }
     
+    /**
+     * Gets the average distance at which the shell looks ahead to check if 
+     * it will hit a wall.
+     * @return the average distance at which the shell looks ahead to check if 
+     * it will hit a wall.
+     */
     public int getLookAhead()
     {
     	return LOOK_AHEAD;

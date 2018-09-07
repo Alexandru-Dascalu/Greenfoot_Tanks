@@ -146,11 +146,21 @@ public class TurquoiseTurret extends EnemyTurret
 		return LIVE_SHELLS_ALLOWED;
 	}
 	
+	/**
+	 * Gets the maximum number of times a shell fired by this turret can bounce.
+	 * Returns the bounce limit of rocket shells.
+	 * @return The bounce limit of rocket shells.
+	 */
+	@Override
 	public int getShellBounceLimit()
 	{
 		return RocketShell.TIMES_ALLOWED_TO_BOUNCE;
 	}
 	
+	/**
+     * Indicates if this turret fires normal shells.
+     * @return False, because this type of turret fires rocket shells.
+     */
 	@Override
 	public boolean firesNormalShells()
 	{

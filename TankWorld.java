@@ -204,7 +204,6 @@ public class TankWorld extends World
     private void prepareLevel1()
     {
     	/*Add other walls in the level.*/
-    	
     	addObject(new WallBlock(),230,450);
     	addObject(new WallBlock(),290,450);
     	addObject(new WallBlock(),350,450);
