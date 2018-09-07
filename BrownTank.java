@@ -37,6 +37,18 @@ public class BrownTank extends Tank
 	}
 	
 	/**
+	 * Act - do whatever the Tank wants to do. This method is called whenever the
+	 * 'Act' or 'Run' button gets pressed in the environment. In this case, it 
+	 * makes the tank tell it's turret to aim and fire. The tank does nothing 
+	 * else since it does not move on it's own.
+	 */
+	public void act()
+	{
+		tankTurret.aim();
+		tankTurret.fire();
+	}
+	
+	/**
 	 * Overrides the default isMoving method because a Brown Tank is a very basic
 	 * enemy and it does not move at all, unless pushed by another tank. This 
 	 * method returns false always.
