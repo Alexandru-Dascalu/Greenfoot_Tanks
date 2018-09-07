@@ -147,12 +147,63 @@ public class Tank extends Actor
     
     /**
      * Moves this tank on each axis by the distances given. Makes sure rounding 
-     * errors do not accumulate.
+     * errors do not accumulate. It is used when this tank is pushed by another
+     * tank. This method also ensures this tank is not pushed by another tank 
+     * into a wall and ensures that if this tank cannot be pushed on one axis,
+     * neither will the other tank be able to move on that axis (and thus 
+     * overlap this tank).
      * @param dx The distance the tank will be moved horizontally.
      * @param dy The distance the tank will be moved vertically.
+     * @param pushingTank The tank that is pushing this tank. This reference 
+     * is needed so if this tank cannot be pushed on one axis, the pushing Tank
+     * will also not move on that axis. If this reference is null, then this tank
+     * is not being pushed so this method just moves this tank on each axis by
+     * the distances given.
      */
-    public void move(double dx, double dy)
+    public void move(double dx, double dy, Tank pushingTank)
     {
+    	/*Check if this tank is being pushed by another.*/
+    	if(pushingTank!=null)
+    	{
+    		/*If it is, we must make sure it is not being pushed inside a wall.*/
+    		WallBlock wall=(WallBlock)getOneIntersectingObject(WallBlock.class);
+        	
+    		/*Check if it is intersecting a wall.*/
+        	if(wall!=null)
+        	{
+        		/*If it, find out which side of the wall block this tank is 
+        		 * touching.*/
+        		String quadrant=wall.getQuadrant(getX(), getY());
+        		
+        		/*Check if this tank is touching the left or right side of the
+        		 * wall block.*/
+        		if(quadrant.equals("right") || quadrant.equals("left"))
+        		{
+        			/*If it is, this tank cannot be pushed on the horizontal 
+        			 * axis. We push the pushing tank on the horizontal axis 
+        			 * in the opposite direction to cancel out the move it did
+        			 * on it's own and make sure it will not overlap this tank.*/
+        			pushingTank.move(-dx, 0, null);
+        			
+        			//set dx to 0 so this tank will not move horizontally
+        			dx=0;
+        		}
+        		/*Else if this tank is touching the top or bottom side of the
+        		 * wall block.*/
+        		else if(quadrant.equals("top") || quadrant.equals("bottom"))
+        		{
+        			/*If it is, this tank cannot be pushed on the vertical 
+        			 * axis. We push the pushing tank on the vertical axis 
+        			 * in the opposite direction to cancel out the move it did
+        			 * on it's own and make sure it will not overlap this tank.*/
+        			pushingTank.move(0, -dy, null);
+        			
+        			//set dy to 0 so this tank will not move horizontally
+        			dy=0;
+        		}
+        	}
+    	}
+    	
     	//update the real x and y coordinates of the tank
     	realX+=dx;
     	realY+=dy;
@@ -764,7 +815,7 @@ public class Tank extends Actor
 			}
 			
 			//move the other tank by the distances established
-			otherTank.move(dx, dy);
+			otherTank.move(dx, dy, this);
 		}
 	}
 	
