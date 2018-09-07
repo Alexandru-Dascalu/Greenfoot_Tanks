@@ -145,4 +145,15 @@ public class TurquoiseTurret extends EnemyTurret
 	{
 		return LIVE_SHELLS_ALLOWED;
 	}
+	
+	public int getShellBounceLimit()
+	{
+		return RocketShell.TIMES_ALLOWED_TO_BOUNCE;
+	}
+	
+	@Override
+	public boolean firesNormalShells()
+	{
+		return false;
+	}
 }
