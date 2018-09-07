@@ -5,7 +5,7 @@ import java.util.List;
  * <p><b>File name: </b> Shell.java
  * @version 1.3
  * @since 14.05.2018
- * <p><p><b>Last modification date: </b> 11.07.2018
+ * <p><p><b>Last modification date: </b> 22.07.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -27,18 +27,18 @@ import java.util.List;
  */
 public class Shell extends Actor
 {
-   	/**The speed with which all shells move. The value is {@value 6}.*/
-    private static final int SHELL_SPEED=6;
+   	/**The speed with which all shells move. The value is {@value}.*/
+    private static final int SHELL_SPEED=4;
     
     /**The number of times the shell is allowed to bounce off a wall.The value
-     *  is {@value 1}.*/
+     *  is {@value}.*/
     public static final int TIMES_ALLOWED_TO_BOUNCE=1;
     
-    /**The number of degrees in <i>pi</i> (or arround 3.14) radians.*/
+    /**The number of degrees in <i>pi</i> (or around 3.14) radians.*/
     private final static int PI_RADIANS=180;
     
     /**The average distance at which the shell looks ahead to check if it will
-     * hit a wall. The value is {@value 11}, because the shell image is 10 by 11 pixels.*/
+     * hit a wall. The value is {@value}, because the shell image is 10 by 11 pixels.*/
     private static final int LOOK_AHEAD=11;
     
     /**The number of times the shell has bounced off a wall so far.*/
@@ -54,11 +54,11 @@ public class Shell extends Actor
     private boolean destroyParent;
     
     /**The correct x position of the shell, represented by a real number.*/
-    private double realX;
-    
-    /**The correct x position of the shell, represented by a real number.*/
-    private double realY;
-    
+	private double realX;
+	
+	/**The correct x position of the shell, represented by a real number.*/
+	private double realY;
+	
     /**
      * Makes a new shell at the given coordinates and with the rotation given.
      * @param rotation The rotation of the new shell, the same as the rotation 
@@ -73,8 +73,8 @@ public class Shell extends Actor
     	timesBounced=0;
         parentTank=parent;
         realX=x;
-	realY=y;
-	
+        realY=y;
+        
         /*if the shell intersects it's parent tank, we do not that tank to be 
          *destroyed immediately*/
         destroyParent=false;
@@ -99,26 +99,26 @@ public class Shell extends Actor
      */
     @Override
     public void move(int distance)
-    {
+	{
     	//calculate the rotation of the shell in radians
-	double radians = Math.toRadians(getRotation());
-	
-	/*Calculate the distance the shell should move by in each axis.*/
-	double dx = Math.cos(radians) * distance;
-	double dy = Math.sin(radians) * distance;
-	
-	//update the real x and y coordinates of the shell
-	realX+=dx;
-	realY+=dy;
-	
-	/*A world in Greenfoot is made up of finite cells, so positions can only
+    	double radians = Math.toRadians(getRotation());
+    	
+    	/*Calculate the distance the shell should move by in each axis.*/
+    	double dx = Math.cos(radians) * distance;
+    	double dy = Math.sin(radians) * distance;
+    	
+    	//update the real x and y coordinates of the shell
+    	realX+=dx;
+    	realY+=dy;
+    	
+    	/*A world in Greenfoot is made up of finite cells, so positions can only
     	 * be integers. So we round to the nearest integers the value of the real
     	 * coordinates and set the location of the shell to these numbers.*/
-	int tempX=(int) Math.round(realX);
-	int tempY=(int) Math.round(realY);
-	setLocation(tempX, tempY);
+    	int tempX=(int) Math.round(realX);
+    	int tempY=(int) Math.round(realY);
+    	setLocation(tempX, tempY);
 	}
-	
+    
     /**
      * Act - do whatever the Shell wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -128,7 +128,7 @@ public class Shell extends Actor
     @Override
     public void act() 
     {
-        move();
+    	move(getSpeed());
       
         /*If the shell has not destroyed any targets and hasn't been removed 
          * from the world as a result, then we can check if it needs to bounce.
@@ -140,7 +140,7 @@ public class Shell extends Actor
 	        if(hitsWall())
 	        {
 	        	//If it has not reached it's number of bounces limit, it bounces.
-	        	if(timesBounced<TIMES_ALLOWED_TO_BOUNCE)
+	        	if(timesBounced<getBounceLimit())
 	        	{
 	        		bounce();
 	        	}
@@ -193,7 +193,7 @@ public class Shell extends Actor
     		destroyParent=true;
     	}
     	
-    	/*Checks of this shell intersects any tank.*/
+    	/*Checks if this shell intersects any tank.*/
     	if(!intersectTanks.isEmpty())
     	{  		
     		/*For each tank it intersects, we destroy it if it is appropiate*/
@@ -247,12 +247,6 @@ public class Shell extends Actor
     	{
     		return false;
     	}
-    }
-    
-    /**Moves the shell based on the speed static final variable of this class.*/
-    private void move()
-    {
-        move(SHELL_SPEED);
     }
     
     /**Makes the shell bounce.*/
@@ -337,19 +331,19 @@ public class Shell extends Actor
     	 * direction). We get the real value of the x component, and we round it
     	 * and cast it as an integer.*/
     	double rotation=Math.toRadians(getRotation());
-    	int xOffset=(int) Math.round(LOOK_AHEAD*Math.cos(rotation));
+    	int xOffset=(int) Math.round(getLookAhead()*Math.cos(rotation));
     	
     	/*The image of the shell is 10 by 11, so it roughly fits inside a circle 
     	 * with a radius of 6. After the rounding, the offset might be less than 
     	 * that, which means the image of the shell will intersect with the wall 
     	 * by the time a hit is detected. We do not want the shell to intersect 
-    	 * the wall block, so if it's modulus is less than 6 we change to either 
-    	 * 6 or -6.*/
-    	if(Math.abs(xOffset)<6)
+    	 * the wall block, so if it's modulus is less than 6 (or LOOK_AHEAD/2+1)
+    	 * we change to either 6 or -6.*/
+    	if(Math.abs(xOffset)<(LOOK_AHEAD/2)+1)
     	{
     		/*We change the offset to either 6 or -6,depending on the cosinus of
     		 * the shell's angle*/
-    		xOffset=6*(int)Math.signum(Math.cos(rotation));
+    		xOffset=(LOOK_AHEAD/2+1)*(int)Math.signum(Math.cos(rotation));
     	}
     	
     	return xOffset;
@@ -368,7 +362,7 @@ public class Shell extends Actor
     	 * direction). We get the real value of the y component, and we round it
     	 * and cast it as an integer.*/
     	double rotation=Math.toRadians(getRotation());
-    	int yOffset=(int) Math.round(LOOK_AHEAD*Math.sin(rotation));
+    	int yOffset=(int) Math.round(getLookAhead()*Math.sin(rotation));
     	
     	/*The image of the shell is 10 by 11, so it roughly fits inside a circle 
     	 * with a radius of 6. After the rounding, the offset might be less than 
@@ -425,5 +419,20 @@ public class Shell extends Actor
     public Tank getParentTank()
     {
     	return parentTank;
+    }
+    
+    public int getSpeed()
+    {
+    	return SHELL_SPEED;
+    }
+    
+    public int getBounceLimit()
+    {
+    	return TIMES_ALLOWED_TO_BOUNCE;
+    }
+    
+    public int getLookAhead()
+    {
+    	return LOOK_AHEAD;
     }
 }
