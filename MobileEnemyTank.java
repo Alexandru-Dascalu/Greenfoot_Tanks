@@ -1,107 +1,70 @@
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
-
-/**
- * <p><b>File name: </b> MobileEnemyTank.java
- * @version 1.2
- * @since 14.08.2018
- * <p><p><b>Last modification date: </b> 03.09.2018
- * @author Alexandru F. Dascalu
- * <p><b>Copyright: </b>
- * <p>No copyright.
- * 
- * <p><b>Purpose: </b>
- * <p> This class models a mobile enemy tank for a Greenfoot recreation of the 
- * Wii Tanks game for the Nintendo Wii. By default, it generates a path to 
- * follow in the game world using the world's graph, follows it, decides to 
- * move while turning or not, plays a sound when moving and tells it's turret 
- * to aim and fire. It is meant to be inherited always and you should not have
- * an actor that is just a MobileEnemyTank object since the class was not meant
- * to be used in this way.
- * 
- * <p><b>Version History</b>
- * <p>	-1.0 - Created the class.
- * <p>	-1.1 - Made the tanks move more naturally by being able to move while
- *  turning if they can still get to the desired rotation by doing so and made
- *  the tank register reaching a point by being close to it, and not 
- *  necessarily at the exact coordinates.
- *  <p>	-1.2 - Made tanks not run into walls when they move while turning.
- */
+import greenfoot.*;
 
 public class MobileEnemyTank extends Tank
 {
-	/**The minimal distance in cells or pixels the chosen target point can be 
-	 * away from the player tank, so this tank will try to not get too close 
-	 * to the player. It's value is {@value}.*/
 	private static final int DISTANCE_FROM_PLAYER=150;
 	
-	/**The maximum distance in cells or pixels this tank needs to be away 
-	 * from a graph point for it to consider it has "reached" that point and
-	 * can move towards the next point. It's value is {@value}.*/
 	private static final int POINT_RADIUS=22;
 	
-	/**A random number generator used to choose a destination point for this 
-	 * tank.*/
 	private Random numberGenerator;
     
-	/**Indicates if this tank is moving (if it is moving forwards, backwards,
-	 * or turning).*/
+	private int targetRotation;
+	
 	protected boolean isMoving;
 	
-	/**Indicates if this tank is moving forwards.*/
 	protected boolean isMovingForward;
 	
-	/**Indicates if this tank is moving backwards.*/
 	protected boolean isMovingBackward;
 	
-	/**A linked list of GraphPoint objects that is the path this tank is taking
-	 * to it's chosen destination point.*/
-	protected LinkedList<GraphPoint> path;
-	
-	/**The GraphPoint object that is the next point in the game world this tank
-	 * needs to reach in it's path.*/
 	protected GraphPoint nextPoint;
 	
-	/***
-	 * Makes a new Mobile Enemy Tank whose starting location in the level is at
-	 * the given coordinates.
-	 * @param startX The x coordinate of the initial position of the tank in 
-	 * the level.
-	 * @param startY The y coordinate of the initial position of the tank in 
-	 * the level.
-	 */
+	protected LinkedList<GraphPoint> regularPath;
+	
+	protected LinkedList<GraphPoint> avoidancePath;
+	
+	private int i;
+	
+	private int j;
+	
     public MobileEnemyTank(int startX, int startY)
     {
-    	//call superclass constructor
         super(startX, startY);
-        
-        //initialise all instance variables of this subclass
         numberGenerator=new Random();
-        path=null;
         
-        //tank does not move initially
+        targetRotation=0;
         isMoving=false;
         isMovingForward=false;
         isMovingBackward=false;
-        
+        nextPoint=null;
+        regularPath=null;
+		avoidancePath=null;
     }
     
-    /**
-	 * Act - do whatever the Mobile Enemy Tank wants to do. This method is 
-	 * called whenever the 'Act' or 'Run' button gets pressed in the 
-	 * environment. In this case, this method makes the tank generate a path 
-	 * to a point in the game world if none exists or follow the current path,
-	 * after which the super type act() method is called.
-	 */
     @Override
 	public void act()
 	{
-    	//Check if there  is a path to follow.
-		if(path!=null)
+		LandMine mine=detectLandMines();
+		if(mine!=null && avoidancePath==null)
 		{
-			//if so, follow that path
-			followPath();
+			avoidLandMine(mine);
+		}
+		
+    	//Check if there  is a path to follow.
+		if(regularPath!=null)
+		{
+			if(avoidancePath!=null)
+			{
+				followPath(true);
+			}
+			else
+			{
+				//if so, follow that path
+				followPath(false);
+			}
 		}
 		//Else, the tank has no path to follow
 		else
@@ -113,20 +76,18 @@ public class MobileEnemyTank extends Tank
 		super.act();
 	}
     
-    /**Generates a path to a destination point in the game world for the tank 
-     * to follow.*/
     private void generatePath()
     {
-    	//Get a reference to the world this tank is in
     	TankWorld world=(TankWorld)getWorldOfType(TankWorld.class);
+    	regularPath=world.getWorldGraph().getShortestPath(getX(), getY(), chooseDestinationPoint());
     	
-    	/*choose a destination point and use the world's graph to get a path 
-    	 * to it.*/
-    	path=world.getWorldGraph().getShortestPath(getX(), getY(), 
-    			chooseDestinationPoint());
+    	for(GraphPoint gp: regularPath)
+    	{
+    		gp.setImage(new GreenfootImage("O.png"));
+    	}
+    	i=0;
     }
     
-    /**Chooses a random destination point for the tank to get to.*/
     private GraphPoint chooseDestinationPoint()
     {
     	//the destination point that will be returned eventually
@@ -181,41 +142,67 @@ public class MobileEnemyTank extends Tank
     	return destination;
     }
     
-    /**Makes the tank follow the path by passing by each node in the path until
-     * the destination is reached.*/
-    private void followPath()
+    private void followPath(boolean mineAvoidance)
     {
+		LinkedList<GraphPoint> path;
+		
+    	if(mineAvoidance)
+    	{
+    		path=avoidancePath;
+    	}
+    	else
+    	{
+    		path=regularPath;
+    	}
+		
     	/*Check if it the tank has a reference to the next point it needs to 
     	 * reach.*/
     	if(nextPoint==null)
     	{
-    		//Try to get the first node in the LinkedList that is the path
-    		try
-        	{
-        		nextPoint=path.getFirst();
-        	}
-    		/*The path might be empty at this point or be null, in which 
-    		 * case we make sure the path is null so a new path will be 
-    		 * generated in the next call of the act() method and terminate
-    		 * this method.*/
-        	catch(NoSuchElementException | NullPointerException e)
-        	{
-        		path=null;
-        		return;
-        	}
+    		if(mineAvoidance)
+    		{
+            	if(j<path.size())
+        	   	{
+        	   		nextPoint=path.get(j);
+        	    	j++;
+        	    }
+        	    else
+        	    {
+        	    	for(GraphPoint gp: path)
+        	    	{
+        	    		gp.getImage().clear();
+        	    	}
+        	    	
+        	    	avoidancePath=null;
+        	    	return;
+        	    }
+    		}
+    		else
+    		{
+    			if(i<path.size())
+    	    	{
+    	    		nextPoint=path.get(i);
+    	    		i++;
+    	    	}
+    	    	else
+    	    	{
+    	    		for(GraphPoint gp: path)
+    	    		{
+    	    			gp.getImage().clear();
+    	    		}
+    	    		
+    	    		regularPath=null;
+    	    		return;
+    	    	}
+    		}
+    		
     	}
     	
-    	/*At this point nextPoint is not null, so we check if this tank has 
-    	 * reached this point.*/
 	    if(reachedPoint(nextPoint))
 	    {
-	    	/*If it has, remove it from the path and set nextPoint to null so 
-	    	 * a new point will be chosen next time this method is called.*/
-	    	path.removeFirst();
+	    	//path.removeFirst();
 	    	nextPoint=null;
 	    }
-	    /*If it has not reached the next point, make sure the tank is heading
-	     * for it.*/
 	    else
 	    {
 	    	/*Calculate the rotation needed for this tank to turn towards the 
@@ -246,11 +233,28 @@ public class MobileEnemyTank extends Tank
 	    		//if the tank is turning, it is considered to be moving
 	    		isMoving=true;
 	    			
+	    		boolean turnIfCloseToMine;
+	    		
+	    		if(mineAvoidance)
+	    		{
+	    			if(normalizeAngle(getRotation()-targetRotation)<10)
+	    			{
+	    				turnIfCloseToMine=true;
+	    			}
+	    			else
+	    			{
+	    				turnIfCloseToMine=false;
+	    			}
+	    		}
+	    		else
+	    		{
+	    			turnIfCloseToMine=true;
+	    		}
 	    		/*For the tank's movements to be more natural, the tank should
 	    		 * move while turning. Sometimes if the tank does that it 
 	    		 * cannot reached the rotation towards the next point or it runs 
 	    		 * into a wall. So we check if this tank can move while turning.*/
-	    		if(canMoveWhileTurning(targetRotation, nextPoint))
+	    		if(turnIfCloseToMine && canMoveWhileTurning(targetRotation, nextPoint))
 	    		{
 	    			//If so, move the tank forward
 	    			move(this.getSpeed());
@@ -266,30 +270,17 @@ public class MobileEnemyTank extends Tank
 	    }
     }
     
-    /**
-     * Detects if this tank has reached a point in the world graph, meaning it 
-     * is within a certain distance from that node's coordinates.
-     * @param point A point in the world graph the tank wants to reach.
-     * @return True if the tank has reached, false if not.
-     */
     private boolean reachedPoint(GraphPoint point)
     {
-    	/*calculate the horizontal and vertical distances between this tank the
-    	 * given graph point*/
     	int deltaX=this.getX()-point.getX();
     	int deltaY=this.getY()-point.getY();
     	
-    	/*Calculate the total distance using Pythagora's theorem.*/
     	double distance=Math.sqrt(deltaX*deltaX + deltaY*deltaY);
     	
-    	/*Check if the distance is small enough for this point to be considered
-    	 * to have been reached by the tank.*/
     	if(distance<POINT_RADIUS)
     	{
-    		//if so, return true because this tank has reached the point
     		return true;
     	}
-    	//Else, the tank needs to be closer, so it has not reached the point
     	else
     	{
     		return false;
@@ -315,15 +306,6 @@ public class MobileEnemyTank extends Tank
 		return targetRotation;
     }
     
-    /**
-     * Calculates which way and how much this tank should turn to get to the 
-     * desired target rotation.
-     * @param targetRotation The rotation the tank needs to get to in order to
-     * reach the next GraphPoint.
-     * @return The amount in degrees the tank should turn in this call of the 
-     * act() method. Negative values mean the tank will turn counter clockwise,
-     * positive values clockwise.
-     */
     private int calculateTurn(int targetRotation)
     {
     	/*We need to decide which way the tank will turn. So we calculate the 
@@ -382,15 +364,6 @@ public class MobileEnemyTank extends Tank
 		return turnSpeed;
     }
     
-    /**
-     * Decides whether this tank can move while it is turning. Sometimes if 
-     * the tank does that it cannot reached the rotation towards the next 
-     * point or it runs into a wall. So it is necessary to check this tank 
-     * can move while turning before doing so.
-     * @param targetRotation The rotation this tank needs to get to.
-     * @param nextPoint The graphPoint whose position this tank needs to reach.
-     * @return True if this tank can safely move while turning, false if not.
-     */
     private boolean canMoveWhileTurning(int targetRotation, GraphPoint nextPoint)
     {
     	/*Check if the tank can move forwards without hitting a wall.*/
@@ -435,39 +408,97 @@ public class MobileEnemyTank extends Tank
 		}
     }
     
-    /***
-	 * Checks if the tank is moving.
-	 * @return True if the tank is moving, false if not. Returns a boolean set 
-	 * according to the tank's movements in the private methods that control
-	 * this tank's movements.
-	 */
+	private LandMine detectLandMines()
+    {
+    	List<LandMine> mines=getObjectsInRange(2*LENGTH, LandMine.class);
+    	
+    	if(mines.isEmpty())
+    	{
+    		return null;
+    	}
+    	else
+    	{
+    		return mines.get(0);
+    	}
+    }
+	
+	private void avoidLandMine(LandMine mine)
+    {
+		/*try
+		{
+			while(regularPath.getFirst().getDistanceFrom(mine)<(2*LENGTH))
+	    	{
+	    		regularPath.removeFirst();
+	    	}
+		}
+    	catch(NoSuchElementException e)
+		{
+    		regularPath=null;
+    		return;
+		}*/
+		
+		try 
+		{
+			while(regularPath.get(i).getDistanceFrom(mine)<(2*LENGTH))
+			{
+				i++;
+			}
+		}
+		catch(IndexOutOfBoundsException e)
+		{
+    		regularPath=null;
+    		return;
+		}
+    	
+    	GraphPoint target=regularPath.get(i);
+    	
+    	//Get a reference to the world this tank is in
+    	TankWorld world=(TankWorld)getWorldOfType(TankWorld.class);
+    	Graph worldGraph=world.getWorldGraph();
+    	avoidancePath=worldGraph.getPathAvoidingMine
+    			(mine, getX(), getY(), target);
+		
+		for(GraphPoint gp: avoidancePath)
+		{
+			gp.setImage(new GreenfootImage("blue-circle.png"));
+		}
+		j=0;
+    }
+	
     @Override
     public boolean isMoving()
     {
     	return isMoving;
     }
     
-    /***
-   	 * Checks if the tank is moving forward.
-   	 * @return True if the tank is moving forward, false if not. Returns a 
-   	 * boolean set according to the tank's movements in the private methods
-   	 * that control this tank's movements.
-   	 */
     @Override
     protected boolean isMovingForward()
     {
     	return isMovingForward;
     }
     
-    /***
-   	 * Checks if the tank is moving backward.
-   	 * @return True if the tank is moving backward, false if not. Returns a 
-   	 * boolean set according to the tank's movements in the private methods
-   	 * that control this tank's movements.
-   	 */
     @Override
     protected boolean isMovingBackward()
     {
     	return isMovingBackward;
+    }
+    
+	public void reloadTank()
+    {
+    	/*We need to set the to null, since if the player lost and level was
+    	 * reloaded, this tank would still try to follow the path it had before
+    	 * the reload. This lead to the tank sometimes just driving thorough 
+    	 * walls.*/
+    	regularPath=null;
+    	avoidancePath=null;
+    	nextPoint=null;
+    	
+    	//call superclass method to reload the tank
+    	super.reloadTank();
+    }
+	
+    public int getMaxTurnSpeed()
+    {
+    	return 0;
     }
 }

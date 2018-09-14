@@ -2,9 +2,9 @@ import greenfoot.*;
 
 /**
  * <p><b>File name: </b> Tank.java
- * @version 1.7
+ * @version 1.6
  * @since 02.05.2018
- * <p><p><b>Last modification date: </b> 03.09.2018
+ * <p><p><b>Last modification date: </b> 11.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -13,7 +13,7 @@ import greenfoot.*;
  * <p> This class models a general tank for a Greenfoot recreation of the Wii Tanks 
  * game for the Nintendo Wii. By default, it moves, plays a sound when moving
  * and tells it's turret to aim and fire. It is meant to be inherited always and
- * you should not have an actor that is just a Tank object since the class was
+ * you should not have an actor that is just a Tank object since it the class was
  * not meant to be used in this way.
  * 
  * <p><b>Version History</b>
@@ -27,8 +27,6 @@ import greenfoot.*;
  * <p>  -1.5 - Modified this class to be a general tank class and moved part of 
  * code into the PlayerTank class, which inherits from this.
  * <p>	-1.6 - Modified this class so tanks can push each other while moving.
- * <p>	-1.7 - Added a getMaxTurnSpeed() method to be overriden in the player 
- * tank and mobile enemy tanks subclasses.
  */
 
 public class Tank extends Actor
@@ -47,11 +45,11 @@ public class Tank extends Actor
 	
 	/**The length of the long side of the tank. Currently, the tank's 
 	 * image is 51 by 49 pixels, so the value is {@value}.*/
-	protected static final double LENGTH=51;
+	protected static final int LENGTH=51;
 	
 	/**The length of the short side of the tank. Currently, the tank's 
 	 * image is 51 by 49 pixels, so the value is {@value}.*/
-	protected static final double WIDTH=49;
+	protected static final int WIDTH=49;
 	
 	/**The angle in degrees between the length of the tank and it's diagonal.
 	 * For the current image the value is {@value}.*/
@@ -147,63 +145,12 @@ public class Tank extends Actor
     
     /**
      * Moves this tank on each axis by the distances given. Makes sure rounding 
-     * errors do not accumulate. It is used when this tank is pushed by another
-     * tank. This method also ensures this tank is not pushed by another tank 
-     * into a wall and ensures that if this tank cannot be pushed on one axis,
-     * neither will the other tank be able to move on that axis (and thus 
-     * overlap this tank).
+     * errors do not accumulate.
      * @param dx The distance the tank will be moved horizontally.
      * @param dy The distance the tank will be moved vertically.
-     * @param pushingTank The tank that is pushing this tank. This reference 
-     * is needed so if this tank cannot be pushed on one axis, the pushing Tank
-     * will also not move on that axis. If this reference is null, then this tank
-     * is not being pushed so this method just moves this tank on each axis by
-     * the distances given.
      */
-    public void move(double dx, double dy, Tank pushingTank)
+    public void move(double dx, double dy)
     {
-    	/*Check if this tank is being pushed by another.*/
-    	if(pushingTank!=null)
-    	{
-    		/*If it is, we must make sure it is not being pushed inside a wall.*/
-    		WallBlock wall=(WallBlock)getOneIntersectingObject(WallBlock.class);
-        	
-    		/*Check if it is intersecting a wall.*/
-        	if(wall!=null)
-        	{
-        		/*If it, find out which side of the wall block this tank is 
-        		 * touching.*/
-        		String quadrant=wall.getQuadrant(getX(), getY());
-        		
-        		/*Check if this tank is touching the left or right side of the
-        		 * wall block.*/
-        		if(quadrant.equals("right") || quadrant.equals("left"))
-        		{
-        			/*If it is, this tank cannot be pushed on the horizontal 
-        			 * axis. We push the pushing tank on the horizontal axis 
-        			 * in the opposite direction to cancel out the move it did
-        			 * on it's own and make sure it will not overlap this tank.*/
-        			pushingTank.move(-dx, 0, null);
-        			
-        			//set dx to 0 so this tank will not move horizontally
-        			dx=0;
-        		}
-        		/*Else if this tank is touching the top or bottom side of the
-        		 * wall block.*/
-        		else if(quadrant.equals("top") || quadrant.equals("bottom"))
-        		{
-        			/*If it is, this tank cannot be pushed on the vertical 
-        			 * axis. We push the pushing tank on the vertical axis 
-        			 * in the opposite direction to cancel out the move it did
-        			 * on it's own and make sure it will not overlap this tank.*/
-        			pushingTank.move(0, -dy, null);
-        			
-        			//set dy to 0 so this tank will not move horizontally
-        			dy=0;
-        		}
-        	}
-    	}
-    	
     	//update the real x and y coordinates of the tank
     	realX+=dx;
     	realY+=dy;
@@ -222,6 +169,10 @@ public class Tank extends Actor
     		tankTurret.setLocation(tempX, tempY);
     	}
     }
+    
+    
+    
+    
     
 	/**
 	 * Act - do whatever the Tank wants to do. This method is called whenever the
@@ -428,7 +379,7 @@ public class Tank extends Actor
 				/*The offset is the length of the projection of half of the length
 				 * of the tank on the horizontal axis, so we multiply it with the
 				 * cosine of the degree and round to the nearest higher integer.*/
-				xOffset=(int) Math.round((LENGTH/2)*Math.cos(Math.toRadians((int)degree)));
+				xOffset=(int) Math.round((LENGTH/2.0)*Math.cos(Math.toRadians((int)degree)));
 				break;
 				
 			case "front left":
@@ -460,7 +411,7 @@ public class Tank extends Actor
 				 * tank's centre, so we make the same calculations as for the
 				 * front point and change the offset to it's opposite.*/
 				degree=getRotation();
-				xOffset= (int) Math.round((LENGTH/2)*Math.cos(Math.toRadians((int)degree)));
+				xOffset= (int) Math.round((LENGTH/2.0)*Math.cos(Math.toRadians((int)degree)));
 				xOffset= -xOffset;
 				break;
 				
@@ -524,7 +475,7 @@ public class Tank extends Actor
 				/*The offset is the length of the projection of half of the length
 				 * of the tank on the vertical axis, so we multiply it with the
 				 * sine of the degree and round to the nearest higher integer.*/
-				yOffset=(int) Math.ceil((LENGTH/2)*Math.sin(Math.toRadians((int)degree)));
+				yOffset=(int) Math.ceil((LENGTH/2.0)*Math.sin(Math.toRadians((int)degree)));
 				break;
 				
 			case "front left":
@@ -556,7 +507,7 @@ public class Tank extends Actor
 				 * tank's centre, so we make the same calculations as for the
 				 * front point and change the offset to it's opposite.*/
 				degree=getRotation(); 
-				yOffset= (int) Math.ceil((LENGTH/2)*Math.sin(Math.toRadians((int)degree)));
+				yOffset= (int) Math.ceil((LENGTH/2.0)*Math.sin(Math.toRadians((int)degree)));
 				yOffset= -yOffset;
 				break;
 				
@@ -815,7 +766,7 @@ public class Tank extends Actor
 			}
 			
 			//move the other tank by the distances established
-			otherTank.move(dx, dy, this);
+			otherTank.move(dx, dy);
 		}
 	}
 	
@@ -960,19 +911,6 @@ public class Tank extends Actor
 	{
 		return 0;
 	}
-	
-	/**
-	 * Getter The maximum number of degrees by which this tank can turn each 
-	 * time the act() method is called. Used by mobile enemy tanks and the 
-	 * player tank.
-	 * @return 	The maximum turn speed of this type of tank.It returns 0 
-	 * because a default tank does not have a specific turn speed. This method 
-	 * should always be overridden.
-	 */
-    public int getMaxTurnSpeed()
-    {
-    	return 0;
-    }
 	
 	/**Deletes this tank and it's turret along with any other associated actors
 	 * from this game world.*/

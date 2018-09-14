@@ -207,9 +207,9 @@ public class TankWorld extends World
     	addObject(new WallBlock(),230,450);
     	addObject(new WallBlock(),290,450);
     	addObject(new WallBlock(),350,450);
-    	addObject(new DestroyableWallBlock(),410,450);
-    	addObject(new DestroyableWallBlock(),470,450);
-    	addObject(new DestroyableWallBlock(),530,450);
+    	//addObject(new DestroyableWallBlock(),410,450);
+    	//addObject(new DestroyableWallBlock(),470,450);
+    	//addObject(new DestroyableWallBlock(),530,450);
     	
     	//add the player tank target
     	addObject(tankTarget,200,200);
@@ -220,12 +220,12 @@ public class TankWorld extends World
         
         /*make enemy tanks, add to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemy1=new BrownTank(300,600);
+        TurquoiseTank enemy1=new TurquoiseTank(300,600);
         addObject(enemy1, 300, 600);
         
-        BrownTank enemy2=new BrownTank(400,350);
-        addObject(enemy2, 400, 350);
-        enemyTanks=2;
+      //  BrownTank enemy2=new BrownTank(400,350);
+       // addObject(enemy2, 400, 350);
+        enemyTanks=1;
     }
     
     /**
@@ -241,10 +241,10 @@ public class TankWorld extends World
     	addObject(new WallBlock(),200,410);
     	addObject(new WallBlock(),200,470);
     	
-    	addObject(new DestroyableWallBlock(),260,470);
-    	addObject(new DestroyableWallBlock(),320,470);
-    	addObject(new DestroyableWallBlock(),380,470);
-    	addObject(new DestroyableWallBlock(),440,470);
+    	//addObject(new DestroyableWallBlock(),260,470);
+    	//addObject(new DestroyableWallBlock(),320,470);
+    	//addObject(new DestroyableWallBlock(),380,470);
+    	//addObject(new DestroyableWallBlock(),440,470);
     	addObject(new WallBlock(),500,470);
     	addObject(new WallBlock(),560,470);
     	

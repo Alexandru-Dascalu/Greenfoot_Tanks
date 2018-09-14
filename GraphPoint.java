@@ -2,239 +2,128 @@ import greenfoot.*;
 import java.lang.IllegalArgumentException;
 
 /**
- * <p><b>File name: </b> GraphPoint.java
- * @version 1.0
- * @since 26.08.2018
- * <p><b>Last modification date: </b> 01.09.2018
- * @author Alexandru F. Dascalu
- * <p><b>Copyright: </b>
- * <p>No copyright.
+ * Write a description of class GraphPoint here.
  * 
- * <p><b>Purpose: </b>
- * <p> This class describes a graph node used for finding the shortest path for a
- * Greenfoot recreation of the Wii Tanks game for the Nintendo Wii. It is a node 
- * in the graph of the game world. It has 8 neighbours, corresponding coordinates
- * in the game world, and class variables that allow it to be used for Diejkstra's
- * algorithm. These nodes are not meant to be placed in the game world in points 
- * through which a tank can not pass without hitting a wall.
- * 
- * <p><b>Version History</b>
- * <p>	-1.0 - Created the class.
+ * @author (your name) 
+ * @version (a version number or a date)
  */
-
-public class GraphPoint implements Comparable<GraphPoint>
+public class GraphPoint extends Actor implements Comparable<GraphPoint>
 {
-	/**The vertical/horizontal interval or distance between the points in the 
-	 * world that these nodes represent. It's value is {@value}.*/
 	public static final int INTERVAL=30;
-	
-	/**The side of an imaginary square with it's centre in the coordinates of
-	 * this node that should not intersect a wall so that tanks will not drive
-	 * into walls.*/
 	private static final int WALL_DISTANCE=52;
 	
-	/**The x coordinate of the point in the world this node represents.*/
     private final int x;
-    
-    /**The y coordinate of the point in the world this node represents.*/
     private final int y;
 
-    /**The best previous node through each the shortest path so far to 
-     * the source point is.*/
     private GraphPoint bestPrevious;
-    
-    /**The length of the current shortest path through the best previous
-     * node to the source point.*/
-    private double tentativeDistance;
-    
-    /**The array of neighbours of this node. Each node has 8 neighbours, since 
-     * nodes in the world are placed like squares on a chess board.*/
+    private double distance;
     private GraphPoint[] neighbours;
-    
-    /**Indicates whether this node has been visited or not in the current 
-     * execution of Diejkstra's algorithm.*/
     private boolean visited;
     
     /**
-     * Makes a new graph point representing the point in the game world at 
-     * the given coordinates.
-     * @param x The x coordinate of the point this node represents.
-     * @param y The y coordinate of the point this node represents.
+     * Constructor for objects of class GraphPoint
      */
     public GraphPoint(int x, int y)
     {
-    	//initialise the x and y coordinates and the other variables.
     	this.x=x;
     	this.y=y;
+    	
+    	distance=Integer.MAX_VALUE;
     	bestPrevious=null;
     	visited=false;
     	neighbours=new GraphPoint[8];
-    	
-    	/*According to shortest path algorithm, the tentative distance of 
-    	 * nodes should be initialised as infinite. Since computers are finite,
-    	 * we set it to the largest integer value possible.*/
-    	tentativeDistance=Integer.MAX_VALUE;
     }
 
-    /**
-     * Getter for the x coordinate of the point in the game world this node 
-     * represents.
-     * @return The x coordinate of this node.
-     */
     public int getX()
     {
     	return x;
     }
     
-    /**
-     * Getter for the y coordinate of the point in the game world this node 
-     * represents.
-     * @return The y coordinate of this node.
-     */
     public int getY()
     {
     	return y;
     }
     
-    /**
-     * Getter for the tentative distance of this node.
-     * @return The tentative distance of this node.
-     */
     public double getDistance()
     {
-    	return tentativeDistance;
+    	return distance;
     }
     
-    /**
-     * Getter for the best previous node of this node.
-     * @return The best previous node of this node.
-     */
     public GraphPoint getBestPrevious()
     {
     	return bestPrevious;
     }
     
-    /**
-     * Getter for the array of neighbours of this node.
-     * @return The array of neighbours of this node.
-     */
     public GraphPoint[] getNeighbours()
     {
     	return neighbours;
     }
     
-    /**
-     * Says if this node was visited or not in the current execution of the 
-     * shortest path algorithm.
-     * @return True if this node has been visited, false if not.
-     */
     public boolean isVisited()
     {
     	return visited;
     }
     
-    /**
-     * Getter for the instance of a specific neighbour of this node. The 8 
-     * neighbours of this node are arranged like the neighbours of a square
-     * on a chess board: one in the upper left, one directly above, one in 
-     * the upper right, one to the left, one to the right, one in the lower
-     * left, one directly below, one to the lower right. This method returns
-     * a specific neighbour based on the string argument which specifies it's
-     * position relative to this node. If the string argument does not match 
-     * any of the predetermined acceptable string arguments ("upper left", 
-     * "upper", "upper right","left","right","lower left","lower","lower right"),
-     * it throws an exception.
-     * @param position The position of the neighbour relative to this node.
-     * @return The neighbour specified by the string argument.
-     * @throws IllegalArgumentException
-     */
     public GraphPoint getNeighbour(String position) throws IllegalArgumentException
     {
-    	/*Based on the value of the string argument, return the corresponding 
-    	 * neighbour reference from the array of 8 neighbours.*/
-    	switch(position)
+    	if(position.equals("upper left"))
     	{
-    		case "upper left":
-    			return neighbours[0];
-    		case "upper":
-    			return neighbours[1];
-    		case "upper right":
-    			return neighbours[2];
-    		case "left":
-    			return neighbours[3];
-    		case "right":
-    			return neighbours[4];
-    		case "lower left":
-    			return neighbours[5];
-    		case "lower":
-    			return neighbours[6];
-    		case "lower right":
-    			return neighbours[7];
-    		/*If the argument does not match any of the predetermined  acceptable
-    		 * arguments, throw an exception.*/
-    		default:
-    			throw new IllegalArgumentException("The location string argument"
-    					+ " has a value that is not one of: upper left, upper, "
-    					+ "upper right, left, right, lower left, lower or lower right.");
+    		return neighbours[0];
+    	}
+    	else if(position.equals("upper"))
+    	{
+    		return neighbours[1];
+    	}
+    	else if(position.equals("upper right"))
+    	{
+    		return neighbours[2];
+    	}
+    	else if(position.equals("left"))
+    	{
+    		return neighbours[3];
+    	}
+    	else if(position.equals("right"))
+    	{
+    		return neighbours[4];
+    	}
+    	else if(position.equals("lower left"))
+    	{
+    		return neighbours[5];
+    	}
+    	else if(position.equals("lower"))
+    	{
+    		return neighbours[6];
+    	}
+    	else if(position.equals("lower right"))
+    	{
+    		return neighbours[7];
+    	}
+    	else
+    	{
+    		throw new IllegalArgumentException("The location string argument"
+					+ " has a value that is not one of: upper left, upper, "
+					+ "upper right, left, right, lower left, lower or lower right.");
     	}
     }
     
-    /**
-     * Sets the tentative distance of this node to a new value.
-     * @param distance The new value of this node's tentative distance.
-     */
     public void setDistance(double distance)
     {
-    	tentativeDistance=distance;
+    	this.distance=distance;
     }
     
-    /**
-     * Sets the boolean value that indicates whether this node has been visited
-     * or not in the current execution of the shortest path algorithm.
-     * @param visited True if this node has been visited, false if not
-     */
     public void setVisited(boolean visited)
     {
     	this.visited=visited;
     }
     
-    /**
-     * Sets the reference of the best previous neighbour of this node to a new value.
-     * @param bestPrevious The new best previous neighbour of this node.
-     */
     public void setBestPrevious(GraphPoint bestPrevious)
     {
     	this.bestPrevious=bestPrevious;
     }
     
-    /**
-     * Setter for the instance of a specific neighbour of this node. The 8 
-     * neighbours of this node are arranged like the neighbours of a square
-     * on a chess board: one in the upper left, one directly above, one in 
-     * the upper right, one to the left, one to the right, one in the lower
-     * left, one directly below, one to the lower right. This method sets
-     * a specific neighbour reference to a new value based on the string 
-     * argument which specifies it's position relative to this node. If the 
-     * string argument does not match any of the predetermined acceptable 
-     * string arguments ("upper left", "upper", "upper right","left","right",
-     * "lower left","lower","lower right"), it throws an exception.
-     * @param neighbour The new neighbour of this node.
-     * @param location The location of this new neighbour relative to this node.
-     * @throws IllegalArgumentException
-     */
     public void addNeighbour(GraphPoint neighbour, String location) 
     		throws IllegalArgumentException
     {
-    	/*Based on the value of the string argument, set the corresponding 
-    	 * neighbour reference from the array of 8 neighbours to the new value.
-    	 * Since neighbourhood is a two way relation, we need to ensure the new
-    	 * neighbour has this node in it's correct place in it's array of neighbours.
-    	 * Therefore, for each case we check if the neighbour parameter is not null 
-    	 * (to avoid an exception) and if the new neighbour does not have this this 
-    	 * node in it's correct place in the neighbours array (to avoid an infinite
-    	 * recursion where the addNeighbour methods of the 2 nodes call each other
-    	 * infinitely). If it passes the check, we set this node to the appropiate 
-    	 * place in the neighbouring node's array.*/
     	switch(location)
     	{
     		case "upper left":
@@ -301,8 +190,6 @@ public class GraphPoint implements Comparable<GraphPoint>
     				neighbour.addNeighbour(this, "upper left");
     			}
     			break;
-    		/*If the argument does not match any of the predetermined  acceptable
-        	 * arguments, throw an exception.*/
     		default:
     			throw new IllegalArgumentException("The location string argument"
     					+ " has a value that is not one of: upper left, upper, "
@@ -310,119 +197,72 @@ public class GraphPoint implements Comparable<GraphPoint>
     	}
     }
     
-    /**Resets this graph point to prepare it to be used for another execution 
-     * of the shortest path algorithm.*/
     public void reset()
     {
-    	/*At the beginning of the shortest path algorithm, nodes have no best 
-    	 * previous neighbour, their tentative distance is infinite and they 
-    	 * are not visited.*/
     	bestPrevious=null;
-    	tentativeDistance=Integer.MAX_VALUE;
+    	distance=Integer.MAX_VALUE;
     	visited=false;
     }
     
-    /**
-     * Compares this node with other nodes in the graph. This method implements
-     * the method in the Comparable interface to be used in the shortest path 
-     * algorithm in a priority queue. A node is considered to be greater than 
-     * another node if it's tentative distance is smaller than the other's. As
-     * a result, nodes will be ordered in a priority queue so that at the head
-     * of the queue is the node with the smallest tentative distance.
-     * @param otherPoint Another node that this node is compared against.
-     */
     @Override
     public int compareTo(GraphPoint otherPoint)
     {
-    	//calculate the difference between the tentative distances of the 2 nodes
     	double difference=this.getDistance()-otherPoint.getDistance();
     	
-    	/*Check if the difference is positive, negative, or 0, to see if this
-    	 * node's distance is greater, lesser or equal.*/
     	if(difference>0)
     	{
-    		/*if the difference is positive, then this node is considered lesser
-    		 * than the other*/
     		return 1;
     	}
     	else if(difference<0)
     	{
-    		/*if the difference is negative, then this node is considered 
-    		 * lesser than the other*/
     		return -1;
     	}
     	else
-    		/*if the difference is 0, the nodes are considered equal*/
     	{
     		return 0;
     	}
     }
     
-    /**
-     * Determines whether a node could not be safely placed at a certain position 
-     * in the given game world so that a tank can drive through it .
-     * @param x The x coordinate of that position in the game world.
-     * @param y The y coordinate of that position in the game world.
-     * @param world A reference to the game world where a node is meant to be 
-     * placed.
-     * @return True if the position in the game world could not be passed through
-     * by a tank without it hitting a wall, false if it could.
-     */
     public static boolean isIntersectingWall(int x, int y, World world)
     {
-    	/*Since a tank is 51 by 49 pixels big, a tank can drive through a point
-    	 * if a square with a side of 52 (slightly larger than the length of 
-    	 * the tank) with the centre in the given position does not intersect 
-    	 * with a wall. The offsets are the horizontal and vertical distances
-    	 * between the centre of the square and one of it's corners.*/
     	int xOffset=(int) Math.ceil(WALL_DISTANCE/2.0);
     	int yOffset=(int) Math.ceil(WALL_DISTANCE/2.0);
     	
-    	/*Check if the bottom right corner of the square intersects a wall.*/
     	if(!world.getObjectsAt(x+xOffset, y+yOffset, WallBlock.class).isEmpty())
     	{
-    		//if so, this node would intersect a wall
     		return true;
     	}
-    	/*Check if the top right corner of the square intersects a wall.*/
     	else if(!world.getObjectsAt(x+xOffset, y-yOffset, WallBlock.class).isEmpty())
     	{
-    		//if so, this node would intersect a wall
     		return true;
     	}
-    	/*Check if the top left corner of the square intersects a wall.*/
     	else if(!world.getObjectsAt(x-xOffset, y-yOffset, WallBlock.class).isEmpty())
     	{
-    		//if so, this node would intersect a wall
     		return true;
     	}
-    	/*Check if the bottom left corner of the square intersects a wall.*/
     	else if(!world.getObjectsAt(x-xOffset, y+yOffset, WallBlock.class).isEmpty())
     	{
-    		//if so, this node would intersect a wall
     		return true;
     	}
-    	/*If all 4 corners do not intersect a wall, then this square also does 
-    	 * not, so this node will not be too close to a wall for a tank to 
-    	 * pass through.*/
     	else
     	{
     		return false;
     	}
     }
     
-    /**
-     * Calculates the distance between 2 nodes.
-     * @param a A GraphPoint object.
-     * @param b Another GraphPoint
-     * @return The distance between the 2 nodes.
-     */
     public static double getDistance(GraphPoint a, GraphPoint b)
     {
-    	//get the horizontal and vertical distances based on the coordinates 
-    	//of each node.
     	int xDistance=a.getX()-b.getX();
     	int yDistance=a.getY()-b.getY();
+    	
+    	double distance=Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
+    	return distance;
+    }
+	
+	 public double getDistanceFrom(LandMine mine)
+    {
+    	int xDistance=mine.getX()-x;
+    	int yDistance=mine.getY()-y;
     	
     	/*Calculate the distance using Pythagora's theorem.*/
     	double distance=Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));

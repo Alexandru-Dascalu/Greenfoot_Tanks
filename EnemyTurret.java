@@ -1,8 +1,8 @@
 /**
  * <p><b>File name: </b> EnemyTurret.java
- * @version 1.1
+ * @version 1.0
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 07.09.2018
+ * <p><b>Last modification date: </b> 15.08.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -19,8 +19,6 @@
  * 
  * <p><b>Version History</b>
  * <p>	-1.0 - Created the class.
- * <p>	-1.1 - Changed the code to allow enemy turrets to fire normal shells or 
- * rocket shells also.
  */
 
 public class EnemyTurret extends Turret
@@ -85,7 +83,7 @@ public class EnemyTurret extends Turret
 			{
 				/*We fire the shell, update lastFiring and increment the counter
 				 * of live shells in the world fired by this turret.*/
-				super.fire();
+				//super.fire();
 				lastFiring=System.currentTimeMillis();
 			}
 		}
@@ -172,7 +170,7 @@ public class EnemyTurret extends Turret
 			if(wall!=null)
 			{
 				/*Check if the line of sight can bounce again.*/
-				if(bounces<getShellBounceLimit())
+				if(bounces<Shell.TIMES_ALLOWED_TO_BOUNCE)
 				{
 					/*If it can, we need to find out the exact point where the
 					 * wall starts, since the last point we checked for a wall 
@@ -276,15 +274,5 @@ public class EnemyTurret extends Turret
 	public int getLiveShellLimit()
 	{
 		return 0;
-	}
-	
-	/**
-	 * Gets the maximum number of times a shell fired by this turret can bounce.
-	 * Returns the bounce limit of normal shells unless overriden.
-	 * @return The bounce limit of normal shells.
-	 */
-	public int getShellBounceLimit()
-	{
-		return Shell.TIMES_ALLOWED_TO_BOUNCE;
 	}
 }
