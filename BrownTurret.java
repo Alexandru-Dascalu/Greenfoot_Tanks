@@ -62,9 +62,9 @@ public class BrownTurret extends Turret
 	 * Makes a new Brown Turret on the Brown Tank given as an argument.
 	 * @param brownTank The Brown Tank on which this Turret will pe placed.
 	 */
-	public BrownTurret(BrownTank brownTank)
+	public BrownTurret(Tank tank)
 	{
-		super(brownTank);
+		super(tank);
 		
 		/*No new rotation position has been generated so we need to generate a
 		 * new one, which is why this is initialised as true.*/
