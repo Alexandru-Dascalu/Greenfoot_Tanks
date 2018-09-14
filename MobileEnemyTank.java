@@ -53,7 +53,7 @@ public class MobileEnemyTank extends Tank
 			avoidLandMine(mine);
 		}
 		
-    	//Check if there  is a path to follow.
+    		//Check if there  is a path to follow.
 		if(regularPath!=null)
 		{
 			if(avoidancePath!=null)
@@ -161,41 +161,40 @@ public class MobileEnemyTank extends Tank
     	{
     		if(mineAvoidance)
     		{
-            	if(j<path.size())
-        	   	{
+            		if(j<path.size()
+			{
         	   		nextPoint=path.get(j);
-        	    	j++;
-        	    }
-        	    else
-        	    {
-        	    	for(GraphPoint gp: path)
+        	    		j++;
+			}
+        	    	else
         	    	{
-        	    		gp.getImage().clear();
-        	    	}
+        	    		for(GraphPoint gp: path)
+        	    		{
+        	    			gp.getImage().clear();
+        	    		}
         	    	
-        	    	avoidancePath=null;
-        	    	return;
-        	    }
+        	    		avoidancePath=null;
+        	    		return;
+        	    	}
     		}
     		else
     		{
     			if(i<path.size())
-    	    	{
-    	    		nextPoint=path.get(i);
-    	    		i++;
-    	    	}
-    	    	else
-    	    	{
-    	    		for(GraphPoint gp: path)
     	    		{
-    	    			gp.getImage().clear();
+    	    			nextPoint=path.get(i);
+    	    			i++;
     	    		}
+    	    		else
+    	    		{
+    	    			for(GraphPoint gp: path)
+    	    			{
+    	    				gp.getImage().clear();
+    	    			}
     	    		
-    	    		regularPath=null;
-    	    		return;
-    	    	}
+    	    			regularPath=null;
+    	    			return;
+    	    		}
     		}
-    		
     	}
     	
 	    if(reachedPoint(nextPoint))
