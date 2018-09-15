@@ -3,7 +3,7 @@ import greenfoot.*;
  * <p><b>File name: </b> TurquoiseTurret.java
  * @version 1.0
  * @since 14.08.2018
- * <p><b>Last modification date: </b> 03.09.2018
+ * <p><b>Last modification date: </b> 14.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.

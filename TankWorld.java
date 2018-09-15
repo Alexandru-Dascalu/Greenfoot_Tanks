@@ -220,12 +220,12 @@ public class TankWorld extends World
         
         /*make enemy tanks, add to the world and set number of enemy tanks 
          * accordingly.*/
-        TurquoiseTank enemy1=new TurquoiseTank(300,600);
+        BrownTank enemy1=new BrownTank(300,600);
         addObject(enemy1, 300, 600);
         
-      //  BrownTank enemy2=new BrownTank(400,350);
-       // addObject(enemy2, 400, 350);
-        enemyTanks=1;
+        BrownTank enemy2=new BrownTank(400,350);
+        addObject(enemy2, 400, 350);
+        enemyTanks=2;
     }
     
     /**

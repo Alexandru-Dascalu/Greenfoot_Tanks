@@ -322,9 +322,15 @@ public class Graph
     			 * neighbour is not visited.*/
     			if(neighbour!=null && !neighbour.isVisited())
     			{
-    				//System.out.println(tank.getMineAvoidanceDistance());
+    				/*In order to avoid the mine, we make sure we only consider 
+    				 * nodes that are far enough from the mine. So we make sure 
+    				 * the distance between the selected node and the mine is 
+    				 * greater than the distance by which this tank avoids mines.*/
     				if(neighbour.getDistanceFrom(mine)>tank.getMineAvoidanceDistance())
     				{
+    					/*If it is, this node is safe to pass through so we go 
+    					 * on as normal.*/
+    					
     					/*calculate the length of the path through this neighbour
         				 * between this node and the source point.*/
         				double tentativeDistance = current.getDistance()+
@@ -345,9 +351,13 @@ public class Graph
         					unvisitedNodes.add(neighbour);
         				}
     				}
+    				/*If it is not, we mark it as visited so it's distance will
+    				 * not be changed when a neighbour of neighbour is visited,
+    				 * and remove it from the queue.*/
     				else
     				{
     					neighbour.setVisited(true);
+    					unvisitedNodes.remove(neighbour);
     				}
     			}
     		}

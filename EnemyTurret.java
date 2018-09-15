@@ -2,7 +2,7 @@
  * <p><b>File name: </b> EnemyTurret.java
  * @version 1.1
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 07.09.2018
+ * <p><b>Last modification date: </b> 14.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -85,7 +85,7 @@ public class EnemyTurret extends Turret
 			{
 				/*We fire the shell, update lastFiring and increment the counter
 				 * of live shells in the world fired by this turret.*/
-				//super.fire();
+				super.fire();
 				lastFiring=System.currentTimeMillis();
 			}
 		}
@@ -277,17 +277,22 @@ public class EnemyTurret extends Turret
 		/*Check if this turret is firing normal shells.*/
     	if(getShellType()==Shell.class)
     	{
+    		//if so, return the amount of times normal shells can bounce
     		return Shell.TIMES_ALLOWED_TO_BOUNCE;
     	}
     	/*Else, check if this turret is firing rocket shells.*/
     	else if(getShellType()==RocketShell.class)
     	{
+    		//if so, return the amount of times rocket shells can bounce
     		return RocketShell.TIMES_ALLOWED_TO_BOUNCE;
     	}
     	else
     	{
+    		/*If the shell type is something different, returning it's type
+    		 * bounce limit must be hardcoded. So if it is not, an exception
+    		 * is thrown.*/
     		throw new IllegalStateException("The type of shell fired by this "
-    				+ "turred is not recognized by this method");
+    				+ "turred is not recognized by this method.");
     	}
 	}
 }

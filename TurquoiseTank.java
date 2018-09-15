@@ -4,7 +4,7 @@ import greenfoot.*;
  * <p><b>File name: </b> TurquoiseTank.java
  * @version 1.1
  * @since 01.08.2018
- * <p><b>Last modification date: </b> 03.09.2018
+ * <p><b>Last modification date: </b> 14.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -32,7 +32,9 @@ public class TurquoiseTank extends MobileEnemyTank
      * act() method is called. It's value is {@value}.*/
     private static final int MAX_TURN_SPEED=2;
     
-    private static final int MINE_AVOIDANCE_DISTANCE=(int)(1.5*LENGTH);
+    /**The safe distance the tank will keep from a mine when it is avoiding
+     * a mine.*/
+    private static final int MINE_AVOIDANCE_DISTANCE=(int)(1.6*LENGTH);
     
     /**
      * Make a new TurquoiseTank whose starting position will be at the given
@@ -81,6 +83,13 @@ public class TurquoiseTank extends MobileEnemyTank
     	return MAX_TURN_SPEED;
     }
     
+    /**
+     * Indicates the safe distance this type of tank will keep from a mine when
+     * it is avoiding a mine.
+     * @return the safe distance this type of tank will keep from a mine when
+     * it is avoiding a mine.
+     */
+    @Override
     public int getMineAvoidanceDistance()
     {
     	return MINE_AVOIDANCE_DISTANCE;

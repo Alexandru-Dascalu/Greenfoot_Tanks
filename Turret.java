@@ -4,7 +4,7 @@ import greenfoot.*;
  * <p><b>File name: </b> Turret.java
  * @version 1.3
  * @since 03.05.2018
- * <p><p><b>Last modification date: </b> 11.07.2018
+ * <p><p><b>Last modification date: </b> 14.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
