@@ -34,11 +34,15 @@ public class PlayerTank extends Tank
 	
 	/**The distance measured in cell-size units by which this tank moves each 
 	 * time it acts. It's value is {@value}.*/
-	private static final int SPEED=2;
+	private static final int SPEED=3;
 	
 	/**The maximum number of degrees by which this tank can turn each time the
      * act() method is called. It's value is {@value}.*/
-    private static final int MAX_TURN_SPEED=2;
+    private static final int MAX_TURN_SPEED=3;
+    
+    /**The maximum number of mines this type of tank can lay in one level. It's
+     * value is {@value}.*/
+    private static final int NR_OF_MINES=100;
 	
 	/**The last information about the state of the mouse we have.*/
     private MouseInfo lastMouseInfo;
@@ -98,9 +102,10 @@ public class PlayerTank extends Tank
 		
 		/*Check if the player has clicked the middle mouse button in order to 
 		 * lay a mine.*/
-		if(middleMBClicked())
+		if(middleMBClicked() && minesLaid<getNumberOfMines())
 		{
 			layMine();
+			minesLaid++;
 		}
 	}
 	
@@ -158,16 +163,6 @@ public class PlayerTank extends Tank
 		{
 			lastMouseInfo=mouse;
 		} 
-	}
-	
-	/**Makes the tank lay down a land mine.*/
-	private void layMine()
-	{
-		World world= getWorld();
-		
-		//make a new land mine and put it in the game world
-		LandMine mine=new LandMine(this);
-		world.addObject(mine, getX(), getY());
 	}
 	
 	/**Detects whether the middle mouse button has been clicked.*/
@@ -304,6 +299,16 @@ public class PlayerTank extends Tank
     {
     	return MAX_TURN_SPEED;
     }
+    
+    /**
+	 * The number of mines this tank can lay in one level.
+	 * @return 0, unless overridden, since a default tank does not lay any mines.
+	 * This method should always be overridden.
+	 */
+	public int getNumberOfMines()
+	{
+		return NR_OF_MINES;
+	}
 	
 	/**Method reloads this tank into the game world to prepare it for another start
 	 * of the current level. Overloaded the method from the Tank class because
@@ -316,9 +321,11 @@ public class PlayerTank extends Tank
 		/*Check if the tank is in a game world to avoid exceptions.*/
 		if(world!=null)
 		{
-			/*Reset the real number values of the tank's position.*/
+			/*Reset the real number values of the tank's position and the counter
+			 * of mines laid by this tank.*/
 			realX=startX;
 			realY=startY;
+			minesLaid=0;
 			
 			/*Place the tank and it's turret at it's original position and reset
 			 * their orientation.*/

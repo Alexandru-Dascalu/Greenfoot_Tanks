@@ -32,6 +32,8 @@ public class TurquoiseTank extends MobileEnemyTank
      * act() method is called. It's value is {@value}.*/
     private static final int MAX_TURN_SPEED=2;
     
+    private static final int MINE_AVOIDANCE_DISTANCE=(int)(1.5*LENGTH);
+    
     /**
      * Make a new TurquoiseTank whose starting position will be at the given
      * coordinates.
@@ -79,20 +81,8 @@ public class TurquoiseTank extends MobileEnemyTank
     	return MAX_TURN_SPEED;
     }
     
-    /**Method reloads this tank into the game world to prepare it for another start
-	 * of the current level, meaning it resets the position and orientation of this
-	 * tank and it's turret. */
-    @Override
-    public void reloadTank()
+    public int getMineAvoidanceDistance()
     {
-    	/*We need to set the to null, since if the player lost and level was
-    	 * reloaded, this tank would still try to follow the path it had before
-    	 * the reload. This lead to the tank sometimes just driving thorough 
-    	 * walls.*/
-    	path=null;
-    	nextPoint=null;
-    	
-    	//call superclass method to reload the tank
-    	super.reloadTank();
+    	return MINE_AVOIDANCE_DISTANCE;
     }
 }

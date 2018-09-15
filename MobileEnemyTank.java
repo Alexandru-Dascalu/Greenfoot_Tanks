@@ -1,6 +1,9 @@
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
+
+import greenfoot.Greenfoot;
 
 /**
  * <p><b>File name: </b> MobileEnemyTank.java
@@ -59,6 +62,8 @@ public class MobileEnemyTank extends Tank
 	 * to it's chosen destination point.*/
 	protected LinkedList<GraphPoint> path;
 	
+	protected boolean avoidingMine;
+	
 	/**The GraphPoint object that is the next point in the game world this tank
 	 * needs to reach in it's path.*/
 	protected GraphPoint nextPoint;
@@ -79,6 +84,7 @@ public class MobileEnemyTank extends Tank
         //initialise all instance variables of this subclass
         numberGenerator=new Random();
         path=null;
+        avoidingMine=false;
         
         //tank does not move initially
         isMoving=false;
@@ -97,10 +103,19 @@ public class MobileEnemyTank extends Tank
     @Override
 	public void act()
 	{
+    	LandMine mine=detectLandMines();
+		if(!avoidingMine && mine!=null)
+		{
+			avoidLandMine(mine);
+		}
+		else if(mine==null)
+		{
+			avoidingMine=false;
+		}
+		
     	//Check if there  is a path to follow.
 		if(path!=null)
 		{
-			//if so, follow that path
 			followPath();
 		}
 		//Else, the tank has no path to follow
@@ -200,7 +215,8 @@ public class MobileEnemyTank extends Tank
     		 * this method.*/
         	catch(NoSuchElementException | NullPointerException e)
         	{
-        		path=null;
+        		
+            	path=null;
         		return;
         	}
     	}
@@ -245,12 +261,30 @@ public class MobileEnemyTank extends Tank
 	    		
 	    		//if the tank is turning, it is considered to be moving
 	    		isMoving=true;
-	    			
+	    		
+	    		boolean turnIfCloseToMine;
+	    		if(avoidingMine)
+	    		{
+	    			if(normalizeAngle(getRotation()-targetRotation)<25)
+	    			{
+	    				turnIfCloseToMine=true;
+	    			}
+	    			else
+	    			{
+	    				turnIfCloseToMine=false;
+	    			}
+	    		}
+	    		else
+	    		{
+	    			turnIfCloseToMine=true;
+	    		}
+	    		
 	    		/*For the tank's movements to be more natural, the tank should
 	    		 * move while turning. Sometimes if the tank does that it 
 	    		 * cannot reached the rotation towards the next point or it runs 
 	    		 * into a wall. So we check if this tank can move while turning.*/
-	    		if(canMoveWhileTurning(targetRotation, nextPoint))
+	    		if(turnIfCloseToMine && canMoveWhileTurning(targetRotation, 
+	    				nextPoint))
 	    		{
 	    			//If so, move the tank forward
 	    			move(this.getSpeed());
@@ -435,6 +469,49 @@ public class MobileEnemyTank extends Tank
 		}
     }
     
+    private LandMine detectLandMines()
+    {
+    	List<LandMine> mines=getObjectsInRange(getMineAvoidanceDistance(), 
+    			LandMine.class);
+    	
+    	if(mines.isEmpty())
+    	{
+    		return null;
+    	}
+    	else
+    	{
+    		return mines.get(0);
+    	}
+    }
+    
+    private void avoidLandMine(LandMine mine)
+    {
+    	try
+		{
+			while(path.getFirst().getDistanceFrom(mine)<getMineAvoidanceDistance())
+	    	{
+	    		path.removeFirst();
+	    	}
+		}
+    	catch(NoSuchElementException e)
+		{
+    		path=null;
+    		return;
+		}
+    	
+    	
+    	//Get a reference to the world this tank is in
+    	TankWorld world=(TankWorld)getWorldOfType(TankWorld.class);
+    	Graph worldGraph=world.getWorldGraph();
+    	GraphPoint target=path.getFirst();
+    	
+    	LinkedList<GraphPoint> avoidancePath=worldGraph. getPathAvoidingMine
+    			(this, mine, getX(), getY(), target);
+    	path.addAll(0, avoidancePath);
+    	
+    	avoidingMine=true;
+    }
+    
     /***
 	 * Checks if the tank is moving.
 	 * @return True if the tank is moving, false if not. Returns a boolean set 
@@ -469,5 +546,33 @@ public class MobileEnemyTank extends Tank
     protected boolean isMovingBackward()
     {
     	return isMovingBackward;
+    }
+    
+    /**Method reloads this tank into the game world to prepare it for another start
+	 * of the current level, meaning it resets the position and orientation of this
+	 * tank and it's turret. */
+    @Override
+    public void reloadTank()
+    {
+    	/*We need to set the to null, since if the player lost and level was
+    	 * reloaded, this tank would still try to follow the path it had before
+    	 * the reload. This lead to the tank sometimes just driving thorough 
+    	 * walls.*/
+    	path=null;
+    	nextPoint=null;
+    	avoidingMine=false;
+    	
+    	//tank does not move initially
+        isMoving=false;
+        isMovingForward=false;
+        isMovingBackward=false;
+        
+    	//call superclass method to reload the tank
+    	super.reloadTank();
+    }
+    
+    public int getMineAvoidanceDistance()
+    {
+    	return 0;
     }
 }

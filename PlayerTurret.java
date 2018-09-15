@@ -35,7 +35,7 @@ public class PlayerTurret extends Turret
 	/**The maximum amount of shells this turret has fired that can be in the game
 	 * world at the same time. If the limit is reached, the turret will not fire
 	 * even if it is told to.*/
-    private static final int SHELLS_ALLOWED = 5;
+    private static final int LIVE_SHELLS_ALLOWED = 5;
     
     /**The array of target line actors that will form a line between the turret
      * and the player tank target.*/
@@ -124,13 +124,24 @@ public class PlayerTurret extends Turret
 	{
 		/*Check if the limit of live shells currently in the game world has 
 		 * not been reached.*/
-		if (liveShells < SHELLS_ALLOWED)
+		if (liveShells < getLiveShellLimit())
 		{
 			//If it has not, fire a shell.
 			super.fire();
 		} 
 	}
-  
+	
+	/**Gets the limit of how many shells fired by this turret can be in the world
+	 * at the same time. This number is a static variable and is the same for
+	 * all objects of this class.It returns 0 because this method is meant to 
+	 * be always overriden.
+	 * @return the limit of how many shells fired by this turret can be in the world
+	 * at the same time, which is 0, unless overriden.*/
+	public int getLiveShellLimit()
+	{
+		return LIVE_SHELLS_ALLOWED;
+	}
+	
 	/**
 	 * Removes the turret and the target line actors from it's game world.
 	 */

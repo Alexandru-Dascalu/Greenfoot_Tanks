@@ -85,7 +85,7 @@ public class EnemyTurret extends Turret
 			{
 				/*We fire the shell, update lastFiring and increment the counter
 				 * of live shells in the world fired by this turret.*/
-				super.fire();
+				//super.fire();
 				lastFiring=System.currentTimeMillis();
 			}
 		}
@@ -267,24 +267,27 @@ public class EnemyTurret extends Turret
 		return 0;
 	}
 	
-	/**Gets the limit of how many shells fired by this turret can be in the world
-	 * at the same time. This number is a static variable and is the same for
-	 * all objects of this class.It returns 0 because this method is meant to 
-	 * be always overriden.
-	 * @return the limit of how many shells fired by this turret can be in the world
-	 * at the same time, which is 0, unless overriden.*/
-	public int getLiveShellLimit()
-	{
-		return 0;
-	}
-	
 	/**
 	 * Gets the maximum number of times a shell fired by this turret can bounce.
-	 * Returns the bounce limit of normal shells unless overriden.
-	 * @return The bounce limit of normal shells.
+	 * Returns the bounce limit of the type of shells fired by this turret.
+	 * @return The bounce limit of the type of shells fired by this turret.
 	 */
 	public int getShellBounceLimit()
 	{
-		return Shell.TIMES_ALLOWED_TO_BOUNCE;
+		/*Check if this turret is firing normal shells.*/
+    	if(getShellType()==Shell.class)
+    	{
+    		return Shell.TIMES_ALLOWED_TO_BOUNCE;
+    	}
+    	/*Else, check if this turret is firing rocket shells.*/
+    	else if(getShellType()==RocketShell.class)
+    	{
+    		return RocketShell.TIMES_ALLOWED_TO_BOUNCE;
+    	}
+    	else
+    	{
+    		throw new IllegalStateException("The type of shell fired by this "
+    				+ "turred is not recognized by this method");
+    	}
 	}
 }

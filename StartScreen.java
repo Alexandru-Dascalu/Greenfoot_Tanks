@@ -46,4 +46,3 @@ public class StartScreen extends Actor
     	setImage(newImage);
 	}
 }
-

@@ -3,9 +3,9 @@ import java.util.PriorityQueue;
 
 /**
  * <p><b>File name: </b> Graph.java
- * @version 1.0
+ * @version 1.1
  * @since 27.07.2018
- * <p><b>Last modification date: </b> 01.09.2018
+ * <p><b>Last modification date: </b> 14.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -18,6 +18,7 @@ import java.util.PriorityQueue;
  * 
  * <p><b>Version History</b>
  * <p>	-1.0 - Created the class.
+ * <p>	-1.1 - Added code to generate paths that avoid land mines.
  */
 public class Graph  
 {
@@ -233,6 +234,120 @@ public class Graph
     					neighbour.setBestPrevious(current);
     					
     					unvisitedNodes.add(neighbour);
+    				}
+    			}
+    		}
+    	}
+    	
+    	//construct the linked list of nodes that is the path
+    	LinkedList<GraphPoint> path=getPath(target);
+    	
+    	/*since the computation is done, reset the tentative distance and 
+    	bestPrevious instance to be used for the next call of this method.*/
+    	resetGraph();
+    	return path;
+    }
+    
+    /**
+     * Computes the shortest path between the given coordinates in the game 
+     * world and the target node in this graph using Diejkstr'a algorithm, 
+     * while keeping a safe distance from the given land mine.
+     * @param startX The starting x coordinate.
+     * @param startY The starting y coordinate.
+     * @param target The node in the graph that is the destination.
+     * @param tank The tank for which this path is computed.
+     * @param mine The mine that will be avoided by the returned path.
+     * @return A LinkedList of graph nodes (GraphPoint objects) that is the 
+     * shortest path to the target node.
+     */
+    public LinkedList<GraphPoint> getPathAvoidingMine(MobileEnemyTank tank, 
+    		LandMine mine, int startX, int startY, GraphPoint target)
+    {
+    	/*Find out the node in the graph closest to the starting coordinates, 
+    	 * which will be our source node and initialise it's tentative distance.*/
+    	initializeSourcePoint(startX, startY);
+    	
+    	/*make a new priority queue, which will be used to get the node with 
+    	 *the shortest tentative distance*/
+    	PriorityQueue<GraphPoint> unvisitedNodes=new PriorityQueue<>();
+    	
+    	//add all nodes in the graph matrix to the priority queue
+    	for(GraphPoint[] pointRow: pointMatrix)
+    	{
+    		for(GraphPoint point: pointRow)
+    		{
+    			//Check if that place in the matrix is populated by a node.
+    			if(point!=null)
+    			{
+    				//if it is, add the node to the priority queue
+    				unvisitedNodes.add(point);
+    			}
+    		}
+    	}
+    	
+    	//the current node we are visiting
+    	GraphPoint current;
+    	
+    	//Visit all nodes and stop when the priority queue is empty.
+    	while(!unvisitedNodes.isEmpty())
+    	{
+    		//get the unvisited node with the smallest tentative distance
+    		current=unvisitedNodes.poll();
+    		
+    		//mark it as visited
+    		current.setVisited(true);
+    		
+    		/*Check if the node we are visiting is the destination node.*/
+    		if(current.equals(target))
+    		{
+    			/*If it is, then we have a shortest path to it so the search is 
+    			 * finished and the loop is terminated.*/
+    			break;
+    		}
+    		
+    		/*Check if the unvisited node with smallest tentative distance is 
+    		 * still the maximum value set initially. */
+    		if(current.getDistance()==Integer.MAX_VALUE)
+    		{
+    			/*If it is,then this node and all other unvisited nodes is separated
+    			 * by a wall from the source point and no path to the destination exists.*/
+    			return null;
+    		}
+    		
+    		/*Go through each neighbour of the current node and update the 
+    		 * tentative distances of the unvisited ones.*/
+    		for(GraphPoint neighbour: current.getNeighbours())
+    		{
+    			/*Check if there is a neighbour at the current index and if that
+    			 * neighbour is not visited.*/
+    			if(neighbour!=null && !neighbour.isVisited())
+    			{
+    				//System.out.println(tank.getMineAvoidanceDistance());
+    				if(neighbour.getDistanceFrom(mine)>tank.getMineAvoidanceDistance())
+    				{
+    					/*calculate the length of the path through this neighbour
+        				 * between this node and the source point.*/
+        				double tentativeDistance = current.getDistance()+
+        						GraphPoint.getDistance(current, neighbour);
+        				
+        				/*Check if the calculated value if smaller than the current 
+        				 * tentative value of the selected neighbour,*/
+        				if(tentativeDistance<neighbour.getDistance())
+        				{
+        					/*If it is, update the value, set the best previous node
+        					 * to the current node remove and re-add the neighbour
+        					 * to the priority queue so that it's place corresponds
+        					 * with the new value.*/
+        					unvisitedNodes.remove(neighbour);
+        					neighbour.setDistance(tentativeDistance);
+        					neighbour.setBestPrevious(current);
+        					
+        					unvisitedNodes.add(neighbour);
+        				}
+    				}
+    				else
+    				{
+    					neighbour.setVisited(true);
     				}
     			}
     		}

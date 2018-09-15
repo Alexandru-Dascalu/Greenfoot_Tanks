@@ -12,7 +12,7 @@ import greenfoot.*;
  * <p><b>Purpose: </b>
  * <p> This class models a wall block for a Greenfoot recreation of the Wii Tanks 
  * game for the Nintendo Wii. It forms part of a wall that obstructs the path of
- * tanks and shell. They can also be destroyed by land mines.
+ * tanks and shell.
  * 
  * <p><b>Version History</b>
  * <p>	-1.0 - Created the class.
@@ -22,8 +22,8 @@ import greenfoot.*;
  */
 public class WallBlock extends Actor
 {
-    /**The length of the side of the square wall block. It's value is {@value}.*/
-    public static final int SIDE=60;
+	/**The length of the side of the square wall block. It's value is {@value}.*/
+	public static final int SIDE=60;
 	
     /**
      * Act - do whatever the Wall wants to do. This method is called whenever
@@ -37,16 +37,16 @@ public class WallBlock extends Actor
        
     }
     
-    /**
-    * Calculates what diagonal quadrant of this wall block a point with the
-    * given coordinates is in. It also applies to points outside the block
-    * (the quadrants start from the centre of this wall block and their 
-    * imaginary edges extend up to the world's boundary.)
-    * @param x The x coordinate of the point.
-    * @param y The y coordinate of the point.
-    * @return A string representing the diagonal quadrant the point is in :
-    * "top", "bottom", "left or"right".
-    */
+	/**
+	 * Calculates what diagonal quadrant of this wall block a point with the
+	 * given coordinates is in. It also applies to points outside the block
+	 * (the quadrants start from the centre of this wall block and their 
+	 * imaginary edges extend up to the world's boundary.)
+	 * @param x The x coordinate of the point.
+	 * @param y The y coordinate of the point.
+	 * @return A string representing the diagonal quadrant the point is in :
+	 * "top", "bottom", "left or"right".
+	 */
     public String getQuadrant(int x, int y)
     {
     	/*The wall block is a square, so the geometric slope of it's diagonals
