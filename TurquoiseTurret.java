@@ -1,10 +1,9 @@
 import greenfoot.*;
-
 /**
  * <p><b>File name: </b> TurquoiseTurret.java
  * @version 1.0
  * @since 14.08.2018
- * <p><b>Last modification date: </b> 03.09.2018
+ * <p><b>Last modification date: </b> 14.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -147,23 +146,13 @@ public class TurquoiseTurret extends EnemyTurret
 	}
 	
 	/**
-	 * Gets the maximum number of times a shell fired by this turret can bounce.
-	 * Returns the bounce limit of rocket shells.
-	 * @return The bounce limit of rocket shells.
+	 * Indicates the type of shell fired by this turret.
+	 * @return The type of shell fired by this turret, indicated by a Class 
+	 * object.
 	 */
 	@Override
-	public int getShellBounceLimit()
-	{
-		return RocketShell.TIMES_ALLOWED_TO_BOUNCE;
-	}
-	
-	/**
-     * Indicates if this turret fires normal shells.
-     * @return False, because this type of turret fires rocket shells.
-     */
-	@Override
-	public boolean firesNormalShells()
-	{
-		return false;
-	}
+	public Class<?> getShellType()
+    {
+    	return RocketShell.class;
+    }
 }

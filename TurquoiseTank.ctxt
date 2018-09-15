@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=TurquoiseTank
-comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ TurquoiseTank.java\r\n\ @version\ 1.1\r\n\ @since\ 01.08.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 03.09.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ turquoise\ enemy\ tank\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ the\ most\ basic\ mobile\ enemy\ \r\n\ tank,\ and\ is\ a\ subclass\ of\ the\ MobileEnemyTank\ class.\ It\ moves\ randomly,\r\n\ avoids\ walls,\ and\ has\ a\ TurquoiseTurret\ which\ fires\ shells\ at\ the\ player\r\n\ tank\ when\ it\ can\ hit\ it.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n\ <p>\t-1.1\ -\ Moved\ of\ the\ code\ to\ a\ new\ superclass\ called\ MobileEnemyTank,\r\n\ which\ handles\ the\ general\ behaviour\ of\ a\ moving\ enemy\ tank.\r\n
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ TurquoiseTank.java\r\n\ @version\ 1.1\r\n\ @since\ 01.08.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 14.09.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ turquoise\ enemy\ tank\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ the\ most\ basic\ mobile\ enemy\ \r\n\ tank,\ and\ is\ a\ subclass\ of\ the\ MobileEnemyTank\ class.\ It\ moves\ randomly,\r\n\ avoids\ walls,\ and\ has\ a\ TurquoiseTurret\ which\ fires\ shells\ at\ the\ player\r\n\ tank\ when\ it\ can\ hit\ it.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n\ <p>\t-1.1\ -\ Moved\ of\ the\ code\ to\ a\ new\ superclass\ called\ MobileEnemyTank,\r\n\ which\ handles\ the\ general\ behaviour\ of\ a\ moving\ enemy\ tank.\r\n
 comment1.params=startX\ startY
 comment1.target=TurquoiseTank(int,\ int)
 comment1.text=\r\n\ Make\ a\ new\ TurquoiseTank\ whose\ starting\ position\ will\ be\ at\ the\ given\r\n\ coordinates.\r\n\ @param\ startX\ The\ x\ coordinate\ the\ tank\ will\ be\ at\ the\ beginning\ of\ the\r\n\ level.\r\n\ @param\ startY\ The\ y\ coordinate\ the\ tank\ will\ be\ at\ the\ beginning\ of\ the\r\n\ level.\r\n
@@ -13,4 +13,7 @@ comment3.text=\r\n\ Getter\ for\ the\ speed\ of\ this\ tank,\ meaning\ the\ dist
 comment4.params=
 comment4.target=int\ getMaxTurnSpeed()
 comment4.text=\r\n\ Getter\ The\ maximum\ number\ of\ degrees\ by\ which\ this\ tank\ can\ turn\ each\ \r\n\ time\ the\ act()\ method\ is\ called.\r\n\ @return\ \tThe\ maximum\ turn\ speed\ of\ this\ type\ of\ tank.\r\n
-numComments=5
+comment5.params=
+comment5.target=int\ getMineAvoidanceDistance()
+comment5.text=\r\n\ Indicates\ the\ safe\ distance\ this\ type\ of\ tank\ will\ keep\ from\ a\ mine\ when\r\n\ it\ is\ avoiding\ a\ mine.\r\n\ @return\ the\ safe\ distance\ this\ type\ of\ tank\ will\ keep\ from\ a\ mine\ when\r\n\ it\ is\ avoiding\ a\ mine.\r\n
+numComments=6

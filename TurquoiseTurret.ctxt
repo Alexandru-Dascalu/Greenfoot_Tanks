@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=TurquoiseTurret
-comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ TurquoiseTurret.java\r\n\ @version\ 1.0\r\n\ @since\ 14.08.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 03.09.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ turquoise\ enemy\ turret\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ roughly\ follows\ the\ position\ of\ \r\n\ the\ \ player\ tank\ and\ fires\ at\ it\ if\ it\ can\ hit\ it.\ It\ cannot\ fire\ another\ \r\n\ shell\ if\ the\ cool\ down\ period\ has\ not\ passed\ and\ if\ there\ is\ another\ shell\ \r\n\ fired\ by\ this\ turret\ still\ in\ the\ world.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ TurquoiseTurret.java\r\n\ @version\ 1.0\r\n\ @since\ 14.08.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 14.09.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ turquoise\ enemy\ turret\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ roughly\ follows\ the\ position\ of\ \r\n\ the\ \ player\ tank\ and\ fires\ at\ it\ if\ it\ can\ hit\ it.\ It\ cannot\ fire\ another\ \r\n\ shell\ if\ the\ cool\ down\ period\ has\ not\ passed\ and\ if\ there\ is\ another\ shell\ \r\n\ fired\ by\ this\ turret\ still\ in\ the\ world.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n
 comment1.params=tank
 comment1.target=TurquoiseTurret(Tank)
 comment1.text=\r\n\ Makes\ a\ new\ Turquoise\ Turret\ on\ the\ Tank\ given\ as\ an\ argument.\r\n\ @param\ tank\ The\ tank\ on\ which\ this\ Turret\ will\ be\ placed.\r\n
@@ -16,9 +16,6 @@ comment5.params=
 comment5.target=int\ getLiveShellLimit()
 comment5.text=Gets\ the\ limit\ of\ how\ many\ shells\ fired\ by\ this\ turret\ can\ be\ in\ the\ world\r\n\ at\ the\ same\ time.\ This\ number\ is\ a\ static\ variable\ and\ is\ the\ same\ for\r\n\ all\ objects\ of\ this\ class.\r\n\ @return\ the\ limit\ of\ how\ many\ shells\ fired\ by\ this\ turret\ can\ be\ in\ the\ world\r\nat\ the\ same\ time.
 comment6.params=
-comment6.target=int\ getShellBounceLimit()
-comment6.text=\r\n\ Gets\ the\ maximum\ number\ of\ times\ a\ shell\ fired\ by\ this\ turret\ can\ bounce.\r\n\ Returns\ the\ bounce\ limit\ of\ rocket\ shells.\r\n\ @return\ The\ bounce\ limit\ of\ rocket\ shells.\r\n
-comment7.params=
-comment7.target=boolean\ firesNormalShells()
-comment7.text=\r\n\ Indicates\ if\ this\ turret\ fires\ normal\ shells.\r\n\ @return\ False,\ because\ this\ type\ of\ turret\ fires\ rocket\ shells.\r\n
-numComments=8
+comment6.target=java.lang.Class\ getShellType()
+comment6.text=\r\n\ Indicates\ the\ type\ of\ shell\ fired\ by\ this\ turret.\r\n\ @return\ The\ type\ of\ shell\ fired\ by\ this\ turret,\ indicated\ by\ a\ Class\ \r\n\ object.\r\n
+numComments=7

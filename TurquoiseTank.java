@@ -4,7 +4,7 @@ import greenfoot.*;
  * <p><b>File name: </b> TurquoiseTank.java
  * @version 1.1
  * @since 01.08.2018
- * <p><b>Last modification date: </b> 03.09.2018
+ * <p><b>Last modification date: </b> 14.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -31,6 +31,10 @@ public class TurquoiseTank extends MobileEnemyTank
     /**The maximum number of degrees by which this tank can turn each time the
      * act() method is called. It's value is {@value}.*/
     private static final int MAX_TURN_SPEED=2;
+    
+    /**The safe distance the tank will keep from a mine when it is avoiding
+     * a mine.*/
+    private static final int MINE_AVOIDANCE_DISTANCE=(int)(1.6*LENGTH);
     
     /**
      * Make a new TurquoiseTank whose starting position will be at the given
@@ -79,20 +83,15 @@ public class TurquoiseTank extends MobileEnemyTank
     	return MAX_TURN_SPEED;
     }
     
-    /**Method reloads this tank into the game world to prepare it for another start
-	 * of the current level, meaning it resets the position and orientation of this
-	 * tank and it's turret. */
+    /**
+     * Indicates the safe distance this type of tank will keep from a mine when
+     * it is avoiding a mine.
+     * @return the safe distance this type of tank will keep from a mine when
+     * it is avoiding a mine.
+     */
     @Override
-    public void reloadTank()
+    public int getMineAvoidanceDistance()
     {
-    	/*We need to set the to null, since if the player lost and level was
-    	 * reloaded, this tank would still try to follow the path it had before
-    	 * the reload. This lead to the tank sometimes just driving thorough 
-    	 * walls.*/
-    	path=null;
-    	nextPoint=null;
-    	
-    	//call superclass method to reload the tank
-    	super.reloadTank();
+    	return MINE_AVOIDANCE_DISTANCE;
     }
 }

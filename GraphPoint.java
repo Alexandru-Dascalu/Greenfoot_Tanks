@@ -428,4 +428,14 @@ public class GraphPoint implements Comparable<GraphPoint>
     	double distance=Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
     	return distance;
     }
+    
+    public double getDistanceFrom(LandMine mine)
+    {
+    	int xDistance=mine.getX()-x;
+    	int yDistance=mine.getY()-y;
+    	
+    	/*Calculate the distance using Pythagora's theorem.*/
+    	double distance=Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
+    	return distance;
+    }
 }

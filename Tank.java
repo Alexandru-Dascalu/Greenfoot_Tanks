@@ -47,11 +47,11 @@ public class Tank extends Actor
 	
 	/**The length of the long side of the tank. Currently, the tank's 
 	 * image is 51 by 49 pixels, so the value is {@value}.*/
-	protected static final double LENGTH=51;
+	public static final int LENGTH=51;
 	
 	/**The length of the short side of the tank. Currently, the tank's 
 	 * image is 51 by 49 pixels, so the value is {@value}.*/
-	protected static final double WIDTH=49;
+	public static final int WIDTH=49;
 	
 	/**The angle in degrees between the length of the tank and it's diagonal.
 	 * For the current image the value is {@value}.*/
@@ -73,6 +73,9 @@ public class Tank extends Actor
 	
 	/**The correct x position of the tank, represented by a real number.*/
 	protected double realY;
+	
+	/**The number of mines layed by this tank in the current level so far.*/
+	protected int minesLaid;
 
 	/**
 	 * Makes a new tank object.
@@ -239,6 +242,16 @@ public class Tank extends Actor
 		tankTurret.fire();
 	}
 
+	/**Makes the tank lay down a land mine.*/
+	protected void layMine()
+	{
+		World world= getWorld();
+		
+		//make a new land mine and put it in the game world
+		LandMine mine=new LandMine(this);
+		world.addObject(mine, getX(), getY());
+	}
+	
 	/**
 	 * Method checks if the tank can move forwards.
 	 * @return True if the tank can move forwards, false if not.
@@ -428,7 +441,7 @@ public class Tank extends Actor
 				/*The offset is the length of the projection of half of the length
 				 * of the tank on the horizontal axis, so we multiply it with the
 				 * cosine of the degree and round to the nearest higher integer.*/
-				xOffset=(int) Math.round((LENGTH/2)*Math.cos(Math.toRadians((int)degree)));
+				xOffset=(int) Math.round((LENGTH/2.0)*Math.cos(Math.toRadians((int)degree)));
 				break;
 				
 			case "front left":
@@ -460,7 +473,7 @@ public class Tank extends Actor
 				 * tank's centre, so we make the same calculations as for the
 				 * front point and change the offset to it's opposite.*/
 				degree=getRotation();
-				xOffset= (int) Math.round((LENGTH/2)*Math.cos(Math.toRadians((int)degree)));
+				xOffset= (int) Math.round((LENGTH/2.0)*Math.cos(Math.toRadians((int)degree)));
 				xOffset= -xOffset;
 				break;
 				
@@ -524,7 +537,7 @@ public class Tank extends Actor
 				/*The offset is the length of the projection of half of the length
 				 * of the tank on the vertical axis, so we multiply it with the
 				 * sine of the degree and round to the nearest higher integer.*/
-				yOffset=(int) Math.ceil((LENGTH/2)*Math.sin(Math.toRadians((int)degree)));
+				yOffset=(int) Math.ceil((LENGTH/2.0)*Math.sin(Math.toRadians((int)degree)));
 				break;
 				
 			case "front left":
@@ -556,7 +569,7 @@ public class Tank extends Actor
 				 * tank's centre, so we make the same calculations as for the
 				 * front point and change the offset to it's opposite.*/
 				degree=getRotation(); 
-				yOffset= (int) Math.ceil((LENGTH/2)*Math.sin(Math.toRadians((int)degree)));
+				yOffset= (int) Math.ceil((LENGTH/2.0)*Math.sin(Math.toRadians((int)degree)));
 				yOffset= -yOffset;
 				break;
 				
@@ -962,6 +975,16 @@ public class Tank extends Actor
 	}
 	
 	/**
+	 * The number of mines this tank can lay in one level.
+	 * @return 0, unless overridden, since a default tank does not lay any mines.
+	 * This method should always be overridden.
+	 */
+	public int getNumberOfMines()
+	{
+		return 0;
+	}
+	
+	/**
 	 * Getter The maximum number of degrees by which this tank can turn each 
 	 * time the act() method is called. Used by mobile enemy tanks and the 
 	 * player tank.
@@ -1002,9 +1025,11 @@ public class Tank extends Actor
 		/*Check if the tank is in a game world to avoid exceptions.*/
 		if(world!=null)
 		{
-			/*Reset the real number values of the tank's position.*/
+			/*Reset the real number values of the tank's position and the counter
+			 * of mines laid by this tank.*/
 			realX=startX;
 			realY=startY;
+			minesLaid=0;
 			
 			/*Place the tank and it's turret at it's original position and reset
 			 * their orientation.*/

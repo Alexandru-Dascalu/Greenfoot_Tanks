@@ -4,7 +4,7 @@ import greenfoot.*;
  * <p><b>File name: </b> Turret.java
  * @version 1.3
  * @since 03.05.2018
- * <p><p><b>Last modification date: </b> 11.07.2018
+ * <p><p><b>Last modification date: </b> 14.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -73,7 +73,7 @@ public class Turret extends Actor
     	 * added to the world by it's constructor so nothing else is needed.*/
     	
     	/*Check if this turret is firing normal shells.*/
-    	if(firesNormalShells())
+    	if(getShellType()==Shell.class)
     	{
     		//if so, fire a normal shell by making a new one at the end of the
     		//barrel of this turret
@@ -81,7 +81,7 @@ public class Turret extends Actor
         			getShellY());
     	}
     	/*Else, check if this turret is firing rocket shells.*/
-    	else
+    	else if(getShellType()==RocketShell.class)
     	{
     		//if so, fire a rocket shell by making a new one at the end of the
     		//barrel of this turret
@@ -130,15 +130,17 @@ public class Turret extends Actor
     	return shellY;
     }
     
-    /**
-     * Indicates if this turret fires normal shells.
-     * @return True, because most turret types fire normal shells, unless overridden.
-     */
-    public boolean firesNormalShells()
-    {
-    	return true;
-    }
-    
+    /**Gets the limit of how many shells fired by this turret can be in the world
+	 * at the same time. This number is a static variable and is the same for
+	 * all objects of this class.It returns 0 because this method is meant to 
+	 * be always overriden.
+	 * @return the limit of how many shells fired by this turret can be in the world
+	 * at the same time, which is 0, unless overriden.*/
+	public int getLiveShellLimit()
+	{
+		return 0;
+	}
+	
     /**Decrements the number of shells in the game world fired by this turret.
      * Since removing the shells is handled in the TankWorld class, we need
      * a public method to decrement this counter when a shell is removed.*/
@@ -161,5 +163,15 @@ public class Turret extends Actor
     	{
     		world.removeObject(this);
     	}
+    }
+    
+    /**
+	 * Indicates the type of shell fired by this turret.
+	 * @return The type of shell fired by this turret, indicated by a Class 
+	 * object.
+	 */
+    public Class<?> getShellType()
+    {
+    	return Shell.class;
     }
 }

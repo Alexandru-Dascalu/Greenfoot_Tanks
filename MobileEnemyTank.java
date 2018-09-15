@@ -1,12 +1,15 @@
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+import greenfoot.Greenfoot;
+
 /**
  * <p><b>File name: </b> MobileEnemyTank.java
- * @version 1.2
+ * @version 1.3
  * @since 14.08.2018
- * <p><p><b>Last modification date: </b> 03.09.2018
+ * <p><p><b>Last modification date: </b> 14.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -27,6 +30,7 @@ import java.util.Random;
  *  the tank register reaching a point by being close to it, and not 
  *  necessarily at the exact coordinates.
  *  <p>	-1.2 - Made tanks not run into walls when they move while turning.
+ *  <p>	-.3 - Made tanks avoid land mines.
  */
 
 public class MobileEnemyTank extends Tank
@@ -40,6 +44,12 @@ public class MobileEnemyTank extends Tank
 	 * from a graph point for it to consider it has "reached" that point and
 	 * can move towards the next point. It's value is {@value}.*/
 	private static final int POINT_RADIUS=22;
+	
+	/**The maximum value of the difference between the target rotation and the
+	 * current rotation in degrees where the tank can still turn while moving
+	 * while it is avoiding a mine. Used to make the tank move more naturally 
+	 * and efficiently around a mine. It's value is {@value}.*/
+	private static final int MINE_AVOIDANCE_TURN_TOLERANCE=25;
 	
 	/**A random number generator used to choose a destination point for this 
 	 * tank.*/
@@ -58,6 +68,9 @@ public class MobileEnemyTank extends Tank
 	/**A linked list of GraphPoint objects that is the path this tank is taking
 	 * to it's chosen destination point.*/
 	protected LinkedList<GraphPoint> path;
+	
+	/**A flag that indicates if this tank is currently avoiding a mine.*/
+	private boolean avoidingMine;
 	
 	/**The GraphPoint object that is the next point in the game world this tank
 	 * needs to reach in it's path.*/
@@ -79,6 +92,7 @@ public class MobileEnemyTank extends Tank
         //initialise all instance variables of this subclass
         numberGenerator=new Random();
         path=null;
+        avoidingMine=false;
         
         //tank does not move initially
         isMoving=false;
@@ -97,10 +111,25 @@ public class MobileEnemyTank extends Tank
     @Override
 	public void act()
 	{
+    	//Check if there is a land mine dangerously close to the tank
+    	LandMine mine=detectLandMines();
+    	
+    	/*If there is a mine too close to the tank, and the is already not
+    	 * avoiding a mine, make this tank avoid the mine.*/
+		if(!avoidingMine && mine!=null)
+		{
+			avoidLandMine(mine);
+		}
+		/*Else, if there is no mine in the vicinity of this tank, set the
+		 * mine avoidance flag to false.*/
+		else if(mine==null)
+		{
+			avoidingMine=false;
+		}
+		
     	//Check if there  is a path to follow.
 		if(path!=null)
 		{
-			//if so, follow that path
 			followPath();
 		}
 		//Else, the tank has no path to follow
@@ -200,7 +229,7 @@ public class MobileEnemyTank extends Tank
     		 * this method.*/
         	catch(NoSuchElementException | NullPointerException e)
         	{
-        		path=null;
+            	path=null;
         		return;
         	}
     	}
@@ -245,12 +274,43 @@ public class MobileEnemyTank extends Tank
 	    		
 	    		//if the tank is turning, it is considered to be moving
 	    		isMoving=true;
-	    			
+	    		
+	    		/*If the tank is very close to a mine, it can be dangerous for 
+	    		 * it to turn while moving. The value of this flag will indicate
+	    		 * if the tank can move while turning while it is avoiding a mine.*/
+	    		boolean turnIfCloseToMine;
+	    		
+	    		/*Check if this tank is currently avoiding a mine.*/
+	    		if(avoidingMine)
+	    		{
+	    			/*To make the tank move more naturally and efficiently, it 
+	    			 * will only turn while moving if the difference between 
+	    			 * it's rotation and the target rotation is under a certain 
+	    			 * limit.*/
+	    			if(normalizeAngle(getRotation()-targetRotation) < 
+	    					MINE_AVOIDANCE_TURN_TOLERANCE)
+	    			{
+	    				//it is under the limit, so it can move while turning
+	    				turnIfCloseToMine=true;
+	    			}
+	    			else
+	    			{
+	    				//it is over the limit, so it can not move while turning
+	    				turnIfCloseToMine=false;
+	    			}
+	    		}
+	    		/*If it is not avoiding a mine, this flag is not  */
+	    		else
+	    		{
+	    			turnIfCloseToMine=true;
+	    		}
+	    		
 	    		/*For the tank's movements to be more natural, the tank should
 	    		 * move while turning. Sometimes if the tank does that it 
 	    		 * cannot reached the rotation towards the next point or it runs 
 	    		 * into a wall. So we check if this tank can move while turning.*/
-	    		if(canMoveWhileTurning(targetRotation, nextPoint))
+	    		if(turnIfCloseToMine && canMoveWhileTurning(targetRotation, 
+	    				nextPoint))
 	    		{
 	    			//If so, move the tank forward
 	    			move(this.getSpeed());
@@ -435,6 +495,89 @@ public class MobileEnemyTank extends Tank
 		}
     }
     
+    /**
+     * Detects if this tank is dangerously close to a mine. It returns a 
+     * reference to one of the mines that is too close to the tank so that
+     * the tank will be able to avoid that mine. The tanks are not very 
+     * smart, so if more than one mine is too close to the tank, it will 
+     * only try to avoid one.
+     * @return A reference to one of the mines that is dangerously close to 
+     * this tank.
+     */
+    private LandMine detectLandMines()
+    {
+    	//get a list of all the mines within a circle whose radius is the 
+    	//minimum distance this type of tank keeps away from mines
+    	List<LandMine> mines=getObjectsInRange(getMineAvoidanceDistance(), 
+    			LandMine.class);
+    	
+    	//Check if the list is empty
+    	if(mines.isEmpty())
+    	{
+    		//if it is, the tank has no mines to avoid, so it returns null
+    		return null;
+    	}
+    	//Else, the tank has to avoid a mine
+    	else
+    	{
+    		//return the first mine in the list
+    		return mines.get(0);
+    	}
+    }
+    
+    /**
+     * This method modifies the path this tank follows so that it will avoid the
+     * mine given as an argument.
+     * @param mine The mine that is to be avoided by this tank.
+     */
+    private void avoidLandMine(LandMine mine)
+    {
+    	/*In order to avoid this mine, nodes that are too close to the mine must
+    	 * be removed from the path.*/
+    	try
+		{
+    		/*Removes the first node from the path until the first node is at 
+    		 * a safe distance away from the mine given.*/
+			while(path.getFirst().getDistanceFrom(mine)<getMineAvoidanceDistance())
+	    	{
+	    		path.removeFirst();
+	    	}
+		}
+    	/*If in this process the path becomes empty,
+   	     * we catch the exception that is thrown.*/
+    	catch(NoSuchElementException e)
+		{
+    		/*If so, set the path to null and return to make the tank generate 
+    		 * a new path for it to follow.*/
+    		path=null;
+    		return;
+		}
+    	
+    	
+    	//Get a reference to the world this tank is in and to the world graph
+    	TankWorld world=(TankWorld)getWorldOfType(TankWorld.class);
+    	Graph worldGraph=world.getWorldGraph();
+    	
+    	/*If the path has not become empty by removing nodes, then the 
+    	 * destination point for the path that is avoiding the mine is the 
+    	 * remaining first node of the regular path.*/
+    	GraphPoint target=path.getFirst();
+    	
+    	/*Use the world graph method getPathAvoidingMine to generate a path of 
+    	 * nodes that avoids the given mine and that leads the tank to the 
+    	 * first node of the regular path. This method uses a modified version
+    	 * of the Shortest Path Algorithm.*/
+    	LinkedList<GraphPoint> avoidancePath=worldGraph.getPathAvoidingMine
+    			(this, mine, getX(), getY(), target);
+    	
+    	/*insert the path returned by the getPathAvoidingMine method in the
+    	 * beginning of the regular path of the tank*/
+    	path.addAll(0, avoidancePath);
+    	
+    	//the tank is currently avoiding the mine, so set the flag accordingly.
+    	avoidingMine=true;
+    }
+    
     /***
 	 * Checks if the tank is moving.
 	 * @return True if the tank is moving, false if not. Returns a boolean set 
@@ -469,5 +612,39 @@ public class MobileEnemyTank extends Tank
     protected boolean isMovingBackward()
     {
     	return isMovingBackward;
+    }
+    
+    /**Method reloads this tank into the game world to prepare it for another start
+	 * of the current level, meaning it resets the position and orientation of this
+	 * tank and it's turret. */
+    @Override
+    public void reloadTank()
+    {
+    	/*We need to set the to null, since if the player lost and level was
+    	 * reloaded, this tank would still try to follow the path it had before
+    	 * the reload. This lead to the tank sometimes just driving thorough 
+    	 * walls.*/
+    	path=null;
+    	nextPoint=null;
+    	avoidingMine=false;
+    	
+    	//tank does not move initially
+        isMoving=false;
+        isMovingForward=false;
+        isMovingBackward=false;
+        
+    	//call superclass method to reload the tank
+    	super.reloadTank();
+    }
+    
+    /**
+     * Indicates the safe distance this type of tank will keep from a mine when
+     * it is avoiding a mine. 
+     * @return 0, unless overriden, since this class should always be extended 
+     * and there is no set behaviour for a default mobile enemy tank.
+     */
+    public int getMineAvoidanceDistance()
+    {
+    	return 0;
     }
 }
