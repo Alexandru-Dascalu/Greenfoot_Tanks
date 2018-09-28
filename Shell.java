@@ -412,6 +412,16 @@ public class Shell extends Actor
     	return newDirection;
     }
     
+    public double getRealX()
+    {
+    	return realX;
+    }
+    
+    public double getRealY()
+    {
+    	return realY;
+    }
+    
     /**
      * Returns the parent tank of this shell.
      * @return The parent tank of this shell.

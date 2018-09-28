@@ -225,6 +225,7 @@ public class TankWorld extends World
         
         BrownTank enemy2=new BrownTank(400,350);
         addObject(enemy2, 400, 350);
+       
         enemyTanks=2;
     }
     

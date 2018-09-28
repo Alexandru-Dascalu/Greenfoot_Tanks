@@ -263,7 +263,7 @@ public class PlayerTank extends Tank
 	 * @return True if the "w" key is pressed, false if not.
 	 */
 	@Override
-	protected boolean isMovingForward()
+	public boolean isMovingForward()
 	{
 		return Greenfoot.isKeyDown("w");
 	}
@@ -273,7 +273,7 @@ public class PlayerTank extends Tank
 	 * @return True if the "s" key is pressed, false if not.
 	 */
 	@Override
-	protected boolean isMovingBackward()
+	public boolean isMovingBackward()
 	{
 		return Greenfoot.isKeyDown("s");
 	}

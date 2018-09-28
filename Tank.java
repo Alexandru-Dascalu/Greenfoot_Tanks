@@ -385,7 +385,7 @@ public class Tank extends Actor
 	 * enemy tanks move continuously, this method always returns true unless 
 	 * overridden.
 	 */
-	protected boolean isMovingForward()
+	public boolean isMovingForward()
 	{
 		return true;
 	}
@@ -396,7 +396,7 @@ public class Tank extends Actor
 	 * enemy tanks move forward continuously, this method always returns false
 	 * unless overridden.
 	 */
-	protected boolean isMovingBackward()
+	public boolean isMovingBackward()
 	{
 		return false;
 	}
