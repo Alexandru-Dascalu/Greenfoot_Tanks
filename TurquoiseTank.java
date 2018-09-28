@@ -4,7 +4,7 @@ import greenfoot.*;
  * <p><b>File name: </b> TurquoiseTank.java
  * @version 1.1
  * @since 01.08.2018
- * <p><b>Last modification date: </b> 14.09.2018
+ * <p><b>Last modification date: </b> 26.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -33,8 +33,12 @@ public class TurquoiseTank extends MobileEnemyTank
     private static final int MAX_TURN_SPEED=2;
     
     /**The safe distance the tank will keep from a mine when it is avoiding
-     * a mine.*/
+     * a mine. It's value is {@value}.*/
     private static final int MINE_AVOIDANCE_DISTANCE=(int)(1.6*LENGTH);
+    
+    /**The distance of a shell to the tank from which the tank will start 
+     * making evasive moves. It's value is {@value}.*/
+    private static final int SHELL_AVOIDANCE_DISTANCE=(int)(2*LENGTH);
     
     /**
      * Make a new TurquoiseTank whose starting position will be at the given
@@ -93,5 +97,16 @@ public class TurquoiseTank extends MobileEnemyTank
     public int getMineAvoidanceDistance()
     {
     	return MINE_AVOIDANCE_DISTANCE;
+    }
+    
+    /**
+     * Indicates the distance from which the tank starts evasive action to avoid
+     * an incoming shell.
+     * @return 0, unless overriden, since this class should always be extended 
+     * and there is no set behaviour for a default mobile enemy tank.
+     */
+    public int getShellAvoidanceDistance()
+    {
+    	return SHELL_AVOIDANCE_DISTANCE;
     }
 }

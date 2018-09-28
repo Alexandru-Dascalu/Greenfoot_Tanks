@@ -9,7 +9,7 @@ import greenfoot.Greenfoot;
  * <p><b>File name: </b> MobileEnemyTank.java
  * @version 1.3
  * @since 14.08.2018
- * <p><p><b>Last modification date: </b> 14.09.2018
+ * <p><p><b>Last modification date: </b> 27.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -30,7 +30,7 @@ import greenfoot.Greenfoot;
  *  the tank register reaching a point by being close to it, and not 
  *  necessarily at the exact coordinates.
  *  <p>	-1.2 - Made tanks not run into walls when they move while turning.
- *  <p>	-.3 - Made tanks avoid land mines.
+ *  <p>	-1.3 - Made tanks avoid land mines.
  */
 
 public class MobileEnemyTank extends Tank
@@ -69,12 +69,19 @@ public class MobileEnemyTank extends Tank
 	 * to it's chosen destination point.*/
 	protected LinkedList<GraphPoint> path;
 	
-	/**A flag that indicates if this tank is currently avoiding a mine.*/
-	private boolean avoidingMine;
+	/**The rotation this tank should have for it to continue moving in the 
+	 * correct direction.*/
+	private int targetRotation;
 	
 	/**The GraphPoint object that is the next point in the game world this tank
 	 * needs to reach in it's path.*/
 	protected GraphPoint nextPoint;
+	
+	/**A flag that indicates if this tank is currently avoiding a mine.*/
+	private boolean avoidingMine;
+	
+	/**A flag that indicates if this tank is currently avoiding a shell.*/
+	private boolean avoidingShell;
 	
 	/***
 	 * Makes a new Mobile Enemy Tank whose starting location in the level is at
@@ -93,12 +100,12 @@ public class MobileEnemyTank extends Tank
         numberGenerator=new Random();
         path=null;
         avoidingMine=false;
+        avoidingShell=false;
         
         //tank does not move initially
         isMoving=false;
         isMovingForward=false;
         isMovingBackward=false;
-        
     }
     
     /**
@@ -116,7 +123,7 @@ public class MobileEnemyTank extends Tank
     	
     	/*If there is a mine too close to the tank, and the is already not
     	 * avoiding a mine, make this tank avoid the mine.*/
-		if(!avoidingMine && mine!=null)
+		if(!avoidingMine && (mine!=null))
 		{
 			avoidLandMine(mine);
 		}
@@ -127,16 +134,59 @@ public class MobileEnemyTank extends Tank
 			avoidingMine=false;
 		}
 		
-    	//Check if there  is a path to follow.
-		if(path!=null)
+		//See if there is a shell dangerously close to the tank
+		Shell shell=detectIncomingShells();
+		
+		/*Check if there is an instance of a shell that is too close to the tank.*/
+		if(shell!=null)
 		{
-			followPath();
+			/*Check if the shell is moving away from the tank or not.*/
+			if(!shellIsMovingAway(shell))
+			{
+				/*If the shell is moving closer to the tank, check if the flag 
+				 * is set accordingly to trigger evasive action.*/
+				if(!avoidingShell)
+				{
+					/*if the flag was not already set, set it to true and calculate
+					 * how the tank should avoid the incoming shell.*/
+					avoidingShell=true;
+					calculateShellAvoidance(shell);
+				}
+			}
+			/*If the shell is moving away from the tank, it cannot hit the tank,
+			 * therefore there is no need to avoid it, so the flag is set accordingly.*/
+			else
+			{
+				avoidingShell=false;
+			}
 		}
-		//Else, the tank has no path to follow
+		/*If there is no shell dangerously close to the tank, make sure the flag
+		 * is set accordingly.*/
 		else
 		{
-			//so we generate one
-			generatePath();
+			avoidingShell=false;
+		}
+		
+		/*Check if the tank is supposed to avoid an incoming shell.*/
+		if(avoidingShell)
+		{
+			//if so, avoid the shell
+			avoidIncomingShell();
+		}
+		//Else, the tank should move normally.
+		else
+		{
+			//Check if there  is a path to follow.
+			if(path!=null)
+			{
+				followPath();
+			}
+			//Else, the tank has no path to follow
+			else
+			{
+				//so we generate one
+				generatePath();
+			}
 		}
 		
 		super.act();
@@ -252,7 +302,7 @@ public class MobileEnemyTank extends Tank
 	    	 * is moving while turning, the target rotation changes. Or because
 	    	 * Greenfoot works in integers, the target rotation may change by a
 	    	 * few degrees even when the tank is facing the next point.*/
-	    	int targetRotation=calculateTargetRotation(nextPoint);
+	    	targetRotation=calculateTargetRotation(nextPoint);
 	    	
 	    	/*Check if the target rotation is the same as this tank's rotation.*/
 	    	if(getRotation()==targetRotation)
@@ -262,6 +312,7 @@ public class MobileEnemyTank extends Tank
 	    		 * speed indicated by the subclass.*/
 	   			isMoving=true;
 	   			isMovingForward=true;
+	   			isMovingBackward=false;
 	   			move(this.getSpeed());
     		}
 	    	/*Else, this tank needs to turn in the correct direction.*/
@@ -269,11 +320,12 @@ public class MobileEnemyTank extends Tank
 	    	{
 	    		/*Calculate which way and how much this tank should turn and 
 	    		 * turn the tank using the returned number.*/
-	    		int turnSpeed=calculateTurn(targetRotation);
+	    		int turnSpeed=calculateTurn();
 	    		turn(turnSpeed);
 	    		
 	    		//if the tank is turning, it is considered to be moving
 	    		isMoving=true;
+	    		isMovingBackward=false;
 	    		
 	    		/*If the tank is very close to a mine, it can be dangerous for 
 	    		 * it to turn while moving. The value of this flag will indicate
@@ -378,13 +430,11 @@ public class MobileEnemyTank extends Tank
     /**
      * Calculates which way and how much this tank should turn to get to the 
      * desired target rotation.
-     * @param targetRotation The rotation the tank needs to get to in order to
-     * reach the next GraphPoint.
      * @return The amount in degrees the tank should turn in this call of the 
      * act() method. Negative values mean the tank will turn counter clockwise,
      * positive values clockwise.
      */
-    private int calculateTurn(int targetRotation)
+    private int calculateTurn()
     {
     	/*We need to decide which way the tank will turn. So we calculate the 
     	 * number of degrees between the desired rotation and the tank's current
@@ -496,6 +546,244 @@ public class MobileEnemyTank extends Tank
     }
     
     /**
+     * Detects if this tank is dangerously close to an incoming shell. It 
+     * returns a reference to one of the shells that is too close to the tank
+     * so that the tank will be able to avoid that shell. The tanks are not 
+     * very smart, so if more than one shell is too close to the tank, it will 
+     * only try to avoid one.
+     * @return A reference to one of the shells that is dangerously close to 
+     * this tank. Ignores shells fired by  this tank's turret.
+     */
+    private Shell detectIncomingShells()
+    {
+    	//get a list of all the shells within a circle whose radius is the 
+    	//minimum distance this type of tank keeps away from incoming shells
+    	List<Shell> shells=getObjectsInRange(getShellAvoidanceDistance(),Shell.class);
+    	
+    	/*A shell in this list might be a shell fired by this tank's turret. 
+    	 * These do not need to be avoided, so we search for shells that were 
+    	 * fired by other tanks's turrets. This loop goes through the list of
+    	 * shells that are too close , checks if they were fired by this tank,
+    	 * and exits prematurely if it finds a shell that was not.*/
+    	for(Shell s: shells)
+    	{
+    		//Check if this shell was fired by a turret other than this tank's turret.
+    		if(s.getParentTank()!=this)
+    		{
+    			//if so, return the shell
+    			return s;
+    		}
+    	}
+    	
+    	/*If so a shell has not been returned, then no shell not fired by this 
+    	 * tank is dangerously close to this tank.*/
+    	return null;
+    }
+    
+    /**
+     * Calculate the way this tank should avoid the incoming shell given as
+     * an argument.
+     * @param incomingShell The shell that is to be avoided by this tank.
+     */
+    private void calculateShellAvoidance(Shell incomingShell)
+    {
+    	//the rotation of the incoming shell
+    	int shellRotation=incomingShell.getRotation();
+    	
+    	//calculate the slope of the direction the shell
+    	double shellSlope=Math.tan(Math.toRadians(shellRotation));
+    	
+    	/*This method uses the formula for the equation of a line: y=m*x+n . 
+    	 * The n in the equation is also called the y intercept.*/
+    	double yIntercept=incomingShell.getY()-shellSlope*incomingShell.getX();
+    	
+    	/*The tank avoids incoming shells by trying to move into a position 
+    	 * where the tank's orientation is perpendicular to that of the shell's
+    	 * direction. This is the quickest way the tank can get out of the 
+    	 * shell's path. After reaching this orientation, the tank will move 
+    	 * forwards or backwards until the shell is moving away from it. We need
+    	 * to choose if the tank will move to a position that is to the right or
+    	 * to the left of the direction of the shell. This boolean variable 
+    	 * represents that choice.*/
+    	boolean rightAvoidance;
+    	
+    	/*We use line equation to find out what side of the shell's direction 
+    	 * this tank is located in. Check if the tank is under the direction 
+    	 * of the shell (y axis is inverted in Greenfoot).*/
+    	if(getY()>shellSlope*getX()+yIntercept)
+    	{
+    		/*Check if the rotation of the shell is betwen 0 and 90 or between
+    		 * 270 and 359.*/
+    		if(shellRotation<90 || shellRotation>270)
+    		{
+    			/*if so, the right side of the line of the direction of the shell
+    			 * is under it, and that is where the tank should go.*/
+    			rightAvoidance=true;
+    		}
+    		/*else the right side of the line of the direction of the shell
+			 * is over it and the left side under it, and that is where the 
+			 * tank should go.*/
+    		else
+    		{
+    			rightAvoidance=false;
+    		}
+    	}
+    	/*Else, the tank is located over the line of the direction of the shell.*/
+    	else
+    	{
+    		/*Check if the rotation of the shell is betwen 0 and 90 or between
+    		 * 270 and 359.*/
+    		if(shellRotation<90 || shellRotation>270)
+    		{
+    			/*if so, the right side of the line of the direction of the shell
+    			 * is under it, and that is where the tank should go.*/
+    			rightAvoidance=false;
+    		}
+    		/*else the right side of the line of the direction of the shell
+			 * is over it and the left side under it, and that is where the 
+			 * tank should go.*/
+    		else
+    		{
+    			rightAvoidance=true;
+    		}
+    	}
+    	/*Check if the tank needs to turn towards the right side of the line 
+    	 * of the shell's direction.*/
+    	if(rightAvoidance)
+    	{
+    		/*if so, the target rotation of the tank is 90 degrees ahead clockwise 
+    		 * of the rotation of the shell*/
+    		targetRotation=(int)normalizeAngle(shellRotation+90);
+    	}
+    	/*else, the tank needs to turn to the left side of the line of the 
+    	 * shell's direction*/
+    	else
+    	{
+    		/*if so, the target rotation of the tank is 90 degrees behind clockwise 
+    		 * of the rotation of the shell*/
+    		targetRotation=(int)normalizeAngle(shellRotation-90);
+    	}
+    	
+    	/*We need to decide which way the tank will turn. So we calculate the 
+    	 * number of degrees between the desired rotation and the tank's current
+    	 * rotation in a clockwise way and in a counter clockwise way.*/
+		int clockwiseDiff=(int)normalizeAngle(targetRotation-getRotation());
+		int counterClockwiseDiff=(int)normalizeAngle(getRotation()-targetRotation);
+    	
+		/*Check if the desired rotation is within 90 degrees of the current
+		 * rotation of the tank.*/
+		if((clockwiseDiff<=90) || (counterClockwiseDiff<=90))
+		{
+			/*if so, the front side of the tank is closer to the target 
+			 * rotation, and the tank will move forward.*/
+			isMovingForward=true;
+			isMovingBackward=false;
+		}
+		/*else, the back side of the tank is closer to the target rotation, and
+		 * the tank will move backwards.*/
+		else
+		{
+			isMovingForward=false;
+			isMovingBackward=true;
+			
+			/*Since the rotation of the tank is where it's front side faces,
+			 * in order for the back side of the tank to face the calculated 
+			 * target rotation, the target rotation is changed to the 
+			 * diametrically opposite value.*/
+			targetRotation=(int)normalizeAngle(targetRotation+180);
+		}
+		
+		//in any case, the tank is moving
+		isMoving=true;
+    }
+    
+    /**Makes the tank avoid the incoming shell, based on the targetRotation and 
+     * the boolean flags set by the calculateShellAvoidance(Shell) method.*/
+    private void avoidIncomingShell()
+    {
+    	//turn the tank towards's it's target rotation
+    	turn(calculateTurn());
+    	
+    	/*Check if the tank is supposed to go forwards.*/
+    	if(isMovingForward && !isMovingBackward)
+    	{
+    		/*Check if it can do so without hitting a wall.*/
+    		if(canMoveForwards())
+    		{
+    			//if so, move forward at maximum speed
+    			move(getSpeed());
+    		}
+    	}
+    	/*else, check if the tank is supposed to go backwards*/
+    	else if(!isMovingForward && isMovingBackward)
+    	{
+    		/*Check if it can do so without hitting a wall.*/
+    		if(canMoveBackwards())
+    		{
+    			//if so, move backward at maximum speed
+    			move(-getSpeed());
+    		}
+    	}
+    	/*Else, if both flags have the same value, something is wrong and an 
+    	 * exception is thrown.*/
+    	else
+    	{
+    		throw new IllegalStateException("The boolean methods isMovingForward() "
+    				+ "and isMovingBackward() return values that are either both "
+    				+ "true (which is illogical) or both false (this method has"
+    				+ " been called when it should not have been).");
+    	}
+    }
+    
+    /**
+     * Computes whether or not the given shell is moving away from the current 
+     * position of this tank or not.
+     * @param s The shell that we want to see if it is moving away from this tank.
+     * @return True if it is moving away from tank, false if not.
+     */
+    private boolean shellIsMovingAway(Shell s)
+    {
+    	//get the horizontal and vertical distances between the tank and the 
+    	//shell based on their coordinates 
+    	double xDistance=realX-s.getRealX();
+    	double yDistance=realY-s.getRealY();
+    	
+    	/*Calculate the distance between the shell and the tank using 
+    	 * Pythagora's theorem.*/
+    	double distance=Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
+    	
+    	//calculate the rotation of the shell in radians
+    	double radians = Math.toRadians(s.getRotation());
+    	
+    	/*Calculate the future coordinates of the shell, as if it's move(int) 
+    	 * method would be called again once.*/
+    	double shellFutureX=s.getRealX() + (Math.cos(radians) * s.getSpeed());
+    	double shellFutureY=s.getRealY() + (Math.sin(radians) * s.getSpeed());
+    	
+    	//get the horizontal and vertical distances between the tank and the 
+    	//future position of the shell based on their coordinates
+    	xDistance=realX-shellFutureX;
+    	yDistance=realY-shellFutureY;
+    	
+    	/*Calculate the distance using Pythagora's theorem.*/
+    	double futureDistance = Math.sqrt((xDistance * xDistance) + 
+    			(yDistance * yDistance));
+    	
+    	/*Check if the distance of the future position of the shell to the tank is larger than
+    	 * the distance of the shell to the tank.*/
+    	if((futureDistance-distance)>0)
+    	{
+    		//if it is, then the shell is moving away from the tank
+    		return true;
+    	}
+    	//else, the shell is moving closer to the tank
+    	else
+    	{
+    		return false;
+    	}
+    }
+    
+    /**
      * Detects if this tank is dangerously close to a mine. It returns a 
      * reference to one of the mines that is too close to the tank so that
      * the tank will be able to avoid that mine. The tanks are not very 
@@ -597,7 +885,7 @@ public class MobileEnemyTank extends Tank
    	 * that control this tank's movements.
    	 */
     @Override
-    protected boolean isMovingForward()
+    public boolean isMovingForward()
     {
     	return isMovingForward;
     }
@@ -609,7 +897,7 @@ public class MobileEnemyTank extends Tank
    	 * that control this tank's movements.
    	 */
     @Override
-    protected boolean isMovingBackward()
+    public boolean isMovingBackward()
     {
     	return isMovingBackward;
     }
@@ -644,6 +932,17 @@ public class MobileEnemyTank extends Tank
      * and there is no set behaviour for a default mobile enemy tank.
      */
     public int getMineAvoidanceDistance()
+    {
+    	return 0;
+    }
+    
+    /**
+     * Indicates the distance from which the tank starts evasive action to avoid
+     * an incoming shell.
+     * @return 0, unless overriden, since this class should always be extended 
+     * and there is no set behaviour for a default mobile enemy tank.
+     */
+    public int getShellAvoidanceDistance()
     {
     	return 0;
     }

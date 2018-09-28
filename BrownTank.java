@@ -65,7 +65,7 @@ public class BrownTank extends Tank
 	 * @return False, because this type of the tank is stationary.
 	 */
 	@Override
-	protected boolean isMovingForward()
+	public boolean isMovingForward()
 	{
 		return false;
 	}
