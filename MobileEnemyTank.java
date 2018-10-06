@@ -3,13 +3,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-import greenfoot.Greenfoot;
-
 /**
  * <p><b>File name: </b> MobileEnemyTank.java
- * @version 1.3
+ * @version 1.4
  * @since 14.08.2018
- * <p><p><b>Last modification date: </b> 27.09.2018
+ * <p><p><b>Last modification date: </b> 02.10.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -31,6 +29,7 @@ import greenfoot.Greenfoot;
  *  necessarily at the exact coordinates.
  *  <p>	-1.2 - Made tanks not run into walls when they move while turning.
  *  <p>	-1.3 - Made tanks avoid land mines.
+ *  <p>	-1.4 - Made tanks avoid shell.
  */
 
 public class MobileEnemyTank extends Tank
@@ -75,13 +74,16 @@ public class MobileEnemyTank extends Tank
 	
 	/**The GraphPoint object that is the next point in the game world this tank
 	 * needs to reach in it's path.*/
-	protected GraphPoint nextPoint;
+	private GraphPoint nextPoint;
 	
 	/**A flag that indicates if this tank is currently avoiding a mine.*/
 	private boolean avoidingMine;
 	
 	/**A flag that indicates if this tank is currently avoiding a shell.*/
 	private boolean avoidingShell;
+	
+	/**The next point in time in milliseconds when this tank will lay a mine.*/
+	protected long nextMineLayingTime;
 	
 	/***
 	 * Makes a new Mobile Enemy Tank whose starting location in the level is at
@@ -106,6 +108,9 @@ public class MobileEnemyTank extends Tank
         isMoving=false;
         isMovingForward=false;
         isMovingBackward=false;
+        
+        //initialise the first point in time this tank will lay a mine
+        generateNextMineLayingTime();
     }
     
     /**
@@ -189,6 +194,10 @@ public class MobileEnemyTank extends Tank
 			}
 		}
 		
+		//lay mines if the tank decides so
+		layMine();
+		
+		//do what all tanks do
 		super.act();
 	}
     
@@ -201,8 +210,22 @@ public class MobileEnemyTank extends Tank
     	
     	/*choose a destination point and use the world's graph to get a path 
     	 * to it.*/
+    	GraphPoint destination=chooseDestinationPoint();
     	path=world.getWorldGraph().getShortestPath(getX(), getY(), 
-    			chooseDestinationPoint());
+    			destination);
+    	
+    	/*The method getShortestPath() returns an empty list in the rare case
+    	 * the tank has just laid a mine of it's own and is still closer to that
+    	 * mine than the mine avoidance distance of this type of tank. The idea
+    	 * is so that the tank will just continue to follow the path it had 
+    	 * before. But if we want to generate a new path, then the tank will an 
+    	 * empty path to follow and do nothing. We check for this to avoid it.*/
+    	if(path.isEmpty())
+    	{
+    		/*add the destination point to the path so that the tank will move
+    		 * and not stop.*/
+    		path.add(destination);
+    	}
     }
     
     /**Chooses a random destination point for the tank to get to.*/
@@ -217,29 +240,17 @@ public class MobileEnemyTank extends Tank
     	 * valid, destination is assigned that value, so the loop terminates.*/
     	while(destination==null)
     	{
-    		//generate random coordinates within the world's exterior walls
-	    	int targetX=numberGenerator.nextInt(TankWorld.LENGTH-2*WallBlock.SIDE);
-	    	int targetY=numberGenerator.nextInt(TankWorld.WIDTH-2*WallBlock.SIDE);
-	    	
-	    	/*divide the coordinates to get the corresponding indexes in the
-	    	 * graph's matrix*/
-	    	int rowIndex=targetY/GraphPoint.INTERVAL;
-	    	int columnIndex=targetX/GraphPoint.INTERVAL;
-	    	
-	    	/*The generated coordinates start from the left and top exterior 
-	    	 * walls of the world, and not from it's edges. So if they are 
-	    	 * both 0, it is not the point on the edge of the world, but a 
-	    	 * point at the inner edge of the exterior walls. Therefore we add
-	    	 * the sides of a wall block to the coordinates to match the real
-	    	 * coordinates in the game world.*/
-	    	targetX+=WallBlock.SIDE;
-	    	targetY+=WallBlock.SIDE;
+    		///generate random coordinates within the world's walls
+	    	int targetX=numberGenerator.nextInt(TankWorld.LENGTH-2*WallBlock.SIDE)
+	    			+ WallBlock.SIDE;
+	    	int targetY=numberGenerator.nextInt(TankWorld.WIDTH-2*WallBlock.SIDE)
+	    			+ WallBlock.SIDE;
 	    	
 	    	//Get the node/point at the calculated indexes from the graph.
 	    	TankWorld world=(TankWorld)getWorld();
-	    	GraphPoint potentialTarget=world.getWorldGraph().getPoint(rowIndex,
-	    			columnIndex);
-	    	
+	    	GraphPoint potentialTarget=world.getWorldGraph().getPoint(targetX,
+	    			targetY);
+	    
 	    	/*Check if the value at those indexes is null. The random coordinates 
 	    	 * might be to a point situated inside or too close to a wall, in
 	    	 * which case the loop will repeat.*/
@@ -262,7 +273,7 @@ public class MobileEnemyTank extends Tank
     
     /**Makes the tank follow the path by passing by each node in the path until
      * the destination is reached.*/
-    private void followPath()
+    protected void followPath()
     {
     	/*Check if it the tank has a reference to the next point it needs to 
     	 * reach.*/
@@ -441,7 +452,7 @@ public class MobileEnemyTank extends Tank
     	 * rotation in a clockwise way and in a counter clockwise way.*/
 		int clockwiseDiff=(int)normalizeAngle(targetRotation-getRotation());
 		int counterClockwiseDiff=(int)normalizeAngle(getRotation()-targetRotation);
-		
+	
 		//the maximum number of degrees this tank can turn once
 		int maxTurnSpeed=getMaxTurnSpeed();
 		
@@ -805,11 +816,36 @@ public class MobileEnemyTank extends Tank
     		//if it is, the tank has no mines to avoid, so it returns null
     		return null;
     	}
-    	//Else, the tank has to avoid a mine
+    	/*Else, the tank has to avoid a mine, unless the mine in question is
+    	 * one that this tank has just laid.*/
     	else
     	{
-    		//return the first mine in the list
-    		return mines.get(0);
+    		//get a reference to the first mine in the list
+    		LandMine mine=mines.get(0);
+    		
+    		/*The mine in question may be one this tank has just laid, in which
+    		 * case the tank may not need to avoid.*/
+    		if(mine.getParentTank().equals(this))
+    		{	
+    			/*Check if the mine this tank has laid can be ignored by this tank.*/
+    			if(mine.canBeIgnoredByParent())
+    			{
+    				//if it can, return null so the tank will continue it's path
+    				return null;
+    			}
+    			/*Else, this tank is approaching this mine, so return it to 
+    			 * avoid it.*/
+    			else
+    			{
+    				return mine;
+    			}
+    		}
+    		/*If it is not, the tank needs to avoid, so a reference to the mine 
+    		 * is returned.*/
+    		else
+    		{
+    			return mine;
+    		}
     	}
     }
     
@@ -841,7 +877,6 @@ public class MobileEnemyTank extends Tank
     		return;
 		}
     	
-    	
     	//Get a reference to the world this tank is in and to the world graph
     	TankWorld world=(TankWorld)getWorldOfType(TankWorld.class);
     	Graph worldGraph=world.getWorldGraph();
@@ -856,7 +891,7 @@ public class MobileEnemyTank extends Tank
     	 * first node of the regular path. This method uses a modified version
     	 * of the Shortest Path Algorithm.*/
     	LinkedList<GraphPoint> avoidancePath=worldGraph.getPathAvoidingMine
-    			(this, mine, getX(), getY(), target);
+    			(this, mine , target);
     	
     	/*insert the path returned by the getPathAvoidingMine method in the
     	 * beginning of the regular path of the tank*/
@@ -864,6 +899,47 @@ public class MobileEnemyTank extends Tank
     	
     	//the tank is currently avoiding the mine, so set the flag accordingly.
     	avoidingMine=true;
+    }
+    
+    /**Makes the tank randomly lay mines, based on how many mines this type of 
+     * tank can lay and how often it can do such.*/
+    @Override
+    protected void layMine()
+    {
+    	/*Check if this tank can lay any more mines.*/
+    	if(minesLaid<getNumberOfMines())
+    	{
+    		/*Check if the next point in time this tank should lay a mine has 
+    		 * passed.*/
+    		if(System.currentTimeMillis()>=nextMineLayingTime)
+    		{
+    			//lay a mine and generate the time the next mine will be laid
+    			super.layMine();
+    			generateNextMineLayingTime();
+    		}
+    	}
+    }
+    
+    /**Generates a new random point in time this tank will lay the next mine. 
+     * This point in time will be in a random number of milliseconds from now
+     * on. This random number is between half of the mine laying period of 
+     * this tank and the mine laying period of this tank.*/
+    private void generateNextMineLayingTime()
+    {
+    	/*Check if the mine laying period is not 1 to ensure this tank is
+    	 * not one that should not lay mines.*/
+    	if(getMineLayingPeriod()!=1)
+    	{
+    		/*Generate a new random number, that will be at least half of the mine 
+        	 * laying period of this tank and at most equal to the mine laying 
+        	 * period of this tank.*/
+    		int number = numberGenerator.nextInt(getMineLayingPeriod() / 2) + 
+    				(getMineLayingPeriod() / 2); 
+    		
+    		/*add the random number to the current time to get the next time a 
+    		 * mine will be laid.*/
+    		nextMineLayingTime=System.currentTimeMillis()+number;
+    	}
     }
     
     /***
@@ -904,7 +980,7 @@ public class MobileEnemyTank extends Tank
     
     /**Method reloads this tank into the game world to prepare it for another start
 	 * of the current level, meaning it resets the position and orientation of this
-	 * tank and it's turret. */
+	 * tank and it's turret, and all other instance variables. */
     @Override
     public void reloadTank()
     {
@@ -915,6 +991,7 @@ public class MobileEnemyTank extends Tank
     	path=null;
     	nextPoint=null;
     	avoidingMine=false;
+    	generateNextMineLayingTime();
     	
     	//tank does not move initially
         isMoving=false;
@@ -945,5 +1022,19 @@ public class MobileEnemyTank extends Tank
     public int getShellAvoidanceDistance()
     {
     	return 0;
+    }
+    
+    /**
+     * Gets a number that indicates the maximum period in milliseconds
+     * between when mines are laid. The higher the number is , the tank will
+     * lay mines more rarely.  Unless overridden, it returns 1, so that unless
+     * overridden the tank will lay all it's mines immediately and show the 
+     * programmer something is wrong.
+     * @return The maximum period in milliseconds between when mines 
+     * are laid by this tank.
+     */
+    public int getMineLayingPeriod()
+    {
+    	return 1;
     }
 }

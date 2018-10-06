@@ -412,11 +412,21 @@ public class Shell extends Actor
     	return newDirection;
     }
     
+    /**
+     * Gets the correct x position of the shell, represented by a real number.
+     * @return The correct x position of the shell, represented by a real. 
+     * number.
+     */
     public double getRealX()
     {
     	return realX;
     }
     
+    /**
+     * Gets the correct y position of the shell, represented by a real number.
+     * @return The correct y position of the shell, represented by a real .
+     * number.
+     */
     public double getRealY()
     {
     	return realY;

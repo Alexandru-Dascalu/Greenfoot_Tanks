@@ -5,7 +5,7 @@ import java.lang.IllegalArgumentException;
  * <p><b>File name: </b> GraphPoint.java
  * @version 1.0
  * @since 26.08.2018
- * <p><b>Last modification date: </b> 01.09.2018
+ * <p><b>Last modification date: </b> 05.10.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -321,7 +321,7 @@ public class GraphPoint implements Comparable<GraphPoint>
     	tentativeDistance=Integer.MAX_VALUE;
     	visited=false;
     }
-    
+   
     /**
      * Compares this node with other nodes in the graph. This method implements
      * the method in the Comparable interface to be used in the shortest path 
@@ -352,7 +352,7 @@ public class GraphPoint implements Comparable<GraphPoint>
     		return -1;
     	}
     	else
-    		/*if the difference is 0, the nodes are considered equal*/
+    	/*if the difference is 0, the nodes are considered equal*/
     	{
     		return 0;
     	}
@@ -429,8 +429,15 @@ public class GraphPoint implements Comparable<GraphPoint>
     	return distance;
     }
     
+    /**
+     * Calculates the distance between this node and the given land mine.
+     * @param mine The mine whose distance to this node will be calculated.
+     * @return The distance between this node and the given mine, as a double.
+     */
     public double getDistanceFrom(LandMine mine)
     {
+    	//get the horizontal and vertical distances based on the coordinates 
+    	//of the node and the mine.
     	int xDistance=mine.getX()-x;
     	int yDistance=mine.getY()-y;
     	

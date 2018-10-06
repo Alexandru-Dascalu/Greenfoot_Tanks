@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=GraphPoint
-comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ GraphPoint.java\r\n\ @version\ 1.0\r\n\ @since\ 26.08.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 01.09.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ describes\ a\ graph\ node\ used\ for\ finding\ the\ shortest\ path\ for\ a\r\n\ Greenfoot\ recreation\ of\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ a\ node\ \r\n\ in\ the\ graph\ of\ the\ game\ world.\ It\ has\ 8\ neighbours,\ corresponding\ coordinates\r\n\ in\ the\ game\ world,\ and\ class\ variables\ that\ allow\ it\ to\ be\ used\ for\ Diejkstra's\r\n\ algorithm.\ These\ nodes\ are\ not\ meant\ to\ be\ placed\ in\ the\ game\ world\ in\ points\ \r\n\ through\ which\ a\ tank\ can\ not\ pass\ without\ hitting\ a\ wall.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n
+comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ GraphPoint.java\r\n\ @version\ 1.0\r\n\ @since\ 26.08.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 05.10.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ describes\ a\ graph\ node\ used\ for\ finding\ the\ shortest\ path\ for\ a\r\n\ Greenfoot\ recreation\ of\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ a\ node\ \r\n\ in\ the\ graph\ of\ the\ game\ world.\ It\ has\ 8\ neighbours,\ corresponding\ coordinates\r\n\ in\ the\ game\ world,\ and\ class\ variables\ that\ allow\ it\ to\ be\ used\ for\ Diejkstra's\r\n\ algorithm.\ These\ nodes\ are\ not\ meant\ to\ be\ placed\ in\ the\ game\ world\ in\ points\ \r\n\ through\ which\ a\ tank\ can\ not\ pass\ without\ hitting\ a\ wall.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n
 comment1.params=x\ y
 comment1.target=GraphPoint(int,\ int)
 comment1.text=\r\n\ Makes\ a\ new\ graph\ point\ representing\ the\ point\ in\ the\ game\ world\ at\ \r\n\ the\ given\ coordinates.\r\n\ @param\ x\ The\ x\ coordinate\ of\ the\ point\ this\ node\ represents.\r\n\ @param\ y\ The\ y\ coordinate\ of\ the\ point\ this\ node\ represents.\r\n
@@ -27,6 +27,7 @@ comment16.target=double\ getDistance(GraphPoint,\ GraphPoint)
 comment16.text=\r\n\ Calculates\ the\ distance\ between\ 2\ nodes.\r\n\ @param\ a\ A\ GraphPoint\ object.\r\n\ @param\ b\ Another\ GraphPoint\r\n\ @return\ The\ distance\ between\ the\ 2\ nodes.\r\n
 comment17.params=mine
 comment17.target=double\ getDistanceFrom(LandMine)
+comment17.text=\r\n\ Calculates\ the\ distance\ between\ this\ node\ and\ the\ given\ land\ mine.\r\n\ @param\ mine\ The\ mine\ whose\ distance\ to\ this\ node\ will\ be\ calculated.\r\n\ @return\ The\ distance\ between\ this\ node\ and\ the\ given\ mine,\ as\ a\ double.\r\n
 comment2.params=
 comment2.target=int\ getX()
 comment2.text=\r\n\ Getter\ for\ the\ x\ coordinate\ of\ the\ point\ in\ the\ game\ world\ this\ node\ \r\n\ represents.\r\n\ @return\ The\ x\ coordinate\ of\ this\ node.\r\n

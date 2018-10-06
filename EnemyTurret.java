@@ -34,6 +34,9 @@ public class EnemyTurret extends Turret
 	 * immediately because it checks a point inside this turret's tank.*/
 	private static final int NR_INTERVALS_FROM_TANK=3;
 	
+	/**The speed at which this turret turns left or right.*/
+	protected static final int TURN_SPEED=1;
+	
 	/**A boolean that says whether the turret has finished turning to the last 
 	 * position that has been generated, and whether we need to start another
 	 * turn.*/
@@ -43,7 +46,7 @@ public class EnemyTurret extends Turret
 	 * degrees from 0 to 359.*/
 	protected int nextRotation;
 	
-	/**The amount of degrees the turret turns untill the next angle, as stored
+	/**The amount of degrees the turret turns until the next angle, as stored
 	 * in nextRotation. If this value is positive, it turns clockwise, anticlockwise
 	 * if otherwise.*/
 	protected int nextTurn;
@@ -85,8 +88,50 @@ public class EnemyTurret extends Turret
 			{
 				/*We fire the shell, update lastFiring and increment the counter
 				 * of live shells in the world fired by this turret.*/
-				super.fire();
+				//super.fire();
 				lastFiring=System.currentTimeMillis();
+			}
+		}
+	}
+	
+	/**
+	 * Moves the turret around, according to what the calculateTurn() method 
+	 * sets the next rotation of this turret as.
+	 */
+	@Override
+	public void aim()
+	{	
+		/*We check if we need to generate a new angle to rotate towards or 
+		 * finish the current rotation, based on the value of finishTurn.*/
+		if(finishTurn)
+		{
+			calculateTurn();
+		}
+		/*If the previous turn is not finished, the turret needs to turn in the
+		 * correct direction until it reaches nextRotation.*/
+		else
+		{
+			/*Check if the turret has reached nextRotation.*/
+			if(nextRotation==getRotation())
+			{
+				/*If it has, we set finishTurn to true so that a new turn will
+				 * be generated.*/
+				finishTurn=true;
+			}
+			/*Else, the needs to slowly turn in the correct direction.*/
+			else
+			{
+				/*Decide the correct direction.
+				 * If nextTurn is positive, the turret turns clockwise.*/
+				if(nextTurn>=0)
+				{
+					turn(TURN_SPEED);
+				}
+				/*If it is negative, the turret turns anti clockwise*/
+				else
+				{
+					turn(-TURN_SPEED);
+				}
 			}
 		}
 	}
@@ -256,12 +301,20 @@ public class EnemyTurret extends Turret
 		return false;
 	}
 	
+	/**Calculates how the turret should turn next. It modifies the nextRotation,
+	 * nextTurn and finishTurn attributes. Does nothing by default since there
+	 * is no set way an enemy turret moves. Should be overridden always.*/
+	protected void calculateTurn()
+	{
+		
+	}
+	
 	/**Gets the cool down period(in milliseconds) after which this turret can 
 	 * fire another shell. This period is a static variable and is the same for
 	 * all objects of this class. It returns 0 because this method is meant to 
-	 * be always overriden.
+	 * be always overridden.
 	 * @return The period in milliseconds after which this turret can fire another
-	 * shell, which is 0, unless overriden.*/
+	 * shell, which is 0, unless overridden.*/
 	public int getFireCooldown()
 	{
 		return 0;

@@ -3,9 +3,9 @@ import java.util.List;
 
 /**
  * <p><b>File name: </b> Shell.java
- * @version 1.3
+ * @version 1.4
  * @since 04.06.2018
- * <p><b>Last modification date: </b> 07.08.2018
+ * <p><b>Last modification date: </b> 05.10.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -23,10 +23,11 @@ import java.util.List;
  * <p>	-1.1 - Made the mine explode and destroy walls, tanks, shells, mines in
  * it's vicinity. It also explodes when hit by a shell.
  * <p>	-1.2 - The mine now also explodes when stepped on by a tank.
- * <p.	-1.3 - Fixed some bugs relating to exceptions appearing after a tank was
+ * <p>	-1.3 - Fixed some bugs relating to exceptions appearing after a tank was
  *  destroyed by a landmine and as a result the level was cleared or reloaded. 
  *  Also fixed a bug that made the landmine not explode when being stepped on 
  *  by enemy tanks.
+ * <p>	-1.4 - Added getters used by code for the suicide attack of Yellow Tanks.
  */
 
 public class LandMine extends Actor
@@ -55,11 +56,24 @@ public class LandMine extends Actor
 	
 	/**Since when it is first laid down this mine overlaps with it's parent tank,
 	 * it would immediately destroy it since the tank "steps" on it. This boolean
-	 * tells us if we need to destroy the parent tank.When the mine is made, it is
+	 * tells us if we need to destroy the parent tank. When the mine is made, it is
 	 * set to false, and when the mine sees the parent tank does not overlap it
 	 * anymore, it is set to true so that if the player steps on this mine again,
 	 * it will explode.*/
 	private boolean destroyParent;
+	
+	/**A flag that tells the parent tank if it can ignore this mine when it detects
+	 * it being too close. Since immediately after being laid, the mine is too 
+	 * close to it's parent tank, the tank would normally want to avoid it. But 
+	 * since all nodes around the tank are all too close to the mine, the path
+	 * returned would be null.To avoid this, this flag is set to true until the 
+	 * first time the parent tank is safely away from the mine (so that the tank
+	 * will just continue it's path), after which if it encounters it again the 
+	 * tank will avoid it as normal.
+	 * 
+	 * If the parent tank is not a MobileEnemyTank, then this flag is set to 
+	 * false the first time the act() method is called.*/
+	private boolean canBeIgnoredByParent;
 	
 	/**
 	 * Make a new land mine, with the parent tank being the one given in the
@@ -73,6 +87,7 @@ public class LandMine extends Actor
 		creationTime=System.currentTimeMillis();
 		this.parentTank=parentTank;
 		destroyParent=false;
+		canBeIgnoredByParent=true;
 	}
 	
     /**
@@ -85,6 +100,13 @@ public class LandMine extends Actor
 	@Override
     public void act() 
     {
+		//Check if this mine can be ignored by it's parent.
+		if(canBeIgnoredByParent)
+		{
+			/*If so, calculate if the flag should be set to false.*/
+			updateIgnoredByParent();
+		}
+		
     	/*To decide if it needs to flash or explode, we need to know the current 
     	 * time.*/
     	long currentTime=System.currentTimeMillis();
@@ -211,6 +233,41 @@ public class LandMine extends Actor
     	return !getIntersectingObjects(Shell.class).isEmpty();
     }
     
+    /*Decides if the canBeIgnoredByParent flag can be set to false.*/
+    private void updateIgnoredByParent()
+    {
+    	/*To get the mine avoidance distance, the parentTank should be cast as 
+    	 * a MobileEnemyTank.*/
+    	MobileEnemyTank tank=null;
+    	try
+    	{
+    		//cast the parent tank as a MobileEnemyTank
+    		tank=(MobileEnemyTank)parentTank;
+	   	}
+	   	/*If the parent tank is not a MobileEnemyTank, catch the exception, set
+	   	 * the flag to false and terminate this method.*/
+	   	catch(ClassCastException e)
+	   	{
+	   		canBeIgnoredByParent=false;
+	   		return;
+	   	}
+    	
+    	//get the horizontal and vertical distances based on the coordinates 
+    	//of each node.
+    	int xDistance=parentTank.getX()-getX();
+    	int yDistance=parentTank.getY()-getY();
+    	
+    	/*Calculate the distance using Pythagora's theorem.*/
+    	int distance=(int)Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
+    	
+    	/*Check if the distance between this mine and it's parent tank is bigger
+    	 * than this tank's mine avoidance distance.*/
+    	if(distance>tank.getMineAvoidanceDistance())
+    	{
+    		canBeIgnoredByParent=false;
+    	}
+    }
+    
     /**
      * Determines if the mine is being stepped on by a tank.
      * @return True if the mine is being stepped on by a tank, false if not.
@@ -258,5 +315,40 @@ public class LandMine extends Actor
     	{
     		return false;
     	}
+    }
+    
+    /**
+     * Gets the tank that laid this mine.
+     * @return the tank that laid this mine.
+     */
+    public Tank getParentTank()
+    {
+    	return parentTank;
+    }
+    
+    /**Gets the flag that indicates if this mine can destroy it's parent tank if 
+     * that is the only tank stepping on it.
+     * @return True if this mine can destroy it's parent tank, false if not.
+     */
+    public boolean getDestroyParent()
+    {
+    	return destroyParent;
+    }
+    
+    /**
+     * Gets the flag that tells if the parent tank can safely ignore this mine.
+     * Since immediately after being laid, the mine is too close to it's parent
+     * tank, the tank would normally want to avoid it. But since all nodes 
+     * around the tank are all too close to the mine, the path returned would 
+     * be null.To avoid this, this flag is set to true until the first time the
+     * parent tank is safely away from the mine (so that the tank will just 
+     * continue it's path), after which if it encounters it again the tank will 
+     * avoid it as normal.
+     * @return the flag that tells if the parent tank can safely ignore this
+     * mine.
+     */
+    public boolean canBeIgnoredByParent()
+    {
+    	return canBeIgnoredByParent;
     }
 }
