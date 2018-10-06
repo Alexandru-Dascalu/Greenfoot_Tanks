@@ -1,47 +1,49 @@
-import greenfoot.*;
+import greenfoot.Greenfoot;
+import greenfoot.World;
+
 /**
- * <p><b>File name: </b> TurquoiseTurret.java
+ * <p><b>File name: </b> YellowTurret.java
  * @version 1.0
- * @since 14.08.2018
- * <p><b>Last modification date: </b> 14.09.2018
+ * @since 28.09.2018
+ * <p><b>Last modification date: </b> 03.10.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
  * 
  * <p><b>Purpose: </b>
- * <p> This class models a turquoise enemy turret for a Greenfoot recreation of 
- * the Wii Tanks game for the Nintendo Wii. It strongly follows the position of 
+ * <p> This class models a yellow enemy turret for a Greenfoot recreation of 
+ * the Wii Tanks game for the Nintendo Wii. It mildly follows the position of 
  * the  player tank and fires at it if it can hit it. It cannot fire another 
- * shell if the cool down period has not passed and if there is another shell 
- * fired by this turret still in the world.
+ * shell if the cool down period has not passed and if there are already 2 
+ * shells fired by this turret still in the game world.
  * 
  * <p><b>Version History</b>
  * <p>	-1.0 - Created the class.
  */
 
-public class TurquoiseTurret extends EnemyTurret
+public class YellowTurret extends EnemyTurret
 {
+	/**A reference to the player tank of the game world this turret is in.*/
+	private PlayerTank playerTank;
+	
 	/**The cooldown period in miliseconds after firing which the turret will not 
 	 * fire again. It's value is {@value}.*/
-	private static final int FIRE_COOLDOWN=1000;
+	private static final int FIRE_COOLDOWN=1100;
 	
 	/**The maximum number of shells that the turret has fired that can be in the 
 	 * world at the same time. It's value is {@value}.*/
-	private static final int LIVE_SHELLS_ALLOWED=1;
+	private static final int LIVE_SHELLS_ALLOWED=2;
 	
 	/**The size in degrees of the angle of an imaginary cone whose axis extends
 	 * to the position of the player tank. In this angle the turret moves 
 	 * randomly. It's value is {@value}.*/
-	private static final int AIM_ANGLE=20;
-	
-	/**A reference to the player tank of the game world this turret is in.*/
-	private PlayerTank playerTank;
+	private static final int AIM_ANGLE=50;
 	
 	/**
 	 * Makes a new Turquoise Turret on the Tank given as an argument.
 	 * @param tank The tank on which this Turret will be placed.
 	 */
-	public TurquoiseTurret(Tank tank)
+	public YellowTurret(Tank tank)
 	{
 		//just call the supertype constructor
 		super(tank);
@@ -129,15 +131,4 @@ public class TurquoiseTurret extends EnemyTurret
 	{
 		return LIVE_SHELLS_ALLOWED;
 	}
-	
-	/**
-	 * Indicates the type of shell fired by this turret.
-	 * @return The type of shell fired by this turret, indicated by a Class 
-	 * object.
-	 */
-	@Override
-	public Class<?> getShellType()
-    {
-    	return RocketShell.class;
-    }
 }

@@ -4,7 +4,7 @@ import greenfoot.*;
  * <p><b>File name: </b> BrownTurret.java
  * @version 1.6
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 14.08.2018
+ * <p><b>Last modification date: </b> 29.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright: </b>
  * <p>No copyright.
@@ -43,9 +43,6 @@ public class BrownTurret extends EnemyTurret
 	 * world at the same time. It's value is {@value}.*/
 	private static final int LIVE_SHELLS_ALLOWED=2;
 	
-	/**The speed at which this turret turns left or right.*/
-	private static final int TURN_SPEED=1;
-	
 	/**
 	 * Makes a new Brown Turret on the tank given as an argument.
 	 * @param tank The tank on which this Turret will be placed.
@@ -55,90 +52,57 @@ public class BrownTurret extends EnemyTurret
 		super(tank);
 	}
 	
-	/**
-	 * Randomly moves the turret around.
-	 */
+	/**Calculates how the turret should turn next. It modifies the nextRotation,
+	 * nextTurn and finishTurn attributes. Makes the turret move randomly.*/
 	@Override
-	public void aim()
-	{	
-		/*We check if we need to generate a new angle to rotate towards or 
-		 * finish the current rotation, based on the value of finishTurn*/
-		if(finishTurn)
+	protected void calculateTurn()
+	{
+		/*We generate a new angle. We would like this turret to have varried
+		 * movements, but then if the generated angle is big it would turn 
+		 * around too much. Therefore, we generate a random number (turnChance),
+		 * based on which we will decide the upper limit of the degrees the 
+		 * turret will turn.*/
+		int turnChance=Greenfoot.getRandomNumber(100);
+		int upperLimit;
+		
+		/*Based on the value of turnChance, we decide the upperLimit in degree 
+		 * of the next turn. This is because we would like the turret to have varied
+		 * moves, so it will mostly make small turns, but sometimes it might
+		 * also make huge turns.*/
+		if(turnChance<60)
 		{
-			/*If the previous turn was finished, we generate a new angle.
-			 * We would like this turret to have varried movements, but then if
-			 * the generated angle is big it would turn around too much. Therefore,
-			 * we generate a random number (turnChance), based on which we will
-			 * decide the upper limit of the degrees the turret will turn.*/
-			int turnChance=Greenfoot.getRandomNumber(100);
-			int upperLimit;
-			
-			/*Based on the value of turnChance, we decide the upperLimit in degree 
-			 * of the next turn. This is because we would like the turret to have varied
-			 * moves, so it will mostly make small turns, but sometimes it might
-			 * also make huge turns.*/
-			if(turnChance<60)
-			{
-				/*There is a 60% chance that the upperLimit is 160.*/
-				upperLimit=160;
-			}
-			/*Otherwise, the upper limit is 720.*/
-			else
-			{
-				upperLimit=720;
-			}
-		
-			/*We would like the turret to be able to turn in either direction,
-			 * so we subtract from the random number half of the upper limit. This
-			 * means we will get a number either from -80 to 80, exclusive, or from
-			 * -360 to 360, exclusive.*/
-			nextTurn=Greenfoot.getRandomNumber(upperLimit)-(upperLimit/2);
-			
-			/*We need to know when to stop, so we calculate the rotation of the 
-			 * turret after it will have turned nextTurn degrees. In Greenfoot 
-			 * the rotation of an object is from 0 to 359, so we use MOD 360
-			 * to ensure that, after we add nextTurn to the current rotation
-			 * of the turret.*/
-			nextRotation=(getRotation()+nextTurn)%360;
-			
-			/*nextTurn may be negative and thus nextRotation could also be.
-			 * By adding 360 we get the equivalent positive angle.*/
-			if(nextRotation<0)
-			{
-				nextRotation=360+nextRotation;
-			}
-		
-			/*The turret has a new angle to turn towards now, so it has not
-			 * finished it's current turn.*/
-			finishTurn=false;
+			/*There is a 60% chance that the upperLimit is 160.*/
+			upperLimit=160;
 		}
-		/*If the previous turn is not finished, the turret needs to turn in the
-		 * correct direction until it reaches nextRotation.*/
+		/*Otherwise, the upper limit is 720.*/
 		else
 		{
-			/*Check if the turret has reached nextRotation.*/
-			if(nextRotation==getRotation())
-			{
-				/*If it has, we set finishTurn to true so that a new turn will
-				 * be generated.*/
-				finishTurn=true;
-			}
-			/*Else, the needs to slowly turn in the correct direction.*/
-			else
-			{
-				/*Decide the correct direction.
-				 * If nextTurn is positive, the turret turns clockwise.*/
-				if(nextTurn>=0)
-				{
-					turn(TURN_SPEED);
-				}
-				/*If it is negative, the turret turns anti clockwise*/
-				else
-				{
-					turn(-TURN_SPEED);
-				}
-			}
+			upperLimit=720;
 		}
+	
+		/*We would like the turret to be able to turn in either direction,
+		 * so we subtract from the random number half of the upper limit. This
+		 * means we will get a number either from -80 to 80, exclusive, or from
+		 * -360 to 360, exclusive.*/
+		nextTurn=Greenfoot.getRandomNumber(upperLimit)-(upperLimit/2);
+		
+		/*We need to know when to stop, so we calculate the rotation of the 
+		 * turret after it will have turned nextTurn degrees. In Greenfoot 
+		 * the rotation of an object is from 0 to 359, so we use MOD 360
+		 * to ensure that, after we add nextTurn to the current rotation
+		 * of the turret.*/
+		nextRotation=(getRotation()+nextTurn)%360;
+		
+		/*nextTurn may be negative and thus nextRotation could also be.
+		 * By adding 360 we get the equivalent positive angle.*/
+		if(nextRotation<0)
+		{
+			nextRotation=360+nextRotation;
+		}
+	
+		/*The turret has a new angle to turn towards now, so it has not
+		 * finished it's current turn.*/
+		finishTurn=false;
 	}
 	
 	/**Gets the cool down period(in milliseconds) after which this turret can 

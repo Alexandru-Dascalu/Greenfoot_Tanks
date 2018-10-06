@@ -42,7 +42,7 @@ public class PlayerTank extends Tank
     
     /**The maximum number of mines this type of tank can lay in one level. It's
      * value is {@value}.*/
-    private static final int NR_OF_MINES=100;
+    private static final int NR_OF_MINES=2;
 	
 	/**The last information about the state of the mouse we have.*/
     private MouseInfo lastMouseInfo;
@@ -105,7 +105,6 @@ public class PlayerTank extends Tank
 		if(middleMBClicked() && minesLaid<getNumberOfMines())
 		{
 			layMine();
-			minesLaid++;
 		}
 	}
 	

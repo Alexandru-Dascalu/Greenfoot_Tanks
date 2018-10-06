@@ -245,11 +245,15 @@ public class Tank extends Actor
 	/**Makes the tank lay down a land mine.*/
 	protected void layMine()
 	{
-		World world= getWorld();
+		//get a reference to the world the tank is in
+		TankWorld world= getWorldOfType(TankWorld.class);
 		
 		//make a new land mine and put it in the game world
 		LandMine mine=new LandMine(this);
-		world.addObject(mine, getX(), getY());
+		
+		//lay the mine in the world where this tank is
+		world.addObject(mine, getX(),getY());
+		minesLaid++;
 	}
 	
 	/**
@@ -1017,7 +1021,7 @@ public class Tank extends Actor
 	
 	/**Method reloads this tank into the game world to prepare it for another start
 	 * of the current level, meaning it resets the position and orientation of this
-	 * tank and it's turret. */
+	 * tank and it's turret, and all other instance variables. */
 	public void reloadTank()
 	{
 		TankWorld world=getWorldOfType(TankWorld.class);
@@ -1054,10 +1058,25 @@ public class Tank extends Actor
 		//Check if the value is negative.
 		if(normalizedAngle<0)
 		{
-			//If it is, make it an equivalent positiv value.
+			//If it is, make it an equivalent positive value.
 			normalizedAngle+=360;
 		}
 		
 		return normalizedAngle;
 	}
+	
+	/**
+	 * Gets the distance between this tank and another given tank.
+	 * @return The distance between this tank and the given tank as a double.
+	 */
+	public double getDistanceFrom(Tank tank)
+    {
+		//get the distances between the 2 tanks on the the 2 axes of the world
+    	int xDistance=tank.getX()-getX();
+    	int yDistance=tank.getY()-getY();
+    	
+    	/*Calculate the distance using Pythagora's theorem.*/
+    	double distance=Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
+    	return distance;
+    }
 }
