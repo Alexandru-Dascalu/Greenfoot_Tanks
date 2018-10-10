@@ -29,11 +29,23 @@ public class BrownTank extends Tank
 	 * as arguments.
 	 * @param startX The starting x coordinate of this tank.
 	 * @param startY The starting y coordinate of this tank.
+	 * @param startRotation The starting rotation of this tank in the world.
 	 */
-	public BrownTank(int startX, int startY)
+	public BrownTank(int startX, int startY, int startRotation)
 	{
 		//simply calls the constructor of the superclass.
-		super(startX,startY);
+		super(startX,startY, startRotation);
+	}
+	
+	/**
+	 * Overrides the superclass addedToWorld method so that a Brown Turret will be 
+	 * placed on this tank not a simple Turret object.
+	 */
+	@Override
+	protected void addedToWorld(World world)
+	{
+		setRotation(startRotation);
+		tankTurret=new BrownTurret(this);
 	}
 	
 	/**
@@ -68,16 +80,5 @@ public class BrownTank extends Tank
 	public boolean isMovingForward()
 	{
 		return false;
-	}
-	
-	/**
-	 * Overrides the superclass addedToWorld method so that a Brown Turret will be 
-	 * placed on this tank not a simple Turret object.
-	 */
-	@Override
-	protected void addedToWorld(World world)
-	{
-		this.setRotation(180);
-		tankTurret=new BrownTurret(this);
 	}
 }

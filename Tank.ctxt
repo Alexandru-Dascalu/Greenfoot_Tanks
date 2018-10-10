@@ -1,9 +1,9 @@
 #BlueJ class context
 comment0.target=Tank
 comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ Tank.java\r\n\ @version\ 1.7\r\n\ @since\ 02.05.2018\r\n\ <p><p><b>Last\ modification\ date\:\ </b>\ 03.09.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ general\ tank\ for\ a\ Greenfoot\ recreation\ of\ the\ Wii\ Tanks\ \r\n\ game\ for\ the\ Nintendo\ Wii.\ By\ default,\ it\ moves,\ plays\ a\ sound\ when\ moving\r\n\ and\ tells\ it's\ turret\ to\ aim\ and\ fire.\ It\ is\ meant\ to\ be\ inherited\ always\ and\r\n\ you\ should\ not\ have\ an\ actor\ that\ is\ just\ a\ Tank\ object\ since\ the\ class\ was\r\n\ not\ meant\ to\ be\ used\ in\ this\ way.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ a\ simple\ tank\ that\ does\ not\ move.\r\n\ <p>\t-1.1\ -\ Made\ the\ tank\ move\ using\ keyboard\ input.\r\n\ <p>\t-1.2\ -\ Made\ the\ tank\ play\ a\ sound\ when\ moving.\r\n\ <p>\t-1.3\ -\ Made\ the\ tank\ generate\ a\ simple\ tank\ turret\ on\ top\ if\ it\ when\ it\r\n\ is\ added\ to\ the\ world.\r\n\ <p>\ \ -1.4\ -\ Made\ the\ tank\ detect\ collisions\ with\ walls\ and\ not\ move\ into\ wall\r\n\ blocks.\r\n\ <p>\ \ -1.5\ -\ Modified\ this\ class\ to\ be\ a\ general\ tank\ class\ and\ moved\ part\ of\ \r\n\ code\ into\ the\ PlayerTank\ class,\ which\ inherits\ from\ this.\r\n\ <p>\t-1.6\ -\ Modified\ this\ class\ so\ tanks\ can\ push\ each\ other\ while\ moving.\r\n\ <p>\t-1.7\ -\ Added\ a\ getMaxTurnSpeed()\ method\ to\ be\ overriden\ in\ the\ player\ \r\n\ tank\ and\ mobile\ enemy\ tanks\ subclasses.\r\n
-comment1.params=startX\ startY
-comment1.target=Tank(int,\ int)
-comment1.text=\r\n\ Makes\ a\ new\ tank\ object.\r\n\ @param\ startX\ The\ starting\ x\ position\ of\ the\ tank\ in\ the\ world.\r\n\ @param\ startY\ The\ starting\ y\ position\ of\ the\ tank\ in\ the\ world.\r\n
+comment1.params=startX\ startY\ startRotation
+comment1.target=Tank(int,\ int,\ int)
+comment1.text=\r\n\ Makes\ a\ new\ tank\ object.\r\n\ @param\ startX\ The\ starting\ x\ position\ of\ the\ tank\ in\ the\ world.\r\n\ @param\ startY\ The\ starting\ y\ position\ of\ the\ tank\ in\ the\ world.\r\n\ @param\ startRotation\ The\ starting\ rotation\ of\ this\ tank\ in\ the\ world.\r\n
 comment10.params=
 comment10.target=boolean\ canTurnLeft()
 comment10.text=\r\n\ Method\ checks\ if\ the\ tank\ can\ turn\ left.\r\n\ @return\ True\ if\ the\ tank\ can\ turn\ left,\ false\ if\ not.\r\n

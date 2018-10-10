@@ -32,7 +32,7 @@ public class TurquoiseTurret extends EnemyTurret
 	/**The size in degrees of the angle of an imaginary cone whose axis extends
 	 * to the position of the player tank. In this angle the turret moves 
 	 * randomly. It's value is {@value}.*/
-	private static final int AIM_ANGLE=20;
+	private static final int AIM_ANGLE=30;
 	
 	/**A reference to the player tank of the game world this turret is in.*/
 	private PlayerTank playerTank;
@@ -55,6 +55,7 @@ public class TurquoiseTurret extends EnemyTurret
 	{
 		//get the reference to the player tank of the world
 		playerTank=((TankWorld)world).getPlayerTank();
+		super.addedToWorld(world);
 	}
 	
 	/**Calculates how the turret should turn next. It modifies the nextRotation,

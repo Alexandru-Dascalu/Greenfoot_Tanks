@@ -1,9 +1,9 @@
 #BlueJ class context
 comment0.target=PlayerTank
 comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ PlayerTank.java\r\n\ @version\ 1.4\r\n\ @since\ 07.06.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 04.09.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ player\ tank\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ a\ tank\ controller\ by\ the\ player.\r\n\ The\ player\ can\ drive\ the\ tank,\ fire\ shells\ and\ lay\ mines.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n\ <p>\t-1.1\ -\ Encapsulated\ the\ turret\ actions\ of\ firing\ and\ aiming\ into\ this\ classes,\r\n\ meaning\ the\ aim()\ and\ fire()\ methods\ are\ called\ by\ the\ tank's\ act()\ method.\r\n\ <p>\t-1.2\ -\ Encapsulated\ mouse\ tracking\ into\ this\ class.\ The\ tank\ detects\ a\r\n\ mouse\ click\ and\ then\ tells\ the\ turret\ to\ fire\ or\ lays\ a\ mine\ ,\ depending\ on\r\n\ the\ mouse\ button\ clicked.\r\n\ <p>\t-1.3\ -\ Changed\ the\ class\ so\ player\ tanks\ can\ push\ other\ tanks\ it\ encounters.\r\n\ <p>\t-1.4\ -\ Added\ a\ method\ that\ calculates\ the\ distance\ between\ the\ point\ at\ the\ \r\n\ given\ coordinates\ and\ this\ tank.\r\n
-comment1.params=startX\ startY
-comment1.target=PlayerTank(int,\ int)
-comment1.text=\r\n\ Make\ a\ new\ player\ tank\ object.\r\n\ @param\ startX\ The\ starting\ x\ coordinate\ in\ the\ world\ for\ this\ tank.\r\n\ @param\ startY\ The\ starting\ x\ coordinate\ in\ the\ world\ for\ this\ tank.\r\n
+comment1.params=startX\ startY\ startRotation
+comment1.target=PlayerTank(int,\ int,\ int)
+comment1.text=\r\n\ Make\ a\ new\ player\ tank\ object.\r\n\ @param\ startX\ The\ starting\ x\ coordinate\ in\ the\ world\ for\ this\ tank.\r\n\ @param\ startY\ The\ starting\ x\ coordinate\ in\ the\ world\ for\ this\ tank.\r\n\ @param\ startRotation\ The\ starting\ rotation\ of\ this\ tank\ in\ the\ world.\r\n
 comment10.params=
 comment10.target=boolean\ isMovingBackward()
 comment10.text=\r\n\ Checks\ if\ the\ tank\ is\ moving\ backward.\r\n\ @return\ True\ if\ the\ "s"\ key\ is\ pressed,\ false\ if\ not.\r\n

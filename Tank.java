@@ -68,6 +68,8 @@ public class Tank extends Actor
 	 * to put the tank when the level is reloaded.*/
 	protected final int startY;
 	
+	protected final int startRotation;
+	
 	/**The correct x position of the tank, represented by a real number.*/
 	protected double realX;
 	
@@ -81,8 +83,9 @@ public class Tank extends Actor
 	 * Makes a new tank object.
 	 * @param startX The starting x position of the tank in the world.
 	 * @param startY The starting y position of the tank in the world.
+	 * @param startRotation The starting rotation of this tank in the world.
 	 */
-	public Tank(int startX, int startY)
+	public Tank(int startX, int startY, int startRotation)
 	{
 		//make new tank
 		super();
@@ -91,6 +94,7 @@ public class Tank extends Actor
 		 * the sound object of this tank.*/
 		this.startX=startX;
 		this.startY=startY;
+		this.startRotation=startRotation;
 		realX=startX;
 		realY=startY;
 		
@@ -102,7 +106,7 @@ public class Tank extends Actor
 	@Override
 	protected void addedToWorld(World world)
 	{
-		setRotation(180);
+		setRotation(startRotation);
 		this.tankTurret = new Turret(this);
 	}
 	
@@ -1039,8 +1043,8 @@ public class Tank extends Actor
 			 * their orientation.*/
 			setLocation(startX,startY);
 			tankTurret.setLocation(startX, startY);
-			setRotation(180);
-			tankTurret.setRotation(180);
+			setRotation(startRotation);
+			tankTurret.setRotation(startRotation);
 		}
 	}
 	

@@ -1,9 +1,9 @@
 #BlueJ class context
 comment0.target=YellowTank
 comment0.text=\r\n\ <p><b>File\ name\:\ </b>\ YellowTank.java\r\n\ @version\ 1.1\r\n\ @since\ 28.09.2018\r\n\ <p><b>Last\ modification\ date\:\ </b>\ 05.10.2018\r\n\ @author\ Alexandru\ F.\ Dascalu\r\n\ <p><b>Copyright\:\ </b>\r\n\ <p>No\ copyright.\r\n\ \r\n\ <p><b>Purpose\:\ </b>\r\n\ <p>\ This\ class\ models\ a\ yellow\ enemy\ tank\ for\ a\ Greenfoot\ recreation\ of\ \r\n\ the\ Wii\ Tanks\ game\ for\ the\ Nintendo\ Wii.\ It\ is\ a\ tank\ with\ a\ medium\ \r\n\ speed,\ agile,\ that\ specialises\ in\ laying\ mines.\ It\ lays\ four\ mines\ randomly\r\n\ and\ it\ can\ also\ do\ a\ suicide\ attack\ on\ the\ player.\r\n\ \r\n\ <p><b>Version\ History</b>\r\n\ <p>\t-1.0\ -\ Created\ the\ class.\r\n\ <p>\t-1.1\ -\ Made\ Yellow\ tanks\ do\ a\ suicide\ attack\ on\ the\ player\ where\ they\r\n\ get\ close\ to\ the\ player,\ lay\ a\ mine\ then\ step\ on\ it\ to\ set\ it\ off.\r\n
-comment1.params=startX\ startY
-comment1.target=YellowTank(int,\ int)
-comment1.text=\r\n\ Make\ a\ new\ TurquoiseTank\ whose\ starting\ position\ will\ be\ at\ the\ given\r\n\ coordinates.\r\n\ @param\ startX\ The\ x\ coordinate\ the\ tank\ will\ be\ at\ the\ beginning\ of\ the\r\n\ level.\r\n\ @param\ startY\ The\ y\ coordinate\ the\ tank\ will\ be\ at\ the\ beginning\ of\ the\r\n\ level.\r\n
+comment1.params=startX\ startY\ startRotation
+comment1.target=YellowTank(int,\ int,\ int)
+comment1.text=\r\n\ Make\ a\ new\ TurquoiseTank\ whose\ starting\ position\ will\ be\ at\ the\ given\r\n\ coordinates.\r\n\ @param\ startX\ The\ x\ coordinate\ the\ tank\ will\ be\ at\ the\ beginning\ of\ the\r\n\ level.\r\n\ @param\ startY\ The\ y\ coordinate\ the\ tank\ will\ be\ at\ the\ beginning\ of\ the\r\n\ level.\r\n\ @param\ startRotation\ The\ starting\ rotation\ of\ this\ tank\ in\ the\ world.\r\n
 comment10.params=
 comment10.target=int\ getMineAvoidanceDistance()
 comment10.text=\r\n\ Indicates\ the\ safe\ distance\ this\ type\ of\ tank\ will\ keep\ from\ a\ mine\ when\r\n\ it\ is\ avoiding\ a\ mine.\r\n\ @return\ the\ safe\ distance\ this\ type\ of\ tank\ will\ keep\ from\ a\ mine\ when\r\n\ it\ is\ avoiding\ a\ mine.\r\n

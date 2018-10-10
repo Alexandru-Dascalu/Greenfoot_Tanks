@@ -57,6 +57,7 @@ public class YellowTurret extends EnemyTurret
 	{
 		//get the reference to the player tank of the world
 		playerTank=((TankWorld)world).getPlayerTank();
+		super.addedToWorld(world);
 	}
 	
 	/**Calculates how the turret should turn next. It modifies the nextRotation,

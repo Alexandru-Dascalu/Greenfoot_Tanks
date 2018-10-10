@@ -56,10 +56,11 @@ public class PlayerTank extends Tank
 	* Make a new player tank object.
 	* @param startX The starting x coordinate in the world for this tank.
 	* @param startY The starting x coordinate in the world for this tank.
+	* @param startRotation The starting rotation of this tank in the world.
 	*/
-	public PlayerTank(int startX, int startY)
+	public PlayerTank(int startX, int startY, int startRotation)
 	{
-		super(startX,startY);
+		super(startX,startY, startRotation);
 		lastMouseInfo=null;
 		leftMBPressStart=0;
 	}
@@ -71,7 +72,7 @@ public class PlayerTank extends Tank
 	@Override
 	protected void addedToWorld(World world)
 	{
-		this.setRotation(180);
+		setRotation(startRotation);
 		tankTurret=new PlayerTurret(this);
 	}
 	
