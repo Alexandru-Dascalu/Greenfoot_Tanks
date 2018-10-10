@@ -657,7 +657,7 @@ public class TankWorld extends World
         
         YellowTank enemy7=new YellowTank(858, 648, 270);
         addObject(enemy7, 858, 648);
-        enemyTanks=6;
+        enemyTanks=7;
     }
     
     /**Shows the updated start screen display for the start of this level.
