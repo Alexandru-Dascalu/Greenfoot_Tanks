@@ -71,11 +71,12 @@ public class YellowTank extends MobileEnemyTank
      * level.
      * @param startY The y coordinate the tank will be at the beginning of the
      * level.
+	 * @param startRotation The starting rotation of this tank in the world.
      */
-    public YellowTank(int startX, int startY)
+    public YellowTank(int startX, int startY, int startRotation)
     {
     	//simply calls the constructor of the superclass.
-        super(startX, startY);
+        super(startX, startY, startRotation);
         
         //initialise instance variables
         suicideMine=null;
@@ -90,7 +91,7 @@ public class YellowTank extends MobileEnemyTank
     @Override
     protected void addedToWorld(World world)
     {
-    	this.setRotation(270);
+    	this.setRotation(startRotation);
     	tankTurret=new YellowTurret(this);
     }
     

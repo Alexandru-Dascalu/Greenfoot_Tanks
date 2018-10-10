@@ -92,11 +92,12 @@ public class MobileEnemyTank extends Tank
 	 * the level.
 	 * @param startY The y coordinate of the initial position of the tank in 
 	 * the level.
+	 * @param startRotation The starting rotation of this tank in the world.
 	 */
-    public MobileEnemyTank(int startX, int startY)
+    public MobileEnemyTank(int startX, int startY, int startRotation)
     {
     	//call superclass constructor
-        super(startX, startY);
+        super(startX, startY, startRotation);
         
         //initialise all instance variables of this subclass
         numberGenerator=new Random();
@@ -214,18 +215,6 @@ public class MobileEnemyTank extends Tank
     	path=world.getWorldGraph().getShortestPath(getX(), getY(), 
     			destination);
     	
-    	/*The method getShortestPath() returns an empty list in the rare case
-    	 * the tank has just laid a mine of it's own and is still closer to that
-    	 * mine than the mine avoidance distance of this type of tank. The idea
-    	 * is so that the tank will just continue to follow the path it had 
-    	 * before. But if we want to generate a new path, then the tank will an 
-    	 * empty path to follow and do nothing. We check for this to avoid it.*/
-    	if(path.isEmpty())
-    	{
-    		/*add the destination point to the path so that the tank will move
-    		 * and not stop.*/
-    		path.add(destination);
-    	}
     }
     
     /**Chooses a random destination point for the tank to get to.*/
@@ -869,7 +858,7 @@ public class MobileEnemyTank extends Tank
 		}
     	/*If in this process the path becomes empty,
    	     * we catch the exception that is thrown.*/
-    	catch(NoSuchElementException e)
+    	catch(NullPointerException | NoSuchElementException e)
 		{
     		/*If so, set the path to null and return to make the tank generate 
     		 * a new path for it to follow.*/
@@ -893,12 +882,24 @@ public class MobileEnemyTank extends Tank
     	LinkedList<GraphPoint> avoidancePath=worldGraph.getPathAvoidingMine
     			(this, mine , target);
     	
-    	/*insert the path returned by the getPathAvoidingMine method in the
-    	 * beginning of the regular path of the tank*/
-    	path.addAll(0, avoidancePath);
-    	
-    	//the tank is currently avoiding the mine, so set the flag accordingly.
-    	avoidingMine=true;
+    	/*Check if the returned path is null, which may happen if the mine blocks
+    	 * the only path leading to the destination point and there is not enough 
+    	 * space around it.*/
+    	if(avoidancePath!=null)
+    	{
+    		//the tank is currently avoiding the mine, so set the flag accordingly.
+        	avoidingMine=true;
+        	
+        	/*insert the path returned by the getPathAvoidingMine method in the
+        	 * beginning of the regular path of the tank*/
+    		path.addAll(0, avoidancePath);
+    	}
+    	/*If it is null, set the entire path to null so the tank will generate a
+    	 * new path to follow.*/
+    	else
+    	{
+    		path=null;
+    	}
     }
     
     /**Makes the tank randomly lay mines, based on how many mines this type of 

@@ -47,11 +47,12 @@ public class TurquoiseTank extends MobileEnemyTank
      * level.
      * @param startY The y coordinate the tank will be at the beginning of the
      * level.
+	 * @param startRotation The starting rotation of this tank in the world.
      */
-    public TurquoiseTank(int startX, int startY)
+    public TurquoiseTank(int startX, int startY, int startRotation)
     {
     	//simply calls the constructor of the superclass.
-        super(startX, startY);
+        super(startX, startY, startRotation);
     }
     
     /**
@@ -61,7 +62,7 @@ public class TurquoiseTank extends MobileEnemyTank
     @Override
     protected void addedToWorld(World world)
     {
-    	this.setRotation(270);
+    	setRotation(startRotation);
     	tankTurret=new TurquoiseTurret(this);
     }
   
