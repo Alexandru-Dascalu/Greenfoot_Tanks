@@ -241,13 +241,16 @@ public class TankWorld extends World
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemy1=new BrownTank(910,400,180);
+       /* BrownTank enemy1=new BrownTank(910,400,180);
         addObject(enemy1, 910, 400);
         
         BrownTank enemy2=new BrownTank(450,190,90);
-        addObject(enemy2, 450,190);
+        addObject(enemy2, 450,190);*/
+        
+        GreenTank enemy1=new GreenTank(450, 190, 90);
+        addObject(enemy1, 450, 190);
        
-        enemyTanks=2;
+        enemyTanks=1;
     }
     
     /**
@@ -457,7 +460,7 @@ public class TankWorld extends World
         BrownTank enemy1=new BrownTank(137, 117, 90);
         addObject(enemy1, 137, 117);
         
-        BrownTank enemy2=new BrownTank(875, 355, 180);
+        GreenTank enemy2=new GreenTank(875, 355, 180);
         addObject(enemy2, 875, 355);
         
         YellowTank enemy3=new YellowTank(518, 116, 90);
@@ -502,7 +505,7 @@ public class TankWorld extends World
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemy1=new BrownTank(680, 395, 180);
+        GreenTank enemy1=new GreenTank(680, 395, 180);
         addObject(enemy1, 680, 395);
         
         TurquoiseTank enemy2=new TurquoiseTank(485, 490, 270);
@@ -542,13 +545,13 @@ public class TankWorld extends World
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemy1=new BrownTank(125, 450, 0);
+        GreenTank enemy1=new GreenTank(125, 450, 0);
         addObject(enemy1, 125, 450);
         
-        BrownTank enemy2=new BrownTank(850, 666, 90);
+        GreenTank enemy2=new GreenTank(850, 666, 90);
         addObject(enemy2, 850, 666);
         
-        BrownTank enemy3=new BrownTank(600, 130, 180);
+        GreenTank enemy3=new GreenTank(600, 130, 180);
         addObject(enemy3, 600, 130);
         
         TurquoiseTank enemy4=new TurquoiseTank(125, 280, 0);
@@ -593,22 +596,22 @@ public class TankWorld extends World
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemy1=new BrownTank(185, 110, 90);
+        GreenTank enemy1=new GreenTank(185, 110, 90);
         addObject(enemy1, 185, 110);
         
-        BrownTank enemy2=new BrownTank(400, 445, 0);
+        GreenTank enemy2=new GreenTank(400, 445, 0);
         addObject(enemy2, 400, 445);
         
-        BrownTank enemy3=new BrownTank(525, 125, 90);
+        GreenTank enemy3=new GreenTank(525, 125, 90);
         addObject(enemy3, 525, 125);
         
-        BrownTank enemy4=new BrownTank(500, 688, 270);
+        GreenTank enemy4=new GreenTank(500, 688, 270);
         addObject(enemy4, 500, 688);
         
-        BrownTank enemy5=new BrownTank(680, 340, 180);
+        GreenTank enemy5=new GreenTank(680, 340, 180);
         addObject(enemy5, 680, 340);
         
-        BrownTank enemy6=new BrownTank(833, 665, 270);
+        GreenTank enemy6=new GreenTank(833, 665, 270);
         addObject(enemy6, 833, 665);
         enemyTanks=6;
     }
@@ -637,10 +640,10 @@ public class TankWorld extends World
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemy1=new BrownTank(140, 640, 0);
+        GreenTank enemy1=new GreenTank(140, 640, 0);
         addObject(enemy1, 140, 640);
         
-        BrownTank enemy2=new BrownTank(528, 690, 180);
+        GreenTank enemy2=new GreenTank(528, 690, 180);
         addObject(enemy2, 528, 690);
         
         BrownTank enemy3=new BrownTank(865, 345, 180);

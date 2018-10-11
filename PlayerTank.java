@@ -318,7 +318,7 @@ public class PlayerTank extends Tank
 	 * coordinates of the tank used for accurate movement. */
 	public void reloadTank(TankWorld world)
 	{
-		/*Check if the tank is in a game world to avoid exceptions.*/
+		/*Check if world is not null to avoid exceptions.*/
 		if(world!=null)
 		{
 			/*Reset the real number values of the tank's position and the counter
@@ -331,8 +331,8 @@ public class PlayerTank extends Tank
 			 * their orientation.*/
 			world.addObject(this, startX, startY);
 			world.addObject(tankTurret, startX, startY);
-			setRotation(180);
-			tankTurret.setRotation(180);
+			setRotation(startRotation);
+			tankTurret.setRotation(startRotation);
 		}
 	}
 	

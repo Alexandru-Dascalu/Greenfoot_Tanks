@@ -37,7 +37,7 @@ public class BrownTurret extends EnemyTurret
 {
 	/**The cooldown period in miliseconds after firing which the turret will not 
 	 * fire again. It's value is {@value}.*/
-	private static final int FIRE_COOLDOWN=1500;
+	private static final int FIRE_COOLDOWN=1400;
 	
 	/**The maximum number of shells that the turret has fired that can be in the 
 	 * world at the same time. It's value is {@value}.*/
@@ -49,6 +49,7 @@ public class BrownTurret extends EnemyTurret
 	 */
 	public BrownTurret(Tank tank)
 	{
+		//just call the supertype constructor
 		super(tank);
 	}
 	
