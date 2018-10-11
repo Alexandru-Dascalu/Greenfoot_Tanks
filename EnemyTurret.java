@@ -1,3 +1,6 @@
+import greenfoot.Greenfoot;
+import greenfoot.World;
+
 /**
  * <p><b>File name: </b> EnemyTurret.java
  * @version 1.1
@@ -54,6 +57,9 @@ public class EnemyTurret extends Turret
 	/**The last time, in milliseconds, that the turret has fired.*/
 	private long lastFiring;
 	
+	/**A reference to the player tank of the game world this turret is in.*/
+	private PlayerTank playerTank;
+	
 	/**
 	 * Makes a new enemy Turret on the Tank given as an argument.
 	 * @param tank The Tank on which this Turret will pe placed.
@@ -68,6 +74,17 @@ public class EnemyTurret extends Turret
 		
 		//no shell has been fired
 		lastFiring=0;
+	}
+	
+	/**
+	 * Prepares this turret to be added in the game world.
+	 */
+	@Override
+	protected void addedToWorld(World world)
+	{
+		//get the reference to the player tank of the world
+		playerTank=((TankWorld)world).getPlayerTank();
+		super.addedToWorld(world);
 	}
 	
 	/**
@@ -302,11 +319,53 @@ public class EnemyTurret extends Turret
 	}
 	
 	/**Calculates how the turret should turn next. It modifies the nextRotation,
-	 * nextTurn and finishTurn attributes. Does nothing by default since there
-	 * is no set way an enemy turret moves. Should be overridden always.*/
+	 * nextTurn and finishTurn attributes. Makes the turret follow the player 
+	 * around, around it does not point at the player exactly, but with a random 
+	 * offset.*/
 	protected void calculateTurn()
 	{
+		/*Get the value of the angle between the horizontal axis and the 
+		 * line between this turret and the player tank.*/
+		double theta=Math.toDegrees(Math.atan2(playerTank.getY()-getY(), 
+    			playerTank.getX()-getX()));
 		
+		//transform that angle into a positive integer between 0 and 359 
+		nextRotation=(int)Math.round(Tank.normalizeAngle(theta));
+		
+		/*We would like the turret to be able to turn in either direction,
+		 * so we subtract from the random number half of the upper limit. This
+		 * means we will get a number from AIM_ANGLE/2 to -AIM_ANGLE/2.*/
+		int aimDifference=Greenfoot.getRandomNumber(getAimAngle())-(getAimAngle()/2);
+		
+		/*The next rotation this turret should reach is obtained by adding 
+		 * the random number of degrees to the rotation need to make the 
+		 * turret point towards the player tank.*/
+		nextRotation=(int)Tank.normalizeAngle(nextRotation+aimDifference);
+		
+		/*Calculate the clockwise and counter clockwise differences between
+		 * the desired rotation and the current rotation of the turret to 
+		 * decide which way the turret will turn.*/
+		int clockwiseDiff=(int)Tank.normalizeAngle(nextRotation-getRotation());
+		int counterClockwiseDiff=(int)Tank.normalizeAngle(getRotation()-nextRotation);
+		
+		/*Check if it is shorter for the turret to turn clockwise.*/
+		if(clockwiseDiff<counterClockwiseDiff)
+		{
+			//if it is, it will turn clockwise
+			nextTurn=clockwiseDiff;
+		}
+		else
+		{
+			/*else it will turn counter clockwise. The differences are positive 
+			 * values, and nextTurn is set to a negative one because the turn(int)
+			 * method turns the actor counter clockwise only if the argument is 
+			 * negative.*/
+			nextTurn=-counterClockwiseDiff;
+		}
+		
+		/*The turret has a new angle to turn towards now, so it has not
+		 * finished it's current turn.*/
+		finishTurn=false;
 	}
 	
 	/**Gets the cool down period(in milliseconds) after which this turret can 
@@ -339,13 +398,31 @@ public class EnemyTurret extends Turret
     		//if so, return the amount of times rocket shells can bounce
     		return RocketShell.TIMES_ALLOWED_TO_BOUNCE;
     	}
+    	/*Else, check if this turret is firing rocket shells MK2.*/
+    	else if(getShellType()==RocketShellMk2.class)
+    	{
+    		//if so, return the amount of times rocket shells can bounce
+    		return RocketShellMk2.TIMES_ALLOWED_TO_BOUNCE;
+    	}
     	else
     	{
     		/*If the shell type is something different, returning it's type
-    		 * bounce limit must be hardcoded. So if it is not, an exception
-    		 * is thrown.*/
+    		 * bounce limit must be hardcoded. Since this method does not 
+    		 * recognize it, throw an exception.*/
     		throw new IllegalStateException("The type of shell fired by this "
-    				+ "turred is not recognized by this method.");
+    				+ "turret is not recognized by this method.");
     	}
+	}
+	
+	/**
+	 * Gets the size in degrees of the angle of an imaginary cone whose axis extends
+	 * to the position of the player tank. In this angle the turret moves 
+	 * randomly. Returns 0 unless overriden, since there is no set behaviour for 
+	 * a basic enemy turret.
+	 * @return The aim angle of this type of turret in relation to the player tank.
+	 */
+	public int getAimAngle()
+	{
+		return 0;
 	}
 }

@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=RocketShellMk2
+comment1.params=rotation\ parent\ x\ y
+comment1.target=RocketShellMk2(int,\ Tank,\ int,\ int)
+comment1.text=\r\n\ Makes\ a\ new\ rocket\ shell\ MK2\ at\ the\ given\ coordinates\ and\ with\ the\ rotation\r\n\ given.\r\n\ @param\ rotation\ The\ rotation\ of\ the\ new\ shell,\ the\ same\ as\ the\ rotation\ \r\n\ of\ the\ turret\ that\ fired\ it\ when\ it\ was\ fired.\r\n\ @param\ parent\ The\ tank\ whose\ turret\ fired\ this\ shell.\r\n\ @param\ x\ The\ x\ coordinate\ where\ the\ new\ shell\ will\ be\ put.\r\n\ @param\ y\ The\ y\ coordinate\ where\ the\ new\ shell\ will\ be\ put.\r\n
+comment2.params=
+comment2.target=int\ getBounceLimit()
+comment2.text=\r\n\ Gets\ the\ number\ of\ times\ the\ shell\ is\ allowed\ to\ bounce\ off\ a\ wall.\ We\ \r\n\ have\ this\ method\ despite\ the\ fact\ it\ returns\ a\ public\ constant\ so\ that\ \r\n\ we\ can\ override\ for\ different\ types\ of\ shells.\r\n\ @return\ the\ number\ of\ times\ the\ shell\ is\ allowed\ to\ bounce\ off\ a\ wall.\r\n
+numComments=3

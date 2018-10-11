@@ -77,7 +77,7 @@ public class Turret extends Actor
     	{
     		//if so, fire a normal shell by making a new one at the end of the
     		//barrel of this turret
-    		Shell tankShell=new Shell(this.getRotation(), tank, getShellX(), 
+    		Shell tankShell=new Shell(getRotation(), tank, getShellX(), 
         			getShellY());
     	}
     	/*Else, check if this turret is firing rocket shells.*/
@@ -85,7 +85,14 @@ public class Turret extends Actor
     	{
     		//if so, fire a rocket shell by making a new one at the end of the
     		//barrel of this turret
-    		RocketShell tankShell=new RocketShell(this.getRotation(), tank, getShellX(), 
+    		RocketShell tankShell=new RocketShell(getRotation(), tank, getShellX(), 
+        			getShellY());
+    	}
+    	else if(getShellType()==RocketShellMk2.class)
+    	{
+    		//if so, fire a rocket shell mk2 by making a new one at the end of the
+    		//barrel of this turret
+    		RocketShell tankShell=new RocketShellMk2(getRotation(), tank, getShellX(), 
         			getShellY());
     	}
     	
