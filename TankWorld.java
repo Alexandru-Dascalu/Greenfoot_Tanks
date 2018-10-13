@@ -10,10 +10,26 @@ import java.util.List;
  * <p><b>File name: </b> TankWorld.java
  * @version 1.6
  * @since 02.05.2018
- * <p><p><b>Last modification date: </b> 14.08.2018
+ * <p><b>Last modification date: </b> 14.08.2018
  * @author Alexandru F. Dascalu
- * <p><b>Copyright: </b>
- * <p>No copyright.
+ * <p><b>Copyright (C)</b> 2018  Alexandru F. Dascalu
+ * 
+ * <p>TankWorld.java is part of Panzer Batallion.
+ * Panzer Batallion is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * <p>This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * <p>You should have received a copy of the GNU General Public License v3
+ * along with this program.  If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a> .
+ * 
+ * <p>A summary of the license can be found here: 
+ * <a href="https://choosealicense.com/licenses/gpl-3.0/">https://choosealicense.com/licenses/gpl-3.0/</a> .
  * 
  * <p><b>Purpose: </b>
  * <p> This class models a game world for a Greenfoot recreation of the Wii Tanks 
@@ -818,6 +834,19 @@ public class TankWorld extends World
     	}
     }
     
+    /**
+     * Makes new wall starting from the coordinates given. The wall can be 
+     * destroyable or not, can be horizontal or vertical.
+     * @param startX The x position of the first block of the wall.
+     * @param startY The y position of the first block of the wall.
+     * @param destroyable True if the wall will be made from destroyable wall
+     * blocks, false if not.
+     * @param isHorizontal True if the wall will be horizontal, false if vertical.
+     * @param nrOfBlocks The nr of blocks this wall will have. If the number is 
+     * negative, the blocks will be put to the left (or above if the wall is
+     * vertical) the previous block. If it is positive, they will be put to the
+     * right (or under if the wall is vertical).
+     */
     private void addWall(int startX, int startY, boolean destroyable,
     		boolean isHorizontal, int nrOfBlocks)
     {
