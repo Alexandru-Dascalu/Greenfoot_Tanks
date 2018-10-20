@@ -54,8 +54,8 @@ public class Shell extends Actor
     private final static int PI_RADIANS=180;
     
     /**The average distance at which the shell looks ahead to check if it will
-     * hit a wall. The value is {@value}, because the shell image is 10 by 11 pixels.*/
-    private static final int LOOK_AHEAD=11;
+     * hit a wall. The value is {@value}, because the shell image is 10 by 17 pixels.*/
+    private static final int LOOK_AHEAD=17;
     
     /**The number of times the shell has bounced off a wall so far.*/
     private int timesBounced;

@@ -830,7 +830,7 @@ public class MobileEnemyTank extends Tank
     		LandMine mine=mines.get(0);
     		
     		/*The mine in question may be one this tank has just laid, in which
-    		 * case the tank may not need to avoid.*/
+    		 * case the tank may not need to avoid it.*/
     		if(mine.getParentTank().equals(this))
     		{	
     			/*Check if the mine this tank has laid can be ignored by this tank.*/
@@ -846,7 +846,7 @@ public class MobileEnemyTank extends Tank
     				return mine;
     			}
     		}
-    		/*If it is not, the tank needs to avoid, so a reference to the mine 
+    		/*If it is not, the tank needs to avoid it, so a reference to the mine 
     		 * is returned.*/
     		else
     		{
@@ -929,7 +929,7 @@ public class MobileEnemyTank extends Tank
     	{
     		/*Check if the next point in time this tank should lay a mine has 
     		 * passed.*/
-    		if(System.currentTimeMillis()>=nextMineLayingTime)
+    		if(System.currentTimeMillis()>=nextMineLayingTime && safeToLayMine())
     		{
     			//lay a mine and generate the time the next mine will be laid
     			super.layMine();
@@ -958,6 +958,21 @@ public class MobileEnemyTank extends Tank
     		 * mine will be laid.*/
     		nextMineLayingTime=System.currentTimeMillis()+number;
     	}
+    }
+    
+    private boolean safeToLayMine()
+    {
+    	List<Tank> neighbouringTanks=this.getObjectsInRange(Tank.LENGTH, Tank.class);
+    	
+    	for(Tank t: neighbouringTanks)
+    	{
+    		if(t.getClass()!=PlayerTank.class)
+    		{
+    			return false;
+    		}
+    	}
+    	
+    	return true;
     }
     
     /***

@@ -51,7 +51,7 @@ public class EnemyTurret extends Turret
 	/**The number of intervals away from this turret's tank's centre where the 
 	 * search for the target will start, to make sure the search does not stop 
 	 * immediately because it checks a point inside this turret's tank.*/
-	private static final int NR_INTERVALS_FROM_TANK=3;
+	private static final int NR_INTERVALS_FROM_TANK=5;
 	
 	/**The speed at which this turret turns left or right.*/
 	protected static final int TURN_SPEED=1;
@@ -114,6 +114,7 @@ public class EnemyTurret extends Turret
 		/*We only fire if the player tank has been detected.*/
 		if(detectTarget())
 		{
+			Greenfoot.delay(5);
 			/*Even then, we only fire if the cooldown period has passed and 
 			 * the live shells in the world limit has not been reached.*/
 			if((lastFiring+getFireCooldown()<System.currentTimeMillis()) &&
@@ -318,7 +319,7 @@ public class EnemyTurret extends Turret
 			
 			/*If the point we checked is beyond the edge of the world, it stops
 			 * the search*/
-			if((getX()+xOffset>=1000) || (getX()+xOffset<0) || (getY()+yOffset>=800)
+			if((getX()+xOffset>=TankWorld.LENGTH) || (getX()+xOffset<0) || (getY()+yOffset>=TankWorld.WIDTH)
 					|| (getY()+yOffset<0))
 			{
 				cont=false;

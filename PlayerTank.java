@@ -108,7 +108,7 @@ public class PlayerTank extends Tank
 		
 		moveAndTurn();
 		pushOtherTanks();
-		playSound();
+		//playSound();
 		
 		tankTurret.aim();
 		

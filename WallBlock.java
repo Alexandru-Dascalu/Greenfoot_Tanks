@@ -39,7 +39,7 @@ import greenfoot.*;
 public class WallBlock extends Actor
 {
 	/**The length of the side of the square wall block. It's value is {@value}.*/
-	public static final int SIDE=60;
+	public static final int SIDE=65;
 	
     /**
      * Act - do whatever the Wall wants to do. This method is called whenever

@@ -59,19 +59,19 @@ public class Tank extends Actor
 	/**The length of half of the diagonal of a tanks image, in pixels. Used for
 	 * detecting collisions with walls and other tanks. For the current image
 	 * the value is {@value}.*/
-	protected final static double HALF_DIAGONAL=35.362409;
+	protected final static double HALF_DIAGONAL=42.07433897282;
 	
 	/**The length of the long side of the tank. Currently, the tank's 
 	 * image is 51 by 49 pixels, so the value is {@value}.*/
-	public static final int LENGTH=51;
+	public static final int LENGTH=60;
 	
 	/**The length of the short side of the tank. Currently, the tank's 
 	 * image is 51 by 49 pixels, so the value is {@value}.*/
-	public static final int WIDTH=49;
+	public static final int WIDTH=59;
 	
 	/**The angle in degrees between the length of the tank and it's diagonal.
 	 * For the current image the value is {@value}.*/
-	protected final static double ANGLE=43.85423781591219;
+	protected final static double ANGLE=44.5185341941;
 	
 	/**The tank turret of this tank. By default it is a simple turret.*/
 	protected Turret tankTurret;
@@ -92,7 +92,7 @@ public class Tank extends Actor
 	/**The correct x position of the tank, represented by a real number.*/
 	protected double realY;
 	
-	/**The number of mines layed by this tank in the current level so far.*/
+	/**The number of mines laid by this tank in the current level so far.*/
 	protected int minesLaid;
 
 	/**
