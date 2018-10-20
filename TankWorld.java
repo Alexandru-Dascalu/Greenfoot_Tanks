@@ -70,13 +70,15 @@ public class TankWorld extends World
     /**The horizontal length of the world. It's value is {@value}. Public so the
      * graph of points enemy tanks pass through is generated correctly based on
      * the size of the world.*/
-    public static final int LENGTH=1000;
+    public static final int LENGTH=1600;
     
     /**The vertical width of the world. It's value is {@value}.Public so the
      * graph of points enemy tanks pass through is generated correctly based on
      * the size of the world.*/
-    public static final int WIDTH=800;
+    public static final int WIDTH=890;
     
+    /**The graph of nodes used by mobile enemy tanks to generate their paths. 
+     * Is remade each time a new level is loaded.*/
     private Graph worldGraph;
     
 	/**The tank target display used by the player and moved using the mouse.*/
@@ -226,7 +228,7 @@ public class TankWorld extends World
         
         /*Re-add the display elements for the number of enemy tanks and update it.*/
         EnemyCount enemyCount=new EnemyCount();
-        addObject(enemyCount,500,23);
+        addObject(enemyCount,LENGTH/2,23);
         enemyCount.act();
         
         /*rebuild the graph used for path finding for the current level that
@@ -244,12 +246,12 @@ public class TankWorld extends World
     private void prepareLevel1()
     {
     	/*Add other walls in the level.*/
-    	addWall(580, 290, false, false, 5);
-    	addWall(520, 260, false, true, 3);
-    	addWall(520 , 560, false, true, 3);
+    	addWall(820, 315, false, false, 5);
+    	addWall(820-WallBlock.SIDE, 315-WallBlock.SIDE, false, true, 3);
+    	addWall(820-WallBlock.SIDE , 315+5*WallBlock.SIDE, false, true, 3);
     	
     	//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
         
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(190,300,0);
@@ -257,16 +259,13 @@ public class TankWorld extends World
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-       /* BrownTank enemy1=new BrownTank(910,400,180);
-        addObject(enemy1, 910, 400);
+        BrownTank enemy1=new BrownTank(1400,440,180);
+        addObject(enemy1, 1400, 440);
         
-        BrownTank enemy2=new BrownTank(450,190,90);
-        addObject(enemy2, 450,190);*/
-        
-        GreenTank enemy1=new GreenTank(450, 190, 90);
-        addObject(enemy1, 450, 190);
-       
-        enemyTanks=1;
+        BrownTank enemy2=new BrownTank(800,170,90);
+        addObject(enemy2, 800, 170);
+  
+        enemyTanks=2;
     }
     
     /**
@@ -277,16 +276,16 @@ public class TankWorld extends World
     {
     	/*Add other walls in the level.*/
     	
-    	addWall(310, 250, false, true, 3);
-    	addWall(490, 250, true, true, 3);
-    	addWall(670, 250, false, true, 3);
+    	addWall(580, 270, false, true, 3);
+    	addWall(580+3*WallBlock.SIDE, 270, true, true, 3);
+    	addWall(580+6*WallBlock.SIDE, 270, false, true, 3);
     	
-    	addWall(280, 570, false, true, 3);
-    	addWall(460, 570, true, true, 3);
-    	addWall(640, 570, false, true, 3);
+    	addWall(540, 600, false, true, 3);
+    	addWall(540+3*WallBlock.SIDE, 600, true, true, 3);
+    	addWall(540+6*WallBlock.SIDE, 600, false, true, 3);
     	
     	//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
         
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(160,290, 0);
@@ -294,14 +293,14 @@ public class TankWorld extends World
        
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemy1=new BrownTank(460,480, 0);
-        addObject(enemy1, 260,480);
+        BrownTank enemy1=new BrownTank(800,520, 180);
+        addObject(enemy1, 800,520);
         
-        TurquoiseTank enemy2=new TurquoiseTank(860,200, 270);
-        addObject(enemy2, 860,200);
+        TurquoiseTank enemy2=new TurquoiseTank(1220,210, 270);
+        addObject(enemy2, 1220,210);
         
-        TurquoiseTank enemy3=new TurquoiseTank(400,150, 270);
-        addObject(enemy3, 400,150);
+        TurquoiseTank enemy3=new TurquoiseTank(850,190, 90);
+        addObject(enemy3, 850,190);
         enemyTanks=3;
     }
     
@@ -312,34 +311,34 @@ public class TankWorld extends World
 	private void prepareLevel3()
 	{
 		/*Add other walls in the level.*/
-		addWall(90, 600, false, true, 3);
-		addWall(320, 195, false, true, 2);
-		addWall(320, 255, false, false, 4);
-		addWall(380, 435, true, true, 4);
-		addWall(620, 435, false, false, 3);
-		addWall(620, 615, false, true, -2);
-		addWall(790, 230, false, true, 3);
+		addWall(96, 620, false, true, 5);
+		addWall(570, 210, false, true, 3);
+		addWall(570, 210+WallBlock.SIDE, false, false, 4);
+		addWall(570+WallBlock.SIDE, 210+4*WallBlock.SIDE, true, true, 5);
+		addWall(570+6*WallBlock.SIDE, 210+4*WallBlock.SIDE, false, false, 3);
+		addWall(570+6*WallBlock.SIDE, 210+7*WallBlock.SIDE, false, true, -3);
+		addWall(1245, 250, false, true, 5);
 		
 		//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
     	
     	//make a player tank and add it to the world.
-        playerTank=new PlayerTank(126,400, 0);
-        addObject(playerTank, 126, 400);
+        playerTank=new PlayerTank(140,400, 0);
+        addObject(playerTank, 140, 400);
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        TurquoiseTank enemy1=new TurquoiseTank(175, 140, 90);
-        addObject(enemy1, 175, 140);
+        TurquoiseTank enemy1=new TurquoiseTank(355, 140, 90);
+        addObject(enemy1, 355, 140);
         
-        TurquoiseTank enemy2=new TurquoiseTank(400, 665, 90);
-        addObject(enemy2, 400, 665);
+        TurquoiseTank enemy2=new TurquoiseTank(730, 680, 270);
+        addObject(enemy2, 730, 680);
         
-        TurquoiseTank enemy3=new TurquoiseTank(565, 135, 90);
-        addObject(enemy3, 565, 135);
+        TurquoiseTank enemy3=new TurquoiseTank(1000, 150, 90);
+        addObject(enemy3, 1000, 150);
         
-        TurquoiseTank enemy4=new TurquoiseTank(845, 390, 90);
-        addObject(enemy4, 845, 390);
+        TurquoiseTank enemy4=new TurquoiseTank(1440, 420, 180);
+        addObject(enemy4, 1440, 420);
         enemyTanks=4;
 	}
 	
@@ -351,42 +350,42 @@ public class TankWorld extends World
     {
     	/*Add other walls in the level.*/
     	
-    	addWall(90, 320, false, true, 2);
-    	addWall(210, 320, true, true, 2);
-    	addWall(330, 320, false, true, 3);
+    	addWall(97, 340, false, true, 3);
+    	addWall(97+3*WallBlock.SIDE, 340, true, true, 3);
+    	addWall(97+6*WallBlock.SIDE, 340, false, true, 3);
     	
-    	addWall(670, 200, false, true, -2);
-    	addWall(790, 200, true, true, -2);
-    	addWall(910, 200, false, true, -2);
+    	addWall(1504, 260, false, true, -3);
+    	addWall(1504-3*WallBlock.SIDE, 260, true, true, -3);
+    	addWall(1504-6*WallBlock.SIDE, 260, false, true, -4);
     	
-    	addWall(90, 560, false, true, 3);
-    	addWall(270, 560, true, true, 2);
-    	addWall(390, 560, false, true, 2);
+    	addWall(97, 610, false, true, 3);
+    	addWall(97+3*WallBlock.SIDE, 610, true, true, 3);
+    	addWall(97+6*WallBlock.SIDE, 610, false, true, 4);
     	
-    	addWall(910, 440, false, true, -6);
+    	addWall(1503, 545, false, true, -9);
     	//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
         
     	//make a player tank and add it to the world.
-        playerTank=new PlayerTank(120,190, 0);
-        addObject(playerTank, 120,190);
+        playerTank=new PlayerTank(140,190, 0);
+        addObject(playerTank, 140,190);
        
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        TurquoiseTank enemy1=new TurquoiseTank(150,420, 0);
-        addObject(enemy1, 150,420);
+        TurquoiseTank enemy1=new TurquoiseTank(150,460, 0);
+        addObject(enemy1, 150,460);
         
-        TurquoiseTank enemy2=new TurquoiseTank(200,660, 0);
-        addObject(enemy2, 200,660);
+        TurquoiseTank enemy2=new TurquoiseTank(230,730, 0);
+        addObject(enemy2, 230,730);
         
-        TurquoiseTank enemy3=new TurquoiseTank(860,120, 180);
-        addObject(enemy3, 860,120);
+        TurquoiseTank enemy3=new TurquoiseTank(1380,145, 180);
+        addObject(enemy3, 1380,145);
         
-        TurquoiseTank enemy4=new TurquoiseTank(820,660, 180);
-        addObject(enemy4, 820,660);
+        TurquoiseTank enemy4=new TurquoiseTank(1410,720, 180);
+        addObject(enemy4, 1410,720);
         
-        YellowTank enemy5=new YellowTank(830,330, 180);
-        addObject(enemy5, 830,330);
+        YellowTank enemy5=new YellowTank(1415,405, 180);
+        addObject(enemy5, 1415,405);
         enemyTanks=5;
     }
     
@@ -397,20 +396,19 @@ public class TankWorld extends World
     private void prepareLevel5()
     {
     	/*Add other walls in the level.*/
-    	addWall(570, 90, false, false, 3);
-    	addWall(570, 270, true , false, 2);
-    	addWall(510, 270, false, true, -5);
-    	addWall(630, 270, true, true, 2);
-    	addWall(750, 270, false, true, 2);
+    	addWall(900, 96, false, false, 3);
+    	addWall(900, 96+3*WallBlock.SIDE, true , false, 2);
+    	addWall(900-WallBlock.SIDE, 96+3*WallBlock.SIDE, false, true, -5);
+    	addWall(900+WallBlock.SIDE, 96+3*WallBlock.SIDE, true, true, 2);
+    	addWall(900+3*WallBlock.SIDE, 96+3*WallBlock.SIDE, false, true, 3);
     	
-    	addWall(510, 710, false, false, -3);
-    	addWall(510, 530, true , false, -2);
-    	addWall(450, 530, true , true, -2);
-    	addWall(330, 530, false , true, -3);
-    	addWall(570, 530, false , true, 4);
+    	addWall(775, 793, false, false, -3);
+    	addWall(775, 793-3*WallBlock.SIDE, true , true, -4);
+    	addWall(775-4*WallBlock.SIDE, 793-3*WallBlock.SIDE, false , true, -3);
+    	addWall(775+WallBlock.SIDE, 793-3*WallBlock.SIDE, false , true, 5);
     	
     	//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
         
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(155,650, 0);
@@ -418,23 +416,23 @@ public class TankWorld extends World
        
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        TurquoiseTank enemy1=new TurquoiseTank(220,140, 90);
-        addObject(enemy1, 220,140);
+        TurquoiseTank enemy1=new TurquoiseTank(700,150, 90);
+        addObject(enemy1, 700,150);
         
-        BrownTank enemy2=new BrownTank(400,415, 180);
-        addObject(enemy2, 400,415);
+        BrownTank enemy2=new BrownTank(600,500, 180);
+        addObject(enemy2, 600,500);
         
-        BrownTank enemy3=new BrownTank(644, 400, 180);
-        addObject(enemy3, 644, 400);
+        BrownTank enemy3=new BrownTank(1220, 490, 180);
+        addObject(enemy3, 1220, 490);
         
-        TurquoiseTank enemy4=new TurquoiseTank(860,120, 180);
-        addObject(enemy4, 860,120);
+        TurquoiseTank enemy4=new TurquoiseTank(1370,145, 180);
+        addObject(enemy4, 1370,145);
         
-        YellowTank enemy5=new YellowTank(830,330, 180);
-        addObject(enemy5, 830,330);
+        YellowTank enemy5=new YellowTank(1440,390, 180);
+        addObject(enemy5, 1440,390);
         
-        TurquoiseTank enemy6=new TurquoiseTank(860,650, 180);
-        addObject(enemy6, 860,650);
+        TurquoiseTank enemy6=new TurquoiseTank(1060,750, 0);
+        addObject(enemy6, 1060,750);
         enemyTanks=6;
     }
     
@@ -445,48 +443,48 @@ public class TankWorld extends World
     private void prepareLevel6()
     {
     	/*Add other walls in the level.*/
-    	addWall(245, 205, false, true, 2);
-    	addWall(365, 205, true, true, 2);
-    	addWall(485, 205, false, true, 2);
-    	addWall(605, 205, true, true, 2);
-    	addWall(725, 205, false, true, 2);
+    	addWall(420, 220, false, true, 2);
+    	addWall(420+2*WallBlock.SIDE, 220, true, true, 3);
+    	addWall(420+5*WallBlock.SIDE, 220, false, true, 3);
+    	addWall(420+8*WallBlock.SIDE, 220, true, true, 2);
+    	addWall(420+10*WallBlock.SIDE, 220, false, true, 3);
     	
-    	addWall(235, 425, true, true, 3);
-    	addWall(415, 425, false, true, 2);
-    	addWall(535, 425, true, true, 2);
-    	addWall(655, 425, false, true, 2);
-    	addWall(715, 425, true, true, 1);
+    	addWall(440, 450, true, true, 3);
+    	addWall(440+3*WallBlock.SIDE, 450, false, true, 3);
+    	addWall(440+6*WallBlock.SIDE, 450, true, true, 2);
+    	addWall(440+8*WallBlock.SIDE, 450, false, true, 3);
+    	addWall(440+11*WallBlock.SIDE, 450, true, true, 2);
     	
-    	addWall(195, 597, false, true, 2);
-    	addWall(315, 597, true, true, 1);
-    	addWall(375, 597, false, true, 1);
-    	addWall(435, 597, true, true, 2);
-    	addWall(555, 597, false, true, 2);
-    	addWall(675, 597, true, true, 2);
-    	addWall(795, 597, false, true, 1);
+    	addWall(380, 650, false, true, 3);
+    	addWall(380+3*WallBlock.SIDE, 650, true, true, 1);
+    	addWall(380+4*WallBlock.SIDE, 650, false, true, 1);
+    	addWall(380+5*WallBlock.SIDE, 650, true, true, 3);
+    	addWall(380+8*WallBlock.SIDE, 650, false, true, 3);
+    	addWall(380+11*WallBlock.SIDE, 650, true, true, 2);
+    	addWall(380+13*WallBlock.SIDE, 650, false, true, 2);
     	
     	//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(120, 360, 0);
         addObject(playerTank, 120, 360);
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        BrownTank enemy1=new BrownTank(137, 117, 90);
-        addObject(enemy1, 137, 117);
+        BrownTank enemy1=new BrownTank(280, 130, 90);
+        addObject(enemy1, 280, 130);
         
-        GreenTank enemy2=new GreenTank(875, 355, 180);
-        addObject(enemy2, 875, 355);
+        GreenTank enemy2=new GreenTank(1070, 355, 180);
+        addObject(enemy2, 1070, 355);
         
-        YellowTank enemy3=new YellowTank(518, 116, 90);
-        addObject(enemy3, 518, 116);
+        YellowTank enemy3=new YellowTank(725, 116, 90);
+        addObject(enemy3, 725, 116);
         
-        YellowTank enemy4=new YellowTank(510, 520, 0);
-        addObject(enemy4, 510, 520);
+        YellowTank enemy4=new YellowTank(715, 555, 0);
+        addObject(enemy4, 715, 555);
         
-        YellowTank enemy5=new YellowTank(871, 233, 180);
-        addObject(enemy5, 871, 233);
+        YellowTank enemy5=new YellowTank(1330, 280, 180);
+        addObject(enemy5, 1330, 280);
         enemyTanks=5;
     }
     
@@ -497,41 +495,41 @@ public class TankWorld extends World
     private void prepareLevel7()
     {
     	/*Add other walls in the level.*/
-    	addWall(780, 230, false, false, 7);
-    	addWall(780, 200, false, true, -2);
-    	addWall(660, 200, true, true, 1);
-    	addWall(600, 200, false, true, -2);
-    	addWall(480, 200, true, true, 1);
-    	addWall(420, 200, false, true, 1);
-    	addWall(360, 200, false, false, 2);
+    	addWall(1200, 215+WallBlock.SIDE, false, false, 6);
+    	addWall(1200, 215, false, true, -2);
+    	addWall(1200-2*WallBlock.SIDE, 215, true, true, -2);
+    	addWall(1200-4*WallBlock.SIDE, 215, false, true, -2);
+    	addWall(1200-6*WallBlock.SIDE, 215, true, true, 1);
+    	addWall(1200-7*WallBlock.SIDE, 215, false, true, -3);
+    	addWall(1200-10*WallBlock.SIDE, 215, false, false, 2);
     	
-    	addWall(720, 590, true, true, 1);
-    	addWall(660, 590, false, true, -2);
-    	addWall(540, 590, true, true, 1);
-    	addWall(480, 590, false, true, 1);
-    	addWall(420, 590, true, true, -2);
-    	addWall(300, 590, false, false, -2);
+    	addWall(1200-WallBlock.SIDE, 215+6*WallBlock.SIDE, true, true, -2);
+    	addWall(1200-3*WallBlock.SIDE, 215+6*WallBlock.SIDE, false, true, -2);
+    	addWall(1200-5*WallBlock.SIDE, 215+6*WallBlock.SIDE, true, true, 1);
+    	addWall(1200-6*WallBlock.SIDE, 215+6*WallBlock.SIDE, false, true, -2);
+    	addWall(1200-8*WallBlock.SIDE, 215+6*WallBlock.SIDE, true, true, -2);
+    	addWall(1200-9*WallBlock.SIDE, 215+5*WallBlock.SIDE, false, false, 1);
     	
     	//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
     	
     	//make a player tank and add it to the world.
-        playerTank=new PlayerTank(880, 375, 180);
-        addObject(playerTank, 880, 375);
+        playerTank=new PlayerTank(1450, 420, 180);
+        addObject(playerTank, 1450, 420);
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        GreenTank enemy1=new GreenTank(680, 395, 180);
-        addObject(enemy1, 680, 395);
+        GreenTank enemy1=new GreenTank(1010, 435, 180);
+        addObject(enemy1, 1010, 435);
         
-        TurquoiseTank enemy2=new TurquoiseTank(485, 490, 270);
-        addObject(enemy2, 485, 490);
+        TurquoiseTank enemy2=new TurquoiseTank(745, 520, 270);
+        addObject(enemy2, 745, 520);
         
-        TurquoiseTank enemy3=new TurquoiseTank(150, 647, 0);
-        addObject(enemy3, 150, 647);
+        TurquoiseTank enemy3=new TurquoiseTank(310, 680, 0);
+        addObject(enemy3, 310, 680);
         
-        YellowTank enemy4=new YellowTank(150, 240, 0);
-        addObject(enemy4, 150, 240);
+        YellowTank enemy4=new YellowTank(375, 170, 0);
+        addObject(enemy4, 375, 170);
         enemyTanks=4;
     }
     
@@ -542,41 +540,39 @@ public class TankWorld extends World
     private void prepareLevel8()
     {
     	/*Add other walls in the level.*/
-    	addObject(new WallBlock(), 305, 200);
-    	addObject(new WallBlock(), 305, 250);
-    	addWall(365, 250, false, false, 2);
-    	addWall(425, 310, true, false, 2);
-    	addWall(485, 370, false, false, 2);
-    	addWall(545, 430, true, false, 2);
-    	addWall(605, 490, false, false, 2);
-    	addObject(new WallBlock(), 665, 550);
-    	addObject(new WallBlock(), 665, 600);
+    	addWall(680, 230, false, false, 2);
+    	addWall(680+WallBlock.SIDE, 230+WallBlock.SIDE, false, false, 2);
+    	addWall(680+2*WallBlock.SIDE, 230+2*WallBlock.SIDE, true, false, 2);
+    	addWall(680+3*WallBlock.SIDE, 230+3*WallBlock.SIDE, false, false, 2);
+    	addWall(680+4*WallBlock.SIDE, 230+4*WallBlock.SIDE, true, false, 2);
+    	addWall(680+5*WallBlock.SIDE, 230+5*WallBlock.SIDE, false, false, 2);
+    	addWall(680+6*WallBlock.SIDE, 230+6*WallBlock.SIDE, false, false, 2);
     	
     	//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
     	
     	//make a player tank and add it to the world.
-        playerTank=new PlayerTank(400, 640, 210);
-        addObject(playerTank, 400, 640);
+        playerTank=new PlayerTank(870, 673, 210);
+        addObject(playerTank, 870, 673);
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        GreenTank enemy1=new GreenTank(125, 450, 0);
-        addObject(enemy1, 125, 450);
+        GreenTank enemy1=new GreenTank(225, 520, 0);
+        addObject(enemy1, 225, 520);
         
-        GreenTank enemy2=new GreenTank(850, 666, 90);
-        addObject(enemy2, 850, 666);
+        GreenTank enemy2=new GreenTank(1410, 580, 270);
+        addObject(enemy2, 1410, 580);
         
-        GreenTank enemy3=new GreenTank(600, 130, 180);
-        addObject(enemy3, 600, 130);
+        GreenTank enemy3=new GreenTank(460, 153, 90);
+        addObject(enemy3, 460, 153);
         
-        TurquoiseTank enemy4=new TurquoiseTank(125, 280, 0);
-        addObject(enemy4, 125, 280);
+        TurquoiseTank enemy4=new TurquoiseTank(190, 280, 0);
+        addObject(enemy4, 190, 280);
         
-        TurquoiseTank enemy5=new TurquoiseTank(870, 390, 180);
-        addObject(enemy5, 870, 390);
+        TurquoiseTank enemy5=new TurquoiseTank(1360, 335, 180);
+        addObject(enemy5, 1360, 335);
         
-        YellowTank enemy6=new YellowTank(850, 140, 90);
+        YellowTank enemy6=new YellowTank(1160, 140, 90);
         addObject(enemy6, 850, 140);
         enemyTanks=6;
     }
@@ -588,23 +584,23 @@ public class TankWorld extends World
     private void prepareLevel9()
     {
     	/*Add other walls in the level.*/
-    	addWall(390, 90, false, false, 3);
-    	addWall(390, 90+3*WallBlock.SIDE, true, false, 2);
-    	addObject(new DestroyableWallBlock(), 390-WallBlock.SIDE, 90+4*WallBlock.SIDE);
-    	addWall(390-2*WallBlock.SIDE, 90+4*WallBlock.SIDE, false, true, -2);
+    	addWall(650, 96, false, false, 3);
+    	addWall(650, 96+3*WallBlock.SIDE, true, false, 2);
+    	addObject(new DestroyableWallBlock(), 650-WallBlock.SIDE, 96+4*WallBlock.SIDE);
+    	addWall(650-2*WallBlock.SIDE, 96+4*WallBlock.SIDE, false, true, -3);
     	
-    	addWall(630, 710, false, false, -3);
-    	addWall(630, 710-3*WallBlock.SIDE, true, true, 3);
+    	addWall(1095, 793, false, false, -4);
+    	addWall(1095, 793-4*WallBlock.SIDE, true, true, 3);
     	
-    	addWall(620, 205, false, true, 3);
-    	addWall(620+3*WallBlock.SIDE, 205, true, false, 2);
+    	addWall(1085, 245, false, true, 4);
+    	addWall(1085+4*WallBlock.SIDE, 245, true, false, 2);
     	
-    	addWall(212, 518, false, false, 2);
-    	addWall(273, 592, true, true, 2);
-    	addObject(new WallBlock(), 273+2*WallBlock.SIDE, 592);
+    	addWall(435, 670, false, false, -2);
+    	addWall(435+WallBlock.SIDE, 670-WallBlock.SIDE, true, true, 3);
+    	addWall(435+4*WallBlock.SIDE, 670-WallBlock.SIDE, false, true, 2);
     	
     	//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
     	
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(145, 670, 270);
@@ -612,23 +608,23 @@ public class TankWorld extends World
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        GreenTank enemy1=new GreenTank(185, 110, 90);
-        addObject(enemy1, 185, 110);
+        GreenTank enemy1=new GreenTank(488, 157, 90);
+        addObject(enemy1, 488, 157);
         
-        GreenTank enemy2=new GreenTank(400, 445, 0);
-        addObject(enemy2, 400, 445);
+        GreenTank enemy2=new GreenTank(673, 515, 0);
+        addObject(enemy2, 673, 515);
         
-        GreenTank enemy3=new GreenTank(525, 125, 90);
-        addObject(enemy3, 525, 125);
+        GreenTank enemy3=new GreenTank(945, 255, 90);
+        addObject(enemy3, 945, 255);
         
-        GreenTank enemy4=new GreenTank(500, 688, 270);
-        addObject(enemy4, 500, 688);
+        GreenTank enemy4=new GreenTank(1415, 724, 270);
+        addObject(enemy4, 1415, 724);
         
-        GreenTank enemy5=new GreenTank(680, 340, 180);
-        addObject(enemy5, 680, 340);
+        GreenTank enemy5=new GreenTank(1348, 437, 180);
+        addObject(enemy5, 1348, 437);
         
-        GreenTank enemy6=new GreenTank(833, 665, 270);
-        addObject(enemy6, 833, 665);
+        GreenTank enemy6=new GreenTank(960, 730, 270);
+        addObject(enemy6, 960, 730);
         enemyTanks=6;
     }
     
@@ -639,43 +635,42 @@ public class TankWorld extends World
     private void prepareLevel10()
     {
     	/*Add other walls in the level.*/
-    	addWall(295, 215, true, false, 4);
-    	addWall(295, 215+(int)3.5*WallBlock.SIDE, true, true, 3);
-    	addWall(295+3*WallBlock.SIDE, 215+(int)3.5*WallBlock.SIDE, true, true, 4);
-    	addWall(295+7*WallBlock.SIDE, 215+(int)3.5*WallBlock.SIDE, true, false, 3);
+    	addWall(510, 230, true, false, 4);
+    	addWall(510+WallBlock.SIDE, 230+3*WallBlock.SIDE, true, true, 8);
+    	addWall(510+8*WallBlock.SIDE, 230+4*WallBlock.SIDE, true, false, 3);
     	
-    	addWall(390, 710, true, false, -2);
-    	addWall(910, 220, true, true, -4);
+    	addWall(680, 793, true, false, -3);
+    	addWall(1503, 246, true, true, -5);
     	
     	//add the player tank target
-    	addObject(tankTarget,200,200);
+    	addObject(tankTarget,500,200);
     	
     	//make a player tank and add it to the world.
-        playerTank=new PlayerTank(483, 139, 90);
-        addObject(playerTank, 483, 139);
+        playerTank=new PlayerTank(827, 244, 90);
+        addObject(playerTank, 827, 244);
         
         /*make enemy tanks, add them to the world and set number of enemy tanks 
          * accordingly.*/
-        GreenTank enemy1=new GreenTank(140, 640, 0);
-        addObject(enemy1, 140, 640);
+        GreenTank enemy1=new GreenTank(236, 688, 0);
+        addObject(enemy1, 236, 688);
         
-        GreenTank enemy2=new GreenTank(528, 690, 180);
-        addObject(enemy2, 528, 690);
+        GreenTank enemy2=new GreenTank(923, 744, 180);
+        addObject(enemy2, 923, 744);
         
-        BrownTank enemy3=new BrownTank(865, 345, 180);
-        addObject(enemy3, 865, 345);
+        BrownTank enemy3=new BrownTank(1413, 438, 180);
+        addObject(enemy3, 1413, 438);
         
-        TurquoiseTank enemy4=new TurquoiseTank(135, 145, 90);
-        addObject(enemy4, 135, 145);
+        TurquoiseTank enemy4=new TurquoiseTank(253, 175, 90);
+        addObject(enemy4, 253, 175);
         
-        TurquoiseTank enemy5=new TurquoiseTank(540, 550, 90);
-        addObject(enemy5, 540, 550);
+        TurquoiseTank enemy5=new TurquoiseTank(847, 543, 90);
+        addObject(enemy5, 847, 543);
         
-        YellowTank enemy6=new YellowTank(150, 390, 270);
-        addObject(enemy6, 150, 390);
+        YellowTank enemy6=new YellowTank(237, 457, 270);
+        addObject(enemy6, 237, 457);
         
-        YellowTank enemy7=new YellowTank(858, 648, 270);
-        addObject(enemy7, 858, 648);
+        YellowTank enemy7=new YellowTank(1386, 674, 270);
+        addObject(enemy7, 1386, 674);
         enemyTanks=7;
     }
     

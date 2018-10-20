@@ -41,6 +41,9 @@ import greenfoot.*;
 
 public class Turret extends Actor
 {
+	/**The length of this turret's gun barrel. It's value is {@value}.*/
+	private static final int BARREL_LENGTH=52;
+	
 	/**The tank this shell is placed on.*/
     protected Tank tank;
     
@@ -135,7 +138,7 @@ public class Turret extends Actor
     	 * length of the gun barrel on the horizontal axis (calculated with the
     	 * cosine of the turret's rotation).*/
     	int rotation=getRotation();
-    	int shellX=getX()+(int)(30*Math.cos(Math.toRadians(rotation)));
+    	int shellX=getX()+(int)(BARREL_LENGTH*Math.cos(Math.toRadians(rotation)));
     	
     	return shellX;
     }
@@ -150,7 +153,7 @@ public class Turret extends Actor
     	 * length of the gun barrel on the vertical axis (calculated with the
     	 * sine of the turret's rotation).*/
     	int rotation=getRotation();
-    	int shellY=getY()+(int)(30*Math.sin(Math.toRadians(rotation)));
+    	int shellY=getY()+(int)(BARREL_LENGTH*Math.sin(Math.toRadians(rotation)));
     	
     	return shellY;
     }

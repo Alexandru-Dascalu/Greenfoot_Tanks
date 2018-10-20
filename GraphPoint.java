@@ -47,7 +47,7 @@ public class GraphPoint implements Comparable<GraphPoint>
 	/**The side of an imaginary square with it's centre in the coordinates of
 	 * this node that should not intersect a wall so that tanks will not drive
 	 * into walls.*/
-	private static final int WALL_DISTANCE=52;
+	private static final int WALL_DISTANCE=63;
 	
 	/**The x coordinate of the point in the world this node represents.*/
     private final int x;
