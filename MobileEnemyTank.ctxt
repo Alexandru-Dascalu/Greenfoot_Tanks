@@ -30,6 +30,7 @@ comment17.target=void\ generateNextMineLayingTime()
 comment17.text=Generates\ a\ new\ random\ point\ in\ time\ this\ tank\ will\ lay\ the\ next\ mine.\ \r\n\ This\ point\ in\ time\ will\ be\ in\ a\ random\ number\ of\ milliseconds\ from\ now\r\n\ on.\ This\ random\ number\ is\ between\ half\ of\ the\ mine\ laying\ period\ of\ \r\nthis\ tank\ and\ the\ mine\ laying\ period\ of\ this\ tank.
 comment18.params=
 comment18.target=boolean\ safeToLayMine()
+comment18.text=\r\n\ Determines\ if\ the\ tank\ is\ safely\ away\ from\ other\ enemy\ tanks\ so\ it\ can\ \r\n\ lay\ a\ mine\ without\ potentially\ destroying\ other\ enemy\ tanks.\r\n\ @return\ True\ if\ it\ is\ far\ away\ from\ other\ tanks,\ false\ if\ not.\r\n
 comment19.params=
 comment19.target=boolean\ isMoving()
 comment19.text=\r\n\ Checks\ if\ the\ tank\ is\ moving.\r\n\ @return\ True\ if\ the\ tank\ is\ moving,\ false\ if\ not.\ Returns\ a\ boolean\ set\ \r\n\ according\ to\ the\ tank's\ movements\ in\ the\ private\ methods\ that\ control\r\n\ this\ tank's\ movements.\r\n

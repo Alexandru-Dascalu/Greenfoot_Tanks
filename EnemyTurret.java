@@ -114,7 +114,6 @@ public class EnemyTurret extends Turret
 		/*We only fire if the player tank has been detected.*/
 		if(detectTarget())
 		{
-			Greenfoot.delay(5);
 			/*Even then, we only fire if the cooldown period has passed and 
 			 * the live shells in the world limit has not been reached.*/
 			if((lastFiring+getFireCooldown()<System.currentTimeMillis()) &&
@@ -122,7 +121,7 @@ public class EnemyTurret extends Turret
 			{
 				/*We fire the shell, update lastFiring and increment the counter
 				 * of live shells in the world fired by this turret.*/
-				super.fire();
+				//super.fire();
 				lastFiring=System.currentTimeMillis();
 			}
 		}

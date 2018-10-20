@@ -50,11 +50,11 @@ public class TurquoiseTank extends MobileEnemyTank
     
     /**The safe distance the tank will keep from a mine when it is avoiding
      * a mine. It's value is {@value}.*/
-    private static final int MINE_AVOIDANCE_DISTANCE=(int)(1.3*LENGTH);
+    private static final int MINE_AVOIDANCE_DISTANCE=(int)(1.7*LENGTH);
     
     /**The distance of a shell to the tank from which the tank will start 
      * making evasive moves. It's value is {@value}.*/
-    private static final int SHELL_AVOIDANCE_DISTANCE=(int)(1.7*LENGTH);
+    private static final int SHELL_AVOIDANCE_DISTANCE=(int)(1.8*LENGTH);
     
     /**
      * Make a new TurquoiseTank whose starting position will be at the given

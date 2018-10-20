@@ -960,16 +960,38 @@ public class MobileEnemyTank extends Tank
     	}
     }
     
+    /**
+     * Determines if the tank is safely away from other enemy tanks so it can 
+     * lay a mine without potentially destroying other enemy tanks.
+     * @return True if it is far away from other tanks, false if not.
+     */
     private boolean safeToLayMine()
     {
-    	List<Tank> neighbouringTanks=this.getObjectsInRange(Tank.LENGTH, Tank.class);
+    	//get a list of all mobile enemy tanks within a radius bigger than all 
+    	//their mine avoidance distances could be.
+    	List<MobileEnemyTank> neighbouringMobileTanks=getObjectsInRange
+    			(4*Tank.LENGTH, MobileEnemyTank.class);
     	
-    	for(Tank t: neighbouringTanks)
+    	for(MobileEnemyTank t: neighbouringMobileTanks)
     	{
-    		if(t.getClass()!=PlayerTank.class)
+    		/*Check if each mobile enemy tanks is further away from this tank
+    		 * than each one's mine avoidance distance.*/
+    		if(getDistanceFrom(t)<t.getMineAvoidanceDistance())
     		{
     			return false;
     		}
+    	}
+    	
+    	/*get a list of all static enemy tanks inside a circle with the radius 
+    	 *being the explosion range of the mine.*/
+    	List<StaticEnemyTank> neighbouringStaticTanks=getObjectsInRange
+    			(LandMine.EXPLOSION_RANGE, StaticEnemyTank.class);
+    	
+    	/*check if the list is empty, so a mine will not be placed if by doing so
+    	 * the static tank would be destroyed.*/
+    	if(!neighbouringStaticTanks.isEmpty())
+    	{
+    		return false;
     	}
     	
     	return true;

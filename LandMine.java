@@ -62,7 +62,7 @@ public class LandMine extends Actor
 	
 	/**The radius around the mine where all tanks,shells,mines and walls will
 	 * be destroyed if their centre is inside the radius. It's value is {@value}.*/
-	private static final int EXPLOSION_RANGE=140;
+	public static final int EXPLOSION_RANGE=140;
 	
 	/**The system time in milliseconds when the mine was laid down.*/
 	private final long creationTime;
@@ -156,12 +156,12 @@ public class LandMine extends Actor
     		/*To do this, we take the time passed since it started to flash, MOD
     		 * divide it by FLASH_INTERVAL to see how many intervals have passed.
     		 * If an even number of intervals have passed, the land mine is red.*/
-    		setImage("redLandMine.png");
+    		setImage("redMine.png");
     	}
     	/* If an odd number of intervals have passed, the land mine is green.*/
     	else
     	{
-    		setImage("greenLandMine.png");
+    		setImage("greenMine.png");
     	}
     }
     

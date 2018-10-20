@@ -38,7 +38,7 @@ import greenfoot.*;
  * <p>	-1.2 - Changed the class so brown tanks can be pushed by other tanks.
  */
 
-public class BrownTank extends Tank
+public class BrownTank extends StaticEnemyTank
 {
 	/**
 	 * Makes a new Brown Tank, with it's start x and y coordinates the ones given
@@ -63,27 +63,5 @@ public class BrownTank extends Tank
 	{
 		setRotation(startRotation);
 		tankTurret=new BrownTurret(this);
-	}
-	
-	/**
-	 * Overrides the default isMoving method because a Brown Tank is a very basic
-	 * enemy and it does not move at all, unless pushed by another tank. This 
-	 * method returns false always.
-	 * @return false.
-	 */
-	@Override
-	public boolean isMoving()
-	{
-		return false;
-	}
-	
-	/**
-	 * Checks if the tank is moving forward.
-	 * @return False, because this type of the tank is stationary.
-	 */
-	@Override
-	public boolean isMovingForward()
-	{
-		return false;
 	}
 }

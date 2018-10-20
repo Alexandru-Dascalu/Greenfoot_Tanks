@@ -35,7 +35,7 @@ import greenfoot.World;
  * <p>	-1.0 - Created the class.
  */
 
-public class GreenTank extends Tank
+public class GreenTank extends StaticEnemyTank
 {
 	/**
 	 * Makes a new Green Tank, with it's start x and y coordinates the ones given
@@ -60,27 +60,5 @@ public class GreenTank extends Tank
 	{
 		setRotation(startRotation);
 		tankTurret=new GreenTurret(this);
-	}
-	
-	/**
-	 * Overrides the default isMoving method because a Green Tank is a basic
-	 * enemy and it does not move at all, unless pushed by another tank. This 
-	 * method returns false always.
-	 * @return false.
-	 */
-	@Override
-	public boolean isMoving()
-	{
-		return false;
-	}
-	
-	/**
-	 * Checks if the tank is moving forward.
-	 * @return False, because this type of the tank is stationary.
-	 */
-	@Override
-	public boolean isMovingForward()
-	{
-		return false;
 	}
 }
