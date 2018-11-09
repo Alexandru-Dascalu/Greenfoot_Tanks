@@ -121,7 +121,7 @@ public class EnemyTurret extends Turret
 			{
 				/*We fire the shell, update lastFiring and increment the counter
 				 * of live shells in the world fired by this turret.*/
-				//super.fire();
+				super.fire();
 				lastFiring=System.currentTimeMillis();
 			}
 		}
