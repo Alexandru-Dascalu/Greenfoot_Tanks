@@ -1,9 +1,4 @@
 import greenfoot.*;  
-//import java.awt.Cursor;
-//import java.awt.Point;
-//import java.awt.Toolkit;
-//import javax.swing.*;
-//import greenfoot.core.WorldHandler;
 import java.util.List;
 
 /**
@@ -87,13 +82,6 @@ public class TankWorld extends World
     /**The player tank of this game world.*/
     private PlayerTank playerTank;
     
-    /**A transparent custom cursor used to hide the mouse cursor when the mouse is
-     * in the game world.*/
-    //private Cursor customCursor;
-    
-    /**A JPanel used to hide the mouse cursor when the mouse is in the game world.*/
-    //private JPanel panel;
-    
     /**The number of the current level of the game the player is in.*/
     private int level;
     
@@ -121,9 +109,6 @@ public class TankWorld extends World
         
         //the player has 3 lives in the beginning
         playerLives=3;
-        
-        /*Makes a custom transparent cursor to use to hide the default mouse cursor.*/
-        //hideCursor();
     }
 
     /**Ensures that the first level is initiated and that the mouse cursor is hidden
@@ -137,27 +122,8 @@ public class TankWorld extends World
     		level++;
     		prepare();
     	}
-    	
-    	//hide the mouse cursor
-        //panel.setCursor(customCursor);
     }
     
-    /**Creates a transparent mouse cursor used to cover and hide the mouse cursor
-     * while the mouse is over the game world, so that it does not overlap the 
-     * player target.*/
-    /*private void hideCursor()
-    {
-    	/*I am not an expert on Java Swing, so this is just code I copied from
-    	 * https://www.greenfoot.org/topics/821 and made changes for it to
-    	 * work for this project.*/
-    	/*Toolkit toolkit=Toolkit.getDefaultToolkit();
-        Point defaultPoint=new Point(0,0);
-        GreenfootImage emptyImage= new GreenfootImage(5,5);
-        customCursor=toolkit.createCustomCursor(emptyImage.getAwtImage(),defaultPoint,
-            "Target");
-        panel=WorldHandler.getInstance().getWorldCanvas; 
-    }*/
-   
     /**Prepares the world for the start of a new level, based on the value of the
      * level class variable. It removes all actors in the current world, adds
      * actors for the next level and updates the displays for the number of enemies
