@@ -101,3 +101,4 @@ public class EnemyCount extends UIDisplay
     	return TEXT_YPOS;
     }
 }
+

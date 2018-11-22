@@ -403,31 +403,31 @@ public class EnemyTurret extends Turret
 	public int getShellBounceLimit()
 	{
 		/*Check if this turret is firing normal shells.*/
-    	if(getShellType()==Shell.class)
-    	{
-    		//if so, return the amount of times normal shells can bounce
-    		return Shell.TIMES_ALLOWED_TO_BOUNCE;
-    	}
-    	/*Else, check if this turret is firing rocket shells.*/
-    	else if(getShellType()==RocketShell.class)
-    	{
-    		//if so, return the amount of times rocket shells can bounce
-    		return RocketShell.TIMES_ALLOWED_TO_BOUNCE;
-    	}
-    	/*Else, check if this turret is firing rocket shells MK2.*/
-    	else if(getShellType()==RocketShellMk2.class)
-    	{
-    		//if so, return the amount of times rocket shells can bounce
-    		return RocketShellMk2.TIMES_ALLOWED_TO_BOUNCE;
-    	}
-    	else
-    	{
-    		/*If the shell type is something different, returning it's type
-    		 * bounce limit must be hardcoded. Since this method does not 
-    		 * recognize it, throw an exception.*/
-    		throw new IllegalStateException("The type of shell fired by this "
-    				+ "turret is not recognized by this method.");
-    	}
+        	if(getShellType()==Shell.class)
+        	{
+        		//if so, return the amount of times normal shells can bounce
+        		return Shell.TIMES_ALLOWED_TO_BOUNCE;
+        	}
+        	/*Else, check if this turret is firing rocket shells.*/
+        	else if(getShellType()==RocketShell.class)
+        	{
+        		//if so, return the amount of times rocket shells can bounce
+        		return RocketShell.TIMES_ALLOWED_TO_BOUNCE;
+        	}
+        	/*Else, check if this turret is firing rocket shells MK2.*/
+        	else if(getShellType()==RocketShellMk2.class)
+        	{
+        		//if so, return the amount of times rocket shells can bounce
+        		return RocketShellMk2.TIMES_ALLOWED_TO_BOUNCE;
+        	}
+        	else
+        	{
+        		/*If the shell type is something different, returning it's type
+        		 * bounce limit must be hardcoded. Since this method does not 
+        		 * recognize it, throw an exception.*/
+        		throw new IllegalStateException("The type of shell fired by this "
+        				+ "turret is not recognized by this method.");
+        	}
 	}
 	
 	/**
@@ -442,3 +442,4 @@ public class EnemyTurret extends Turret
 		return 0;
 	}
 }
+

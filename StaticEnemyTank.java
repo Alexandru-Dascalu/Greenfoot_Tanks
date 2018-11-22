@@ -1,4 +1,3 @@
-
 /**
  * <p><b>File name: </b> StaticEnemyTank.java
  * @version 1.0

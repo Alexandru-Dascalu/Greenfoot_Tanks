@@ -128,3 +128,4 @@ public class WallBlock extends Actor
     	return quadrant;
     }
 }
+

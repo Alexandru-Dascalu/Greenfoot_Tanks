@@ -99,3 +99,4 @@ public class LivesMeter extends UIDisplay
     	return TEXT_YPOS;
     }
 }
+

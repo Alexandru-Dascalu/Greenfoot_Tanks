@@ -144,3 +144,4 @@ public class BrownTurret extends EnemyTurret
 		return LIVE_SHELLS_ALLOWED;
 	}
 }
+

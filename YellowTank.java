@@ -339,3 +339,4 @@ public class YellowTank extends MobileEnemyTank
     	return MINE_LAYING_PERIOD;
     }
 }
+

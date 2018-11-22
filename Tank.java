@@ -1107,3 +1107,4 @@ public class Tank extends Actor
     	return distance;
     }
 }
+

@@ -1,4 +1,3 @@
-
 /**
  * <p><b>File name: </b> DestroyableWallBlock.java
  * @version 1.0
@@ -40,3 +39,4 @@ public class DestroyableWallBlock extends WallBlock
 	 *  Everything else relating to destroying walls is in the LandMine class, 
 	 *  so this class is empty and ust has a differrent image.*/
 }
+

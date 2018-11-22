@@ -1,4 +1,4 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*; 
 
 /**
  * <p><b>File name: </b> StartScreen.java
@@ -62,3 +62,4 @@ public class StartScreen extends Actor
     	setImage(newImage);
 	}
 }
+

@@ -377,3 +377,4 @@ public class LandMine extends Actor
     	return canBeIgnoredByParent;
     }
 }
+
