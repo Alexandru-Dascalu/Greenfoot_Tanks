@@ -62,7 +62,7 @@ public class BrownTank extends StaticEnemyTank
 	protected void addedToWorld(World world)
 	{
 		setRotation(startRotation);
-		tankTurret=new BrownTurret(this);
+		tankTurret = new BrownTurret(this);
 	}
 }
 
