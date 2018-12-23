@@ -49,7 +49,7 @@ import java.util.Random;
  *  <p>	-1.4 - Made tanks avoid shell.
  */
 
-public class MobileEnemyTank extends Tank
+public abstract class MobileEnemyTank extends Tank
 {
 	/**The minimal distance in cells or pixels the chosen target point can be 
 	 * away from the player tank, so this tank will try to not get too close 

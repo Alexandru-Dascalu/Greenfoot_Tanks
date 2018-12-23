@@ -33,7 +33,7 @@
  * <p><b>Version History</b>
  * <p>	-1.0 - Created the class.
  */
-public class StaticEnemyTank extends Tank
+public abstract class StaticEnemyTank extends Tank
 {
 
 	 /** Makes a new Static Enemy Tank whose starting location in the level is at
@@ -71,4 +71,35 @@ public class StaticEnemyTank extends Tank
 	{
 		return false;
 	}
+	
+	/**
+	 * The speed of this tank, meaning the distance in cells that the tank moves
+	 * each time the move(int) method is called.
+	 * @return 0, since static tanks do not move.
+	 */
+	public int getSpeed()
+	{
+		return 0;
+	}
+	
+	/**
+	 * The number of mines this tank can lay in one level.
+	 * @return 0, since tanks that do not move can not lay mines.
+	 */
+	public int getNumberOfMines()
+	{
+		return 0;
+	}
+	
+	/**
+	 * Getter The maximum number of degrees by which this tank can turn each 
+	 * time the act() method is called. Used by mobile enemy tanks and the 
+	 * player tank.
+	 * @return 	0, since static tanks do not turn or move.
+	 */
+    public int getMaxTurnSpeed()
+    {
+    	return 0;
+    }
+	
 }

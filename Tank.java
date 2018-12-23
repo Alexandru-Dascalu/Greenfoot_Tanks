@@ -1,4 +1,6 @@
-import greenfoot.*;
+import greenfoot.Actor;
+import greenfoot.GreenfootSound;
+import greenfoot.World;
 
 /**
  * <p><b>File name: </b> Tank.java
@@ -47,7 +49,7 @@ import greenfoot.*;
  * tank and mobile enemy tanks subclasses.
  */
 
-public class Tank extends Actor
+public abstract class Tank extends Actor
 {
 	/**The file name of the sound that will play when the tank moves.*/
 	protected static final String DRIVING_SOUND_NAME="tank_moving_1.wav";
@@ -996,36 +998,23 @@ public class Tank extends Actor
 	/**
 	 * The speed of this tank, meaning the distance in cells that the tank moves
 	 * each time the move(int) method is called.
-	 * @return 0, unless overridden, since a default tank does not have a specific 
-	 * speed. This method should always be overridden.
+	 * @return The speed of this tank.
 	 */
-	public int getSpeed()
-	{
-		return 0;
-	}
+	public abstract int getSpeed();
 	
 	/**
 	 * The number of mines this tank can lay in one level.
-	 * @return 0, unless overridden, since a default tank does not lay any mines.
-	 * This method should always be overridden.
+	 * @return The number of mines this tank can lay.
 	 */
-	public int getNumberOfMines()
-	{
-		return 0;
-	}
+	public abstract int getNumberOfMines();
 	
 	/**
 	 * Getter The maximum number of degrees by which this tank can turn each 
 	 * time the act() method is called. Used by mobile enemy tanks and the 
 	 * player tank.
-	 * @return 	The maximum turn speed of this type of tank.It returns 0 
-	 * because a default tank does not have a specific turn speed. This method 
-	 * should always be overridden.
+	 * @return 	The maximum turn speed of this type of tank.
 	 */
-    public int getMaxTurnSpeed()
-    {
-    	return 0;
-    }
+    public abstract int getMaxTurnSpeed();
 	
 	/**Deletes this tank and it's turret along with any other associated actors
 	 * from this game world.*/

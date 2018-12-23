@@ -94,6 +94,16 @@ public class TurquoiseTank extends MobileEnemyTank
     }
     
     /**
+	 * The number of mines this tank can lay in one level.
+	 * @return The number of mines this tank can lay, which is 0, since this 
+	 * type of tank does not lay mines.
+	 */
+	public int getNumberOfMines()
+	{
+		return 0;
+	}
+    
+    /**
 	 * Getter The maximum number of degrees by which this tank can turn each 
 	 * time the act() method is called.
 	 * @return 	The maximum turn speed of this type of tank.
