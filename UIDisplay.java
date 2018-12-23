@@ -37,7 +37,7 @@ import greenfoot.*;
  * <p>	-1.0 - Created a class for UI displays that update themselves.
  */
 
-public class UIDisplay extends Actor
+public abstract class UIDisplay extends Actor
 {
 	/**The data displayed in the text that may be updated. Protected so that it
 	 * can be accessed by subtypes.*/
@@ -98,48 +98,33 @@ public class UIDisplay extends Actor
     }
     
     /**
-     * Returns the updated data that should be displayed. Meant to be overridden.
-     * @return Just 0, because it is should be overridden and not used on it's own.
+     * Returns the updated data that should be displayed.
+     * @return the updated data that should be displayed
      */
-    public int getNewData()
-    {
-    	return 0;
-    }
+    public abstract int getNewData();
     
     /**
-     * Returns the name of the background image of the display. Meant to be overridden.
-     * @return Just /'a/', because it is should be overridden and not used on it's own.
+     * Returns the name of the background image of the display.
+     * @return the name of the background image of the display.
      */
-    public String getShapeImage()
-    {
-    	return "a";
-    }
+    public abstract String getShapeImage();
     
     /**
      * Returns the text that of the display that remains the same.
-     * @return Just /'b/', because it is should be overridden and not used on it's own.
+     * @return the text that of the display that remains the same.
      */
-    public String getText()
-    {
-    	return "b";
-    }
+    public abstract String getText();
     
     /**
      * Returns the correct x coordinate where the updated text should be displayed.
-     * @return Just 0, because it is should be overridden and not used on it's own.
+     * @return the correct x coordinate where the updated text should be displayed.
      */
-    public int getTextXPos()
-    {
-    	return 0;
-    }
+    public abstract int getTextXPos();
     
     /**
      * Returns the correct y coordinate where the updated text should be displayed.
-     * @return Just 0, because it is should be overridden and not used on it's own.
+     * @return the correct y coordinate where the updated text should be displayed.
      */
-    public int getTextYPos()
-    {
-    	return 0;
-    }
+    public abstract int getTextYPos();
 }
 
