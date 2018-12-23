@@ -42,7 +42,7 @@ import greenfoot.World;
  * rocket shells also.
  */
 
-public class EnemyTurret extends Turret
+public abstract class EnemyTurret extends Turret
 {
 	/**The approximate length in cells(pixels) between points on the line of
 	 * sight where we check if the player is there. It's value is {@value}.*/
@@ -131,7 +131,6 @@ public class EnemyTurret extends Turret
 	 * Moves the turret around, according to what the calculateTurn() method 
 	 * sets the next rotation of this turret as.
 	 */
-	@Override
 	public void aim()
 	{	
 		/*We check if we need to generate a new angle to rotate towards or 
@@ -384,17 +383,6 @@ public class EnemyTurret extends Turret
 		finishTurn=false;
 	}
 	
-	/**Gets the cool down period(in milliseconds) after which this turret can 
-	 * fire another shell. This period is a static variable and is the same for
-	 * all objects of this class. It returns 0 because this method is meant to 
-	 * be always overridden.
-	 * @return The period in milliseconds after which this turret can fire another
-	 * shell, which is 0, unless overridden.*/
-	public int getFireCooldown()
-	{
-		return 0;
-	}
-	
 	/**
 	 * Gets the maximum number of times a shell fired by this turret can bounce.
 	 * Returns the bounce limit of the type of shells fired by this turret.
@@ -430,6 +418,14 @@ public class EnemyTurret extends Turret
         	}
 	}
 	
+	/**Gets the cool down period(in milliseconds) after which this turret can 
+	 * fire another shell. This period is a static variable and is the same for
+	 * all objects of this class. It returns 0 because this method is meant to 
+	 * be always overridden.
+	 * @return The period in milliseconds after which this turret can fire another
+	 * shell.*/
+	public abstract int getFireCooldown();
+	
 	/**
 	 * Gets the size in degrees of the angle of an imaginary cone whose axis extends
 	 * to the position of the player tank. In this angle the turret moves 
@@ -437,9 +433,6 @@ public class EnemyTurret extends Turret
 	 * a basic enemy turret.
 	 * @return The aim angle of this type of turret in relation to the player tank.
 	 */
-	public int getAimAngle()
-	{
-		return 0;
-	}
+	public abstract int getAimAngle();
 }
 

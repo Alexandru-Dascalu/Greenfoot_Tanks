@@ -143,5 +143,17 @@ public class BrownTurret extends EnemyTurret
 	{
 		return LIVE_SHELLS_ALLOWED;
 	}
+	
+	/**
+	 * Gets the size in degrees of the angle of an imaginary cone whose axis extends
+	 * to the position of the player tank. In this angle the turret moves 
+	 * randomly. Returns 0 unless overriden, since there is no set behaviour for 
+	 * a basic enemy turret.
+	 * @return 0, since this turret aims randomly and does not follow the player.
+	 */
+	public int getAimAngle()
+	{
+		return 0;
+	}
 }
 

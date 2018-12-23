@@ -39,7 +39,7 @@ import greenfoot.*;
  * from the centre of the turret.
  */
 
-public class Turret extends Actor
+public abstract class Turret extends Actor
 {
 	/**The length of this turret's gun barrel. It's value is {@value}.*/
 	private static final int BARREL_LENGTH=52;
@@ -94,39 +94,35 @@ public class Turret extends Actor
     	 * added to the world by it's constructor so nothing else is needed.*/
     	
     	/*Check if this turret is firing normal shells.*/
-    	if(getShellType()==Shell.class)
+    	if(getShellType() == Shell.class)
     	{
     		//if so, fire a normal shell by making a new one at the end of the
     		//barrel of this turret
-    		Shell tankShell=new Shell(getRotation(), tank, getShellX(), 
+    		Shell tankShell = new Shell(getRotation(), tank, getShellX(), 
         			getShellY());
     	}
     	/*Else, check if this turret is firing rocket shells.*/
-    	else if(getShellType()==RocketShell.class)
+    	else if(getShellType() == RocketShell.class)
     	{
     		//if so, fire a rocket shell by making a new one at the end of the
     		//barrel of this turret
-    		RocketShell tankShell=new RocketShell(getRotation(), tank, getShellX(), 
-        			getShellY());
+    		RocketShell tankShell = new RocketShell(getRotation(), tank, 
+    				getShellX(), getShellY());
     	}
     	else if(getShellType()==RocketShellMk2.class)
     	{
     		//if so, fire a rocket shell mk2 by making a new one at the end of the
     		//barrel of this turret
-    		RocketShell tankShell=new RocketShellMk2(getRotation(), tank, getShellX(), 
-        			getShellY());
+    		RocketShell tankShell = new RocketShellMk2(getRotation(), tank, 
+    				getShellX(), getShellY());
     	}
     	
     	//increment the number of shells in the world fired by this turret
     	liveShells++;
     }
     
-    /**Makes the turret aim. By default it does nothing and the method is just 
-     * here so it can be overriden.*/
-    public void aim()
-    {
-    	
-    }
+    /**Makes the turret aim. */
+    public abstract void aim();
     
     /**
      * Calculates the x position of the end of the turret's gun barrel.
@@ -137,8 +133,8 @@ public class Turret extends Actor
     	/*The x position is that of the turret added with the projection of the
     	 * length of the gun barrel on the horizontal axis (calculated with the
     	 * cosine of the turret's rotation).*/
-    	int rotation=getRotation();
-    	int shellX=getX()+(int)(BARREL_LENGTH*Math.cos(Math.toRadians(rotation)));
+    	int rotation = getRotation();
+    	int shellX = getX() + (int)(BARREL_LENGTH * Math.cos(Math.toRadians(rotation)));
     	
     	return shellX;
     }
@@ -152,8 +148,8 @@ public class Turret extends Actor
     	/*The y position is that of the turret added with the projection of the
     	 * length of the gun barrel on the vertical axis (calculated with the
     	 * sine of the turret's rotation).*/
-    	int rotation=getRotation();
-    	int shellY=getY()+(int)(BARREL_LENGTH*Math.sin(Math.toRadians(rotation)));
+    	int rotation = getRotation();
+    	int shellY = getY() + (int)(BARREL_LENGTH * Math.sin(Math.toRadians(rotation)));
     	
     	return shellY;
     }
@@ -163,11 +159,8 @@ public class Turret extends Actor
 	 * all objects of this class.It returns 0 because this method is meant to 
 	 * be always overriden.
 	 * @return the limit of how many shells fired by this turret can be in the world
-	 * at the same time, which is 0, unless overriden.*/
-	public int getLiveShellLimit()
-	{
-		return 0;
-	}
+	 * at the same time.*/
+	public abstract int getLiveShellLimit();
 	
     /**Decrements the number of shells in the game world fired by this turret.
      * Since removing the shells is handled in the TankWorld class, we need

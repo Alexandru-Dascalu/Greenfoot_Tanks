@@ -119,17 +119,6 @@ public abstract class Tank extends Actor
 		drivingSound = new GreenfootSound(DRIVING_SOUND_NAME);
 	}
 	
-	/**Method sets the correct rotation of the tank after it is placed in the 
-	 * world and then makes a new tank turret that will be placed on this tank.
-	 * @param world The game world this tank has just been added to.
-	 */
-	@Override
-	protected void addedToWorld(World world)
-	{
-		setRotation(startRotation);
-		this.tankTurret = new Turret(this);
-	}
-	
 	/**
      * Moves this tank by approximately the distance given as a parameter
      * in the direction it is currently facing. Overrides the default one so that
