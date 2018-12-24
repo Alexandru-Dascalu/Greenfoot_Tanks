@@ -52,10 +52,7 @@ public abstract class EnemyTurret extends Turret
 	 * search for the target will start, to make sure the search does not stop 
 	 * immediately because it checks a point inside this turret's tank.*/
 	private static final int NR_INTERVALS_FROM_TANK=5;
-	
-	/**The speed at which this turret turns left or right.*/
-	protected static final int TURN_SPEED=1;
-	
+
 	/**A boolean that says whether the turret has finished turning to the last 
 	 * position that has been generated, and whether we need to start another
 	 * turn.*/
@@ -85,11 +82,13 @@ public abstract class EnemyTurret extends Turret
 		super(tank);
 		
 		/*No new rotation position has been generated so we need to generate a
-		 * new one, which is why this is initialised as true.*/
-		finishTurn=true;
+		 * new one, which is why this is initialized as true.*/
+		finishTurn = true;
 		
 		//no shell has been fired
-		lastFiring=0;
+		lastFiring = 0;
+		nextRotation = 0;
+		nextTurn = 0;
 	}
 	
 	/**
@@ -104,7 +103,7 @@ public abstract class EnemyTurret extends Turret
 	}
 	
 	/**
-	 * Fires a shell if it has detected the player, if the cooldown period has
+	 * Fires a shell if it has detected the player, if the cool down period has
 	 * passed and if the limit of live shells in the world fire by this turret
 	 * has not been reached.
 	 */
@@ -112,12 +111,12 @@ public abstract class EnemyTurret extends Turret
 	public void fire()
 	{
 		/*We only fire if the player tank has been detected.*/
-		if(detectTarget())
+		if(detectPlayer())
 		{
-			/*Even then, we only fire if the cooldown period has passed and 
+			/*Even then, we only fire if the cool down period has passed and 
 			 * the live shells in the world limit has not been reached.*/
-			if((lastFiring+getFireCooldown()<System.currentTimeMillis()) &&
-					liveShells<getLiveShellLimit())
+			if((lastFiring + getFireCooldown() < System.currentTimeMillis()) &&
+					liveShells < getLiveShellLimit())
 			{
 				/*We fire the shell, update lastFiring and increment the counter
 				 * of live shells in the world fired by this turret.*/
@@ -157,12 +156,12 @@ public abstract class EnemyTurret extends Turret
 				 * If nextTurn is positive, the turret turns clockwise.*/
 				if(nextTurn>=0)
 				{
-					turn(TURN_SPEED);
+					turn(1);
 				}
 				/*If it is negative, the turret turns anti clockwise*/
 				else
 				{
-					turn(-TURN_SPEED);
+					turn(-1);
 				}
 			}
 		}
@@ -174,7 +173,7 @@ public abstract class EnemyTurret extends Turret
 	 * false if not or if the shell would hit another enemy tank before it would
 	 * hit the player.
 	 */
-	private boolean detectTarget()
+	private boolean detectPlayer()
 	{
 		//counts the number of times the line of sight has bounced off walls
 		int bounces=0;
@@ -202,7 +201,7 @@ public abstract class EnemyTurret extends Turret
 		double yRealOffset=NR_INTERVALS_FROM_TANK*yInterval;
 		
 		//says whether to continue looking for the player or stop
-		boolean cont=true;
+		boolean lookingForPlayer=true;
 		
 		/*The detection works by checking if the player tank is at some points
 		 * in the world relative to this turret. These points have a distance
@@ -214,7 +213,7 @@ public abstract class EnemyTurret extends Turret
 		 * fires do) or if this turret's tank is detected in it's line of sight
 		 * (so that it won't fire a shell that destroys this tank before it can
 		 * reach the player).*/
-		while(cont)
+		while(lookingForPlayer)
 		{
 			/*Greenfoot Worlds work in integers not real numbers, so we approximate
 			 * to the closest integer bigger than the real offsets*/
@@ -311,7 +310,7 @@ public abstract class EnemyTurret extends Turret
 				/*If it can not bounce again, we stop out search*/
 				else
 				{
-					cont=false;
+					lookingForPlayer=false;
 				}
 			}
 			
@@ -320,7 +319,7 @@ public abstract class EnemyTurret extends Turret
 			if((getX()+xOffset>=TankWorld.LENGTH) || (getX()+xOffset<0) || (getY()+yOffset>=TankWorld.WIDTH)
 					|| (getY()+yOffset<0))
 			{
-				cont=false;
+				lookingForPlayer=false;
 			}
 			
 			/*Increase the offsets for the next point we search.*/
