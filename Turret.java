@@ -1,4 +1,5 @@
-import greenfoot.*; 
+import greenfoot.Actor;
+import greenfoot.World;
 
 /**
  * <p><b>File name: </b> Turret.java
