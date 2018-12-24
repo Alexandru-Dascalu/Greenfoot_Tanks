@@ -167,6 +167,12 @@ public abstract class Turret extends Actor
      * a public method to decrement this counter when a shell is removed.*/
     public void decLiveShells()
     {
+    	if(liveShells < 1)
+    	{
+    		throw new IllegalStateException("Can not decrement the counter of " +
+    				"live shells when it is 0 or less!");
+    	}
+    	
     	liveShells--;
     }
     
@@ -191,7 +197,7 @@ public abstract class Turret extends Actor
 	 * @return The type of shell fired by this turret, indicated by a Class 
 	 * object.
 	 */
-    public Class<?> getShellType()
+    public Class<? extends Shell> getShellType()
     {
     	return Shell.class;
     }

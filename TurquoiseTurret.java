@@ -91,7 +91,7 @@ public class TurquoiseTurret extends EnemyTurret
 	 * object.
 	 */
 	@Override
-	public Class<?> getShellType()
+	public Class<? extends Shell> getShellType()
     {
     	return RocketShell.class;
     }
