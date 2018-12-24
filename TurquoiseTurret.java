@@ -49,8 +49,6 @@ public class TurquoiseTurret extends EnemyTurret
 	 * randomly. It's value is {@value}.*/
 	private static final int AIM_ANGLE=35;
 	
-	
-	
 	/**
 	 * Makes a new Turquoise Turret on the Tank given as an argument.
 	 * @param tank The tank on which this Turret will be placed.
@@ -60,8 +58,6 @@ public class TurquoiseTurret extends EnemyTurret
 		//just call the supertype constructor
 		super(tank);
 	}
-	
-	
 	
 	/**Gets the cool down period(in milliseconds) after which this turret can 
 	 * fire another shell. This period is a static variable and is the same for

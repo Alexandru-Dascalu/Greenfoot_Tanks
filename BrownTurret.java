@@ -65,7 +65,7 @@ public class BrownTurret extends EnemyTurret
 	 */
 	public BrownTurret(Tank tank)
 	{
-		//just call the supertype constructor
+		//just call the super type constructor
 		super(tank);
 	}
 	
