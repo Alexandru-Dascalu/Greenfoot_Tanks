@@ -45,7 +45,7 @@ import greenfoot.World;
  * <p>  -1.5 - Modified this class to be a general tank class and moved part of 
  * code into the PlayerTank class, which inherits from this.
  * <p>	-1.6 - Modified this class so tanks can push each other while moving.
- * <p>	-1.7 - Added a getMaxTurnSpeed() method to be overriden in the player 
+ * <p>	-1.7 - Added a getMaxTurnSpeed() method to be overridden in the player 
  * tank and mobile enemy tanks subclasses.
  */
 
@@ -54,14 +54,10 @@ public abstract class Tank extends Actor
 	/**The file name of the sound that will play when the tank moves.*/
 	protected static final String DRIVING_SOUND_NAME="tank_moving_1.wav";
 	
-	/**The GreenfootSound object associated with this tank. Used to make sure
-	 * the sound only plays when this tank moves.*/
-	protected GreenfootSound drivingSound;
-	
 	/**The length of half of the diagonal of a tanks image, in pixels. Used for
 	 * detecting collisions with walls and other tanks. For the current image
 	 * the value is {@value}.*/
-	protected final static double HALF_DIAGONAL=42.07433897282;
+	protected static final double HALF_DIAGONAL=42.07433897282;
 	
 	/**The length of the long side of the tank. Currently, the tank's 
 	 * image is 51 by 49 pixels, so the value is {@value}.*/
@@ -73,7 +69,11 @@ public abstract class Tank extends Actor
 	
 	/**The angle in degrees between the length of the tank and it's diagonal.
 	 * For the current image the value is {@value}.*/
-	protected final static double ANGLE=44.5185341941;
+	protected static final double ANGLE=44.5185341941;
+	
+	/**The GreenfootSound object associated with this tank. Used to make sure
+	 * the sound only plays when this tank moves.*/
+	protected GreenfootSound drivingSound;
 	
 	/**The tank turret of this tank. By default it is a simple turret.*/
 	protected Turret tankTurret;
@@ -86,12 +86,14 @@ public abstract class Tank extends Actor
 	 * to put the tank when the level is reloaded.*/
 	protected final int startY;
 	
+	/**The starting rotation of the tank when the level starts. It is a number 
+	 * between 0 and 359.*/
 	protected final int startRotation;
 	
 	/**The correct x position of the tank, represented by a real number.*/
 	protected double realX;
 	
-	/**The correct x position of the tank, represented by a real number.*/
+	/**The correct y position of the tank, represented by a real number.*/
 	protected double realY;
 	
 	/**The number of mines laid by this tank in the current level so far.*/
@@ -105,16 +107,16 @@ public abstract class Tank extends Actor
 	 */
 	public Tank(int startX, int startY, int startRotation)
 	{
-		//make new tank
 		super();
 		
-		/*Initialise variables that store the starting position of the tank and
+		/*Initialize variables that store the starting position of the tank and
 		 * the sound object of this tank.*/
 		this.startX=startX;
 		this.startY=startY;
 		this.startRotation=startRotation;
 		realX=startX;
 		realY=startY;
+		minesLaid=0;
 		
 		drivingSound = new GreenfootSound(DRIVING_SOUND_NAME);
 	}
@@ -176,7 +178,7 @@ public abstract class Tank extends Actor
      * is not being pushed so this method just moves this tank on each axis by
      * the distances given.
      */
-    public void move(double dx, double dy, Tank pushingTank)
+    private void getPushed(double dx, double dy, Tank pushingTank)
     {
     	/*Check if this tank is being pushed by another.*/
     	if(pushingTank!=null)
@@ -199,7 +201,7 @@ public abstract class Tank extends Actor
         			 * axis. We push the pushing tank on the horizontal axis 
         			 * in the opposite direction to cancel out the move it did
         			 * on it's own and make sure it will not overlap this tank.*/
-        			pushingTank.move(-dx, 0, null);
+        			pushingTank.getPushed(-dx, 0, null);
         			
         			//set dx to 0 so this tank will not move horizontally
         			dx=0;
@@ -212,7 +214,7 @@ public abstract class Tank extends Actor
         			 * axis. We push the pushing tank on the vertical axis 
         			 * in the opposite direction to cancel out the move it did
         			 * on it's own and make sure it will not overlap this tank.*/
-        			pushingTank.move(0, -dy, null);
+        			pushingTank.getPushed(0, -dy, null);
         			
         			//set dy to 0 so this tank will not move horizontally
         			dy=0;
@@ -287,7 +289,7 @@ public abstract class Tank extends Actor
 		 * these points and the center of the tank using other private methods.*/
 		frontRight = getOneObjectAtOffset(getXOffset("front right"), getYOffset("front right"), WallBlock.class);
 		frontLeft = getOneObjectAtOffset(getXOffset("front left"), getYOffset("front left"), WallBlock.class);
-		front= getOneObjectAtOffset(getXOffset("front"),getYOffset("front"),WallBlock.class);
+		front = getOneObjectAtOffset(getXOffset("front"),getYOffset("front"),WallBlock.class);
 		
 
 		/*Check if the tank can move forward. It can only if no wall has been
@@ -848,7 +850,7 @@ public abstract class Tank extends Actor
 				}
 				
 				//move the other tank by the distances established
-				otherTank.move(dx, dy, this);
+				otherTank.getPushed(dx, dy, this);
 			}
 		}	
 	}
