@@ -122,6 +122,22 @@ public abstract class Tank extends Actor
 	}
 	
 	/**
+	 * Act - do whatever the Tank wants to do. This method is called whenever the
+	 * 'Act' or 'Run' button gets pressed in the environment. In this case, this
+	 * method makes the tank play a sound if it moves and tells it's turret to 
+	 * aim and fire.
+	 */
+	@Override
+	public void act()
+	{
+		//playSound();
+		pushOtherTanks();
+		
+		tankTurret.aim();
+		tankTurret.fire();
+	}
+	
+	/**
      * Moves this tank by approximately the distance given as a parameter
      * in the direction it is currently facing. Overrides the default one so that
      * errors do not accumulate over time dues to the fact in Greenfoot actor
@@ -241,22 +257,6 @@ public abstract class Tank extends Actor
     	}
     }
     
-	/**
-	 * Act - do whatever the Tank wants to do. This method is called whenever the
-	 * 'Act' or 'Run' button gets pressed in the environment. In this case, this
-	 * method makes the tank play a sound if it moves and tells it's turret to 
-	 * aim and fire.
-	 */
-	@Override
-	public void act()
-	{
-		//playSound();
-		pushOtherTanks();
-		
-		tankTurret.aim();
-		tankTurret.fire();
-	}
-
 	/**Makes the tank lay down a land mine.*/
 	protected void layMine()
 	{
@@ -678,7 +678,7 @@ public abstract class Tank extends Actor
 	}
 	
 	/**
-	 * Checks if this tank should other tanks while it moves and calculates the 
+	 * Checks if this tank should push other tanks while it moves and calculates the 
 	 * x and y distances by which the other tanks should be moved.
 	 */
 	protected void pushOtherTanks()
@@ -730,52 +730,13 @@ public abstract class Tank extends Actor
 					 * on what side of it is touched by this tank.*/
 					if(side.equals("front") || side.equals("back"))
 					{
-						/*If the other tank is touched on it's front or back sides, it
-						 * should be moved horizontally. Check if this tank pushes the
-						 * other tank with it's front, by seeing if it touches the other
-						 * tank with one of it's front corners and if it also moves forward.*/
-						if(isMovingForward() && (corner.equals("front left") || 
-							corner.equals("front right")))
-						{
-							/*If so, the distance the other tank should be moved by 
-							 * is the x axis component of this tank's movement vector.*/
-							dx=getSpeed()*Math.cos(Math.toRadians(getRotation()));
-						}
-						/*Check if this tank pushes the other tank with it's back, by 
-						 * seeing if it touches the other tank with one of it's back
-						 * corners and if it also moves backward.*/
-						else if(isMovingBackward() && (corner.equals("back left") 
-							|| corner.equals("back right")))
-						{
-							/*If so, the distance the other tank should be moved by 
-							 * is the x axis component of this tank's movement vector.
-							 * The opposite value to the above conditional block since
-							 * the tank moves backwards.*/
-							dx=-(getSpeed()*Math.cos(Math.toRadians(getRotation())));
-						}
+						dx = computeHorizontalPush(corner);
 					}
 					/*Else, if the other tank is touched on it's right or left sides,
 					 * it should be moved vertically.*/ 
 					else
 					{
-						//Check if this tank pushes the other tank with it's front.
-						if(isMovingForward() && (corner.equals("front left") || 
-								corner.equals("front right")))
-						{
-							/*If so, the distance the other tank should be moved by 
-							 * is the y axis component of this tank's movement vector.*/
-							dy=getSpeed()*Math.sin(Math.toRadians(getRotation()));
-						}
-						//Check if this tank pushes the other tank with it's back.
-						else if(isMovingBackward() && (corner.equals("back left") 
-							|| corner.equals("back right")))
-						{
-							/*If so, the distance the other tank should be moved by 
-							 * is the y axis component of this tank's movement vector.
-							 * The opposite value to the above conditional block since
-							 * the tank moves backwards.*/
-							dy=-(getSpeed()*Math.sin(Math.toRadians(getRotation())));
-						}
+						dy = computeVerticalPush(corner);
 					}
 				}
 				/*Else, we need to decide if the other tank touches this tank with
@@ -847,9 +808,82 @@ public abstract class Tank extends Actor
 	}
 	
 	/**
+	 * Calculate the distance on the horizontal axis the tank being pushed by 
+	 * this tank should move, in the case when this tank touches the front or 
+	 * back side of the other tank with one of it's corners.
+	 * @param corner The corner of this touching the other tank.
+	 * @return The distance the other should be moved horizontally.
+	 */
+	private double computeHorizontalPush(String corner)
+	{
+		//The distance on the x axis the other tank should be moved
+		double dx = 0;
+		
+		/*If the other tank is touched on it's front or back sides, it
+		 * should be moved horizontally. Check if this tank pushes the
+		 * other tank with it's front, by seeing if it touches the other
+		 * tank with one of it's front corners and if it also moves forward.*/
+		if(isMovingForward() && (corner.equals("front left") || 
+			corner.equals("front right")))
+		{
+			/*If so, the distance the other tank should be moved by 
+			 * is the x axis component of this tank's movement vector.*/
+			dx=getSpeed()*Math.cos(Math.toRadians(getRotation()));
+		}
+		/*Check if this tank pushes the other tank with it's back, by 
+		 * seeing if it touches the other tank with one of it's back
+		 * corners and if it also moves backward.*/
+		else if(isMovingBackward() && (corner.equals("back left") 
+			|| corner.equals("back right")))
+		{
+			/*If so, the distance the other tank should be moved by 
+			 * is the x axis component of this tank's movement vector.
+			 * The opposite value to the above conditional block since
+			 * the tank moves backwards.*/
+			dx=-(getSpeed()*Math.cos(Math.toRadians(getRotation())));
+		}
+		
+		return dx;
+	}
+	
+	/**
+	 * Calculate the distance on the vertical axis the tank being pushed by 
+	 * this tank should move, in the case when this tank touches the left or 
+	 * right side of the other tank with one of it's corners.
+	 * @param corner The corner of this touching the other tank.
+	 * @return The distance the other should be moved vertically.
+	 */
+	private double computeVerticalPush(String corner)
+	{
+		//The distance on the y axis the other tank should be moved
+		double dy = 0;
+		
+		//Check if this tank pushes the other tank with it's front.
+		if(isMovingForward() && (corner.equals("front left") || 
+				corner.equals("front right")))
+		{
+			/*If so, the distance the other tank should be moved by 
+			 * is the y axis component of this tank's movement vector.*/
+			dy=getSpeed()*Math.sin(Math.toRadians(getRotation()));
+		}
+		//Check if this tank pushes the other tank with it's back.
+		else if(isMovingBackward() && (corner.equals("back left") 
+			|| corner.equals("back right")))
+		{
+			/*If so, the distance the other tank should be moved by 
+			 * is the y axis component of this tank's movement vector.
+			 * The opposite value to the above conditional block since
+			 * the tank moves backwards.*/
+			dy=-(getSpeed()*Math.sin(Math.toRadians(getRotation())));
+		}
+		
+		return dy;
+	}
+	
+	/**
 	 * Calculates what diagonal quadrant of this tank a point with the
 	 * given coordinates is in. It also applies to points outside the tank
-	 * (the quadrants start from the centre of this tank and their 
+	 * (the quadrants start from the center of this tank and their 
 	 * imaginary edges extend up to the world's boundary.) Takes into account 
 	 * the rotation of this tank.
 	 * @param x The x coordinate of the point.
