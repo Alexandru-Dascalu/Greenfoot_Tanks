@@ -73,6 +73,16 @@ public abstract class StaticEnemyTank extends Tank
 	}
 	
 	/**
+	 * Checks if the tank is moving backward.
+	 * @return False, because this type of the tank is stationary.
+	 */
+	@Override
+	public boolean isMovingBackward()
+	{
+		return false;
+	}
+	
+	/**
 	 * The speed of this tank, meaning the distance in cells that the tank moves
 	 * each time the move(int) method is called.
 	 * @return 0, since static tanks do not move.

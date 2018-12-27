@@ -393,10 +393,7 @@ public abstract class Tank extends Actor
 	 * @return True if the tank is moving, false if not. Because most enemy tanks
 	 * move continuously, this method always returns true unless overridden.
 	 */
-	public boolean isMoving()
-	{
-		return true;
-	}
+	public abstract boolean isMoving();
 	
 	/**
 	 * Checks if the tank is moving forward.
@@ -404,10 +401,7 @@ public abstract class Tank extends Actor
 	 * enemy tanks move continuously, this method always returns true unless 
 	 * overridden.
 	 */
-	public boolean isMovingForward()
-	{
-		return true;
-	}
+	public abstract boolean isMovingForward();
 	
 	/**
 	 * Checks if the tank is moving backward.
@@ -415,11 +409,8 @@ public abstract class Tank extends Actor
 	 * enemy tanks move forward continuously, this method always returns false
 	 * unless overridden.
 	 */
-	public boolean isMovingBackward()
-	{
-		return false;
-	}
-
+	public abstract boolean isMovingBackward();
+	
 	/**
 	 * Method returns the approximate distance (or offset) between the x position
 	 * of the centre of the tank and the x position of one of the six points on 
