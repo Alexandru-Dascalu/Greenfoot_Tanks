@@ -35,7 +35,6 @@
  */
 public abstract class StaticEnemyTank extends Tank
 {
-
 	 /** Makes a new Static Enemy Tank whose starting location in the level is at
 	 * the given coordinates.
 	 * @param startX The x coordinate of the initial position of the tank in 
