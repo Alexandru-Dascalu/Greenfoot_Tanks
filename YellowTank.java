@@ -128,14 +128,11 @@ public class YellowTank extends MobileEnemyTank
     		 * order to destroy the player.*/
     		if(triggerSuicideMine)
     		{
-    			//make sure to move so that the mine will be stepped on and trigerred
+    			//make sure to move so that the mine will be stepped on and triggered
     			suicide();
     			
     			/*Meanwhile do what any other tank does.*/
-    			//playSound();
-    			pushOtherTanks();
-    			tankTurret.aim();
-    			tankTurret.fire();
+    			super.act();
     		}
     		/*If not, then this tank needs to get close enough to the player.*/
     		else
