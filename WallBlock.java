@@ -1,10 +1,10 @@
-import greenfoot.*; 
+import greenfoot.Actor;
 
 /**
  * <p><b>File name: </b> WallBlock.java
- * @version 1.1
+ * @version 1.2
  * @since 20.05.2018
- * <p><b>Last modification date: </b> 11.07.2018
+ * <p><b>Last modification date: </b> 28.12.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright (C)</b> 2018  Alexandru F. Dascalu
  * 
@@ -35,24 +35,13 @@ import greenfoot.*;
  * <p>	-1.1 - Added code so that this object can detect what diagonal quadrant
  * of this wall block a point is in, used for when a target search or shell
  * needs to bounce.
+ * <p>  -1.1 - Added isDestroyable method.
  */
 public class WallBlock extends Actor
 {
 	/**The length of the side of the square wall block. It's value is {@value}.*/
 	public static final int SIDE=65;
 	
-    /**
-     * Act - do whatever the Wall wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     * By itself, a wall block does nothing, and collision and bouncing is
-     * handled in other classes.
-     */
-	@Override
-    public void act() 
-    {
-       
-    }
-    
 	/**
 	 * Calculates what diagonal quadrant of this wall block a point with the
 	 * given coordinates is in. It also applies to points outside the block
@@ -126,6 +115,15 @@ public class WallBlock extends Actor
     	}
     	
     	return quadrant;
+    }
+    
+    /**
+     * Says if this type of wall block is destroyable.
+     * @return false, since normal wall blocks are not destroyable.
+     */
+    public boolean isDestroyable()
+    {
+    	return false;
     }
 }
 

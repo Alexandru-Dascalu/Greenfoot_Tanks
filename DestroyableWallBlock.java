@@ -1,7 +1,7 @@
 /**
  * <p><b>File name: </b> DestroyableWallBlock.java
- * @version 1.0
- * @since 05.09.2018
+ * @version 1.1
+ * @since 28.12.2018
  * <p><b>Last modification date: </b> 07.09.2018
  * @author Alexandru F. Dascalu
  * <p><b>Copyright (C)</b> 2018  Alexandru F. Dascalu
@@ -30,13 +30,19 @@
  * 
  * <p><b>Version History</b>
  * <p>	-1.0 - Created the class.
+ * <p>  -1.1 - Added isDestroyable method.
  */
 
 public class DestroyableWallBlock extends WallBlock
 {
-	/*The land mine only needs to know this is a different type of wall than the
-	 *  WallBlock class, and this is achieved by just having a different class. 
-	 *  Everything else relating to destroying walls is in the LandMine class, 
-	 *  so this class is empty and ust has a differrent image.*/
+	/**
+     * Says if this type of wall block is destroyable.
+     * @return true, since normal wall blocks are not destroyable.
+     */
+	@Override
+    public boolean isDestroyable()
+    {
+    	return true;
+    }
 }
 
