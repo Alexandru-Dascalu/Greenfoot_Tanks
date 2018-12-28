@@ -63,7 +63,7 @@ public abstract class MobileEnemyTank extends Tank
 	
 	/**The maximum value of the difference between the target rotation and the
 	 * current rotation in degrees where the tank can still turn while moving
-	 * while it is avoiding a mine. Used to make the tank move more naturally 
+	 * and while it is avoiding a mine. Used to make the tank move more naturally 
 	 * and efficiently around a mine. It's value is {@value}.*/
 	private static final int MINE_AVOIDANCE_TURN_TOLERANCE=25;
 	
@@ -116,7 +116,7 @@ public abstract class MobileEnemyTank extends Tank
     	//call superclass constructor
         super(startX, startY, startRotation);
         
-        //initialise all instance variables of this subclass
+        //initialize all instance variables of this subclass
         numberGenerator=new Random();
         path=null;
         avoidingMine=false;
@@ -127,7 +127,7 @@ public abstract class MobileEnemyTank extends Tank
         isMovingForward=false;
         isMovingBackward=false;
         
-        //initialise the first point in time this tank will lay a mine
+        //initialize the first point in time this tank will lay a mine
         generateNextMineLayingTime();
     }
     
@@ -231,7 +231,6 @@ public abstract class MobileEnemyTank extends Tank
     	GraphPoint destination=chooseDestinationPoint();
     	path=world.getWorldGraph().getShortestPath(getX(), getY(), 
     			destination);
-    	
     }
     
     /**Chooses a random destination point for the tank to get to.*/
@@ -246,7 +245,7 @@ public abstract class MobileEnemyTank extends Tank
     	 * valid, destination is assigned that value, so the loop terminates.*/
     	while(destination==null)
     	{
-    		///generate random coordinates within the world's walls
+    		//generate random coordinates within the world's walls
 	    	int targetX=numberGenerator.nextInt(TankWorld.LENGTH-2*WallBlock.SIDE)
 	    			+ WallBlock.SIDE;
 	    	int targetY=numberGenerator.nextInt(TankWorld.WIDTH-2*WallBlock.SIDE)
@@ -330,7 +329,7 @@ public abstract class MobileEnemyTank extends Tank
 	   			isMoving=true;
 	   			isMovingForward=true;
 	   			isMovingBackward=false;
-	   			move(this.getSpeed());
+	   			move(getSpeed());
     		}
 	    	/*Else, this tank needs to turn in the correct direction.*/
 	    	else
@@ -347,7 +346,7 @@ public abstract class MobileEnemyTank extends Tank
 	    		/*If the tank is very close to a mine, it can be dangerous for 
 	    		 * it to turn while moving. The value of this flag will indicate
 	    		 * if the tank can move while turning while it is avoiding a mine.*/
-	    		boolean turnIfCloseToMine;
+	    		boolean moveWhileTurning;
 	    		
 	    		/*Check if this tank is currently avoiding a mine.*/
 	    		if(avoidingMine)
@@ -360,26 +359,25 @@ public abstract class MobileEnemyTank extends Tank
 	    					MINE_AVOIDANCE_TURN_TOLERANCE)
 	    			{
 	    				//it is under the limit, so it can move while turning
-	    				turnIfCloseToMine=true;
+	    				moveWhileTurning=true;
 	    			}
 	    			else
 	    			{
 	    				//it is over the limit, so it can not move while turning
-	    				turnIfCloseToMine=false;
+	    				moveWhileTurning=false;
 	    			}
 	    		}
 	    		/*If it is not avoiding a mine, this flag is not  */
 	    		else
 	    		{
-	    			turnIfCloseToMine=true;
+	    			moveWhileTurning=true;
 	    		}
 	    		
 	    		/*For the tank's movements to be more natural, the tank should
 	    		 * move while turning. Sometimes if the tank does that it 
 	    		 * cannot reached the rotation towards the next point or it runs 
 	    		 * into a wall. So we check if this tank can move while turning.*/
-	    		if(turnIfCloseToMine && canMoveWhileTurning(targetRotation, 
-	    				nextPoint))
+	    		if(moveWhileTurning && canMoveWhileTurning())
 	    		{
 	    			//If so, move the tank forward
 	    			move(this.getSpeed());
@@ -511,14 +509,14 @@ public abstract class MobileEnemyTank extends Tank
     
     /**
      * Decides whether this tank can move while it is turning. Sometimes if 
-     * the tank does that it cannot reached the rotation towards the next 
+     * the tank does that it cannot reach the rotation towards the next 
      * point or it runs into a wall. So it is necessary to check this tank 
      * can move while turning before doing so.
      * @param targetRotation The rotation this tank needs to get to.
      * @param nextPoint The graphPoint whose position this tank needs to reach.
      * @return True if this tank can safely move while turning, false if not.
      */
-    private boolean canMoveWhileTurning(int targetRotation, GraphPoint nextPoint)
+    private boolean canMoveWhileTurning()
     {
     	/*Check if the tank can move forwards without hitting a wall.*/
     	if(!canMoveForwards())
@@ -755,27 +753,27 @@ public abstract class MobileEnemyTank extends Tank
     /**
      * Computes whether or not the given shell is moving away from the current 
      * position of this tank or not.
-     * @param s The shell that we want to see if it is moving away from this tank.
+     * @param shell The shell that we want to see if it is moving away from this tank.
      * @return True if it is moving away from tank, false if not.
      */
-    private boolean shellIsMovingAway(Shell s)
+    private boolean shellIsMovingAway(Shell shell)
     {
     	//get the horizontal and vertical distances between the tank and the 
     	//shell based on their coordinates 
-    	double xDistance=realX-s.getRealX();
-    	double yDistance=realY-s.getRealY();
+    	double xDistance=realX-shell.getRealX();
+    	double yDistance=realY-shell.getRealY();
     	
     	/*Calculate the distance between the shell and the tank using 
     	 * Pythagora's theorem.*/
     	double distance=Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
     	
     	//calculate the rotation of the shell in radians
-    	double radians = Math.toRadians(s.getRotation());
+    	double radians = Math.toRadians(shell.getRotation());
     	
     	/*Calculate the future coordinates of the shell, as if it's move(int) 
     	 * method would be called again once.*/
-    	double shellFutureX=s.getRealX() + (Math.cos(radians) * s.getSpeed());
-    	double shellFutureY=s.getRealY() + (Math.sin(radians) * s.getSpeed());
+    	double shellFutureX=shell.getRealX() + (Math.cos(radians) * shell.getSpeed());
+    	double shellFutureY=shell.getRealY() + (Math.sin(radians) * shell.getSpeed());
     	
     	//get the horizontal and vertical distances between the tank and the 
     	//future position of the shell based on their coordinates
@@ -972,11 +970,11 @@ public abstract class MobileEnemyTank extends Tank
     	List<MobileEnemyTank> neighbouringMobileTanks=getObjectsInRange
     			(4*Tank.LENGTH, MobileEnemyTank.class);
     	
-    	for(MobileEnemyTank t: neighbouringMobileTanks)
+    	for(MobileEnemyTank mobileTank: neighbouringMobileTanks)
     	{
     		/*Check if each mobile enemy tanks is further away from this tank
     		 * than each one's mine avoidance distance.*/
-    		if(getDistanceFrom(t)<t.getMineAvoidanceDistance())
+    		if(getDistanceFrom(mobileTank)<mobileTank.getMineAvoidanceDistance())
     		{
     			return false;
     		}
@@ -997,7 +995,7 @@ public abstract class MobileEnemyTank extends Tank
     	return true;
     }
     
-    /***
+    /**
 	 * Checks if the tank is moving.
 	 * @return True if the tank is moving, false if not. Returns a boolean set 
 	 * according to the tank's movements in the private methods that control
