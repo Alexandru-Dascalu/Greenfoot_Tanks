@@ -945,12 +945,19 @@ public abstract class MobileEnemyTank extends Tank
     	/*Generate a new random number, that will be at least half of the mine 
          * laying period of this tank and at most equal to the mine laying 
          * period of this tank.*/
-    	int number = numberGenerator.nextInt(getMineLayingPeriod() / 2) + 
-    			(getMineLayingPeriod() / 2); 
+    	try
+    	{
+    		int number = numberGenerator.nextInt(getMineLayingPeriod() / 2) + 
+        			(getMineLayingPeriod() / 2); 
     		
-    	/*add the random number to the current time to get the next time a 
-    	 * mine will be laid.*/
-    	nextMineLayingTime=System.currentTimeMillis()+number;
+    		/*add the random number to the current time to get the next time a 
+        	 * mine will be laid.*/
+        	nextMineLayingTime=System.currentTimeMillis()+number;
+    	}
+    	catch(IllegalArgumentException e)
+    	{
+    		nextMineLayingTime=0;
+    	}
     }
     
     /**
@@ -1068,14 +1075,14 @@ public abstract class MobileEnemyTank extends Tank
     /**
      * Gets a number that indicates the maximum period in milliseconds
      * between when mines are laid. The higher the number is , the tank will
-     * lay mines more rarely.  Unless overridden, it returns 1, so that unless
-     * overridden the tank will lay all it's mines immediately and show the 
-     * programmer something is wrong.
+     * lay mines more rarely.  Unless overridden, it returns 0, so that unless
+     * overridden. It should not be overriden if the tank extending this class 
+     * does not lay mines.
      * @return The maximum period in milliseconds between when mines 
      * are laid by this tank.
      */
     public int getMineLayingPeriod()
     {
-    	return 1;
+    	return 0;
     }
 }
