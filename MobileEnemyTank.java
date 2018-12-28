@@ -942,20 +942,15 @@ public abstract class MobileEnemyTank extends Tank
      * this tank and the mine laying period of this tank.*/
     private void generateNextMineLayingTime()
     {
-    	/*Check if the mine laying period is not 1 to ensure this tank is
-    	 * not one that should not lay mines.*/
-    	if(getMineLayingPeriod()!=1)
-    	{
-    		/*Generate a new random number, that will be at least half of the mine 
-        	 * laying period of this tank and at most equal to the mine laying 
-        	 * period of this tank.*/
-    		int number = numberGenerator.nextInt(getMineLayingPeriod() / 2) + 
-    				(getMineLayingPeriod() / 2); 
+    	/*Generate a new random number, that will be at least half of the mine 
+         * laying period of this tank and at most equal to the mine laying 
+         * period of this tank.*/
+    	int number = numberGenerator.nextInt(getMineLayingPeriod() / 2) + 
+    			(getMineLayingPeriod() / 2); 
     		
-    		/*add the random number to the current time to get the next time a 
-    		 * mine will be laid.*/
-    		nextMineLayingTime=System.currentTimeMillis()+number;
-    	}
+    	/*add the random number to the current time to get the next time a 
+    	 * mine will be laid.*/
+    	nextMineLayingTime=System.currentTimeMillis()+number;
     }
     
     /**
@@ -1058,24 +1053,17 @@ public abstract class MobileEnemyTank extends Tank
     /**
      * Indicates the safe distance this type of tank will keep from a mine when
      * it is avoiding a mine. 
-     * @return 0, unless overriden, since this class should always be extended 
-     * and there is no set behaviour for a default mobile enemy tank.
+     * @return the safe distance this type of tank will keep away from a mine.
      */
-    public int getMineAvoidanceDistance()
-    {
-    	return 0;
-    }
+    public abstract int getMineAvoidanceDistance();
     
     /**
      * Indicates the distance from which the tank starts evasive action to avoid
      * an incoming shell.
-     * @return 0, unless overriden, since this class should always be extended 
-     * and there is no set behaviour for a default mobile enemy tank.
+     * @return the distance from which the tank starts evasive action to avoid
+     * an incoming shell.
      */
-    public int getShellAvoidanceDistance()
-    {
-    	return 0;
-    }
+    public abstract int getShellAvoidanceDistance();
     
     /**
      * Gets a number that indicates the maximum period in milliseconds
