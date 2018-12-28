@@ -216,15 +216,15 @@ public class LandMine extends Actor
     	
     	/*Remove each destroyable wall block in the radius with the default 
     	 * removeObject method.*/
-    	for(DestroyableWallBlock dwb: destroyedWalls)
+    	for(DestroyableWallBlock destroyableBlock: destroyedWalls)
     	{
-    		world.removeObject(dwb);
+    		world.removeObject(destroyableBlock);
     	}
     	
     	/*Remove each wall block in the radius with the default removeObject method.*/
-    	for(LandMine lm: destroyedMines)
+    	for(LandMine landMine: destroyedMines)
     	{
-    		world.removeObject(lm);
+    		world.removeObject(landMine);
     	}
     	
     	/*Remove each tank in the radius with the overloaded removeObject method.*/
