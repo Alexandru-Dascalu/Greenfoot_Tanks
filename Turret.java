@@ -168,13 +168,10 @@ public abstract class Turret extends Actor
      * a public method to decrement this counter when a shell is removed.*/
     public void decLiveShells()
     {
-    	if(liveShells < 1)
+    	if(liveShells > 0)
     	{
-    		throw new IllegalStateException("Can not decrement the counter of " +
-    				"live shells when it is 0 or less!");
+    		liveShells--;
     	}
-    	
-    	liveShells--;
     }
     
     /**Removes the turret from the game world along with all associated actors.
