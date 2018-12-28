@@ -1,4 +1,4 @@
-import greenfoot.*;
+import greenfoot.World;
 
 /**
  * <p><b>File name: </b> TurquoiseTank.java
