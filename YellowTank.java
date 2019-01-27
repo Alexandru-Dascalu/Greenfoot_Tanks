@@ -47,9 +47,12 @@ public class YellowTank extends MobileEnemyTank
      * act() method is called. It's value is {@value}.*/
     private static final int MAX_TURN_SPEED=4;
     
-    /**The safe distance the tank will keep from a mine when it is avoiding
-     * a mine. It's value is {@value}.*/
-    private static final int MINE_AVOIDANCE_DISTANCE=(int)(1.5*LENGTH);
+    /**
+     * A real number that will be multiplied by the length of this 
+     * tank and cast as an integer to get the mine avoidance distance of this
+     * tank. Its value is {@value}.
+     */
+    private static final double LENGTH_MULTIPLIER = 1.5;
     
     /**The distance of a shell to the tank from which the tank will start 
      * making evasive moves. It's value is {@value}.*/
@@ -295,9 +298,9 @@ public class YellowTank extends MobileEnemyTank
      * it is avoiding a mine.
      */
     @Override
-    public int getMineAvoidanceDistance()
+    public double getLengthMultiplier()
     {
-    	return MINE_AVOIDANCE_DISTANCE;
+    	return LENGTH_MULTIPLIER;
     }
     
     /**

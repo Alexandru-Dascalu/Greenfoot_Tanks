@@ -1062,7 +1062,18 @@ public abstract class MobileEnemyTank extends Tank
      * it is avoiding a mine. 
      * @return the safe distance this type of tank will keep away from a mine.
      */
-    public abstract int getMineAvoidanceDistance();
+    public int getMineAvoidanceDistance()
+    {
+    	return (int)(getLengthMultiplier()*LENGTH);
+    }
+    
+    /**
+     * Indicates a real number that will be multiplied by the length of this 
+     * tank and cast as an integer to get the mine avoidance distance of this tank
+     * @return a number by which the length of this will be multiplied to get the 
+     * mine avoidance distance of this tank.
+     */
+    public abstract double getLengthMultiplier();
     
     /**
      * Indicates the distance from which the tank starts evasive action to avoid
