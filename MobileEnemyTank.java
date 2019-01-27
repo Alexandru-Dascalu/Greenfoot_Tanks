@@ -1064,7 +1064,7 @@ public abstract class MobileEnemyTank extends Tank
      */
     public int getMineAvoidanceDistance()
     {
-    	return (int)(getLengthMultiplier()*LENGTH);
+    	return (int)(getMineLengthMultiplier()*LENGTH);
     }
     
     /**
@@ -1073,7 +1073,7 @@ public abstract class MobileEnemyTank extends Tank
      * @return a number by which the length of this will be multiplied to get the 
      * mine avoidance distance of this tank.
      */
-    public abstract double getLengthMultiplier();
+    public abstract double getMineLengthMultiplier();
     
     /**
      * Indicates the distance from which the tank starts evasive action to avoid
@@ -1081,7 +1081,18 @@ public abstract class MobileEnemyTank extends Tank
      * @return the distance from which the tank starts evasive action to avoid
      * an incoming shell.
      */
-    public abstract int getShellAvoidanceDistance();
+    public int getShellAvoidanceDistance()
+    {
+    	return (int)(getShellLengthMultiplier()*LENGTH);
+    }
+    
+    /**
+     * Indicates a real number that will be multiplied by the length of this 
+     * tank and cast as an integer to get the shell avoidance distance of this tank
+     * @return a number by which the length of this will be multiplied to get the 
+     * shell avoidance distance of this tank.
+     */
+    public abstract double getShellLengthMultiplier();
     
     /**
      * Gets a number that indicates the maximum period in milliseconds

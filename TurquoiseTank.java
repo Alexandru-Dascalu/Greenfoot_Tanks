@@ -53,12 +53,15 @@ public class TurquoiseTank extends MobileEnemyTank
      * tank and cast as an integer to get the mine avoidance distance of this
      * tank. Its value is {@value}.
      */
-    private static final double LENGTH_MULTIPLIER = 1.7;
+    private static final double MINE_LENGTH_MULTIPLIER = 1.7;
     
-    /**The distance of a shell to the tank from which the tank will start 
-     * making evasive moves. Its value is {@value}.*/
-    private static final int SHELL_AVOIDANCE_DISTANCE=(int)(1.8*LENGTH);
-    
+    /**
+     * A real number that will be multiplied by the length of this 
+     * tank and cast as an integer to get the shell avoidance distance of this
+     * tank. Its value is {@value}.
+     */
+    private static final double SHELL_LENGTH_MULTIPLIER = 1.8;
+
     /**
      * Make a new TurquoiseTank whose starting position will be at the given
      * coordinates.
@@ -124,19 +127,20 @@ public class TurquoiseTank extends MobileEnemyTank
      * it is avoiding a mine.
      */
     @Override
-    public double getLengthMultiplier()
+    public double getMineLengthMultiplier()
     {
-    	return LENGTH_MULTIPLIER;
+    	return MINE_LENGTH_MULTIPLIER;
     }
     
     /**
-     * Indicates the distance from which the tank starts evasive action to avoid
-     * an incoming shell.
-     * @return 0, unless overriden, since this class should always be extended 
-     * and there is no set behaviour for a default mobile enemy tank.
+     * Indicates the safe distance this type of tank will keep from a shell when
+     * it is avoiding a mine.
+     * @return the safe distance this type of tank will keep from a shell when
+     * it is avoiding a mine.
      */
-    public int getShellAvoidanceDistance()
+    @Override
+    public double getShellLengthMultiplier()
     {
-    	return SHELL_AVOIDANCE_DISTANCE;
+    	return SHELL_LENGTH_MULTIPLIER;
     }
 }
