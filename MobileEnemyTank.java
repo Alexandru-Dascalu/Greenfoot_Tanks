@@ -1075,8 +1075,8 @@ public abstract class MobileEnemyTank extends Tank
     /**
      * Gets a number that indicates the maximum period in milliseconds
      * between when mines are laid. The higher the number is , the tank will
-     * lay mines more rarely.  Unless overridden, it returns 0, so that unless
-     * overridden. It should not be overriden if the tank extending this class 
+     * lay mines more rarely.  Unless overridden, it returns 0, so that mines 
+     * will not be laid. It should not be overriden if the tank extending this class 
      * does not lay mines.
      * @return The maximum period in milliseconds between when mines 
      * are laid by this tank.
