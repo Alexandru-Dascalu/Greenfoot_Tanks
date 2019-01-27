@@ -40,11 +40,11 @@ import greenfoot.*;
 public class YellowTank extends MobileEnemyTank
 {
 	/**The distance measured in cell-size units by which this tank moves each 
-	 * time it acts. It's value is {@value}.*/
+	 * time it acts. It value is {@value}.*/
     private static final int SPEED=2;
     
     /**The maximum number of degrees by which this tank can turn each time the
-     * act() method is called. It's value is {@value}.*/
+     * act() method is called. It value is {@value}.*/
     private static final int MAX_TURN_SPEED=4;
     
     /**
@@ -61,16 +61,16 @@ public class YellowTank extends MobileEnemyTank
      */
     private static final double SHELL_LENGTH_MULTIPLIER = 1.5;
     
-    /**The maximum number of mines this type of tank can lay in one level. It's
+    /**The maximum number of mines this type of tank can lay in one level. Its
      * value is {@value}.*/
     private static final int NR_OF_MINES=4;
     
     /**The maximum period in milliseconds between when mines 
-     * are laid by this tank. It's value is {@value}.*/
+     * are laid by this tank. Its value is {@value}.*/
     private static final int MINE_LAYING_PERIOD=9000;
     
     /**The distance in cells from the player tank that this tank needs to be in 
-     * order for it to lay a mine and then try to trigger it. It's value is 
+     * order for it to lay a mine and then try to trigger it. Its value is 
      * {@value}.*/
     private static final int SUICIDE_ATTACK_DISTANCE=100;
     
