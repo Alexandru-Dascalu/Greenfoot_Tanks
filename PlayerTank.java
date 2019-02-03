@@ -235,7 +235,8 @@ public class PlayerTank extends Tank
 	    		/*Else, if the left mouse button has been released, but long after
 	    		 * the press started, we just reset the last start time of a left
 	    		 * mouse button press.*/
-	    		else if(currentTime>leftMBPressStart+CLICK_TIME_WINDOW && Greenfoot.mouseClicked(null))
+	    		else if(currentTime>leftMBPressStart+CLICK_TIME_WINDOW && Greenfoot.mouseClicked(null) 
+	    				&& lastMouseInfo.getButton()==1)
 	    		{
 	    			leftMBPressStart=0;
 	    		}
