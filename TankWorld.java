@@ -62,12 +62,12 @@ public class TankWorld extends World
     /**The file name of the image displayed when the player beats the final level.*/
     private static final String GAME_WIN="game_Win.png";
     
-    /**The horizontal length of the world. It's value is {@value}. Public so the
+    /**The horizontal length of the world. It value is {@value}. Public so the
      * graph of points enemy tanks pass through is generated correctly based on
      * the size of the world.*/
     public static final int LENGTH=1600;
     
-    /**The vertical width of the world. It's value is {@value}.Public so the
+    /**The vertical width of the world. It value is {@value}.Public so the
      * graph of points enemy tanks pass through is generated correctly based on
      * the size of the world.*/
     public static final int WIDTH=890;
