@@ -62,12 +62,20 @@ public class TankWorld extends World
     /**The file name of the image displayed when the player beats the final level.*/
     private static final String GAME_WIN="game_Win.png";
     
-    /**The horizontal length of the world. It value is {@value}. Public so the
+    /**The number of time steps the mission clear or mission fail message will 
+     * show up on the screen, during which the game is paused. Its value is {@value}.*/
+    private static final int END_LEVEL_DELAY = 200;
+    
+    /**The number of time steps the mission clear or mission fail message will 
+     * show up on the screen, during which the game is paused. Its value is {@value}.*/
+    private static final int START_LEVEL_DELAY = 75;
+    
+    /**The horizontal length of the world. Its value is {@value}. Public so the
      * graph of points enemy tanks pass through is generated correctly based on
      * the size of the world.*/
     public static final int LENGTH=1600;
     
-    /**The vertical width of the world. It value is {@value}.Public so the
+    /**The vertical width of the world. Its value is {@value}.Public so the
      * graph of points enemy tanks pass through is generated correctly based on
      * the size of the world.*/
     public static final int WIDTH=890;
@@ -96,7 +104,7 @@ public class TankWorld extends World
      */
     public TankWorld()
     {    
-    	/*make a new TankWorld world, which is always 1000x800 pixels with the 
+    	/*make a new TankWorld world, which is always LENGTH x WIDTH pixels with the 
     	 * cells being one pixels.It is also bounded so actors can not move 
     	 * outside the world.*/
         super(LENGTH, WIDTH, 1,true);
@@ -652,9 +660,9 @@ public class TankWorld extends World
     	/*Display the screen for a bit and stop the game meanwhile. Then remove it
     	 * and stop the game for a bit to allow the player to see the layout of
     	 * the level before the game starts.*/
-    	Greenfoot.delay(50);
+    	Greenfoot.delay(START_LEVEL_DELAY);
     	removeObject(levelStart);
-    	Greenfoot.delay(50);
+    	Greenfoot.delay(START_LEVEL_DELAY);
     }
     
     /**Displays a message for the player telling him he cleared this level for
@@ -673,7 +681,7 @@ public class TankWorld extends World
     	
     	//add the display, stop the game for a bit, then remove it
     	addObject(missionCleared,LENGTH/2,WIDTH/2);
-    	Greenfoot.delay(300);
+    	Greenfoot.delay(END_LEVEL_DELAY);
     	removeObject(missionCleared);
     	
     	/*Check if the player should receive a bonus life. This happens every 3 levels.*/
@@ -715,7 +723,7 @@ public class TankWorld extends World
     	Actor missionFail=new WallBlock();
     	missionFail.setImage(new GreenfootImage(MISSION_FAILED));
     	addObject(missionFail,LENGTH/2,WIDTH/2);
-    	Greenfoot.delay(300);
+    	Greenfoot.delay(END_LEVEL_DELAY);
     	removeObject(missionFail);
     	
     	/*We need to place tanks back at their original place and remove any remaining
