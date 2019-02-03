@@ -43,7 +43,7 @@ public abstract class UIDisplay extends Actor
 	 * can be accessed by subtypes.*/
 	protected int data;
 	
-	/**The size of the text on UIDisplay objects.It's value is {@value}.*/
+	/**The size of the text on UIDisplay objects.Its value is {@value}.*/
 	private static final int TEXT_SIZE=25;
 	
 	/**Makes a new UIDisplay object.*/

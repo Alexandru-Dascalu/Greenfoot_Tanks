@@ -49,14 +49,14 @@ public class PlayerTank extends Tank
 	private static final int CLICK_TIME_WINDOW=165;
 	
 	/**The distance measured in cell-size units by which this tank moves each 
-	 * time it acts. It's value is {@value}.*/
+	 * time it acts. Its value is {@value}.*/
 	private static final int SPEED=3;
 	
 	/**The maximum number of degrees by which this tank can turn each time the
-     * act() method is called. It's value is {@value}.*/
+     * act() method is called. Its value is {@value}.*/
     private static final int MAX_TURN_SPEED=3;
     
-    /**The maximum number of mines this type of tank can lay in one level. It's
+    /**The maximum number of mines this type of tank can lay in one level. Its
      * value is {@value}.*/
     private static final int NR_OF_MINES=2;
 	

@@ -39,7 +39,7 @@ import greenfoot.Actor;
  */
 public class WallBlock extends Actor
 {
-	/**The length of the side of the square wall block. It's value is {@value}.*/
+	/**The length of the side of the square wall block. Its value is {@value}.*/
 	public static final int SIDE=65;
 	
 	/**

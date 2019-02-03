@@ -40,11 +40,11 @@ import greenfoot.*;
 public class YellowTank extends MobileEnemyTank
 {
 	/**The distance measured in cell-size units by which this tank moves each 
-	 * time it acts. It value is {@value}.*/
+	 * time it acts. Its value is {@value}.*/
     private static final int SPEED=2;
     
     /**The maximum number of degrees by which this tank can turn each time the
-     * act() method is called. It value is {@value}.*/
+     * act() method is called. Its value is {@value}.*/
     private static final int MAX_TURN_SPEED=4;
     
     /**

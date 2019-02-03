@@ -42,7 +42,7 @@ import greenfoot.World;
 
 public abstract class Turret extends Actor
 {
-	/**The length of this turret's gun barrel. It's value is {@value}.*/
+	/**The length of this turret's gun barrel. Its value is {@value}.*/
 	private static final int BARREL_LENGTH=52;
 	
 	/**The tank this shell is placed on.*/

@@ -41,12 +41,12 @@ import java.lang.IllegalArgumentException;
 public class GraphPoint implements Comparable<GraphPoint>
 {
 	/**The vertical/horizontal interval or distance between the points in the 
-	 * world that these nodes represent. It's value is {@value}.*/
+	 * world that these nodes represent. Its value is {@value}.*/
 	public static final int INTERVAL=30;
 	
 	/**The side of an imaginary square with it's centre in the coordinates of
 	 * this node that should not intersect a wall so that tanks will not drive
-	 * into walls.*/
+	 * into walls. Its value is {@value}.*/
 	private static final int WALL_DISTANCE=63;
 	
 	/**The x coordinate of the point in the world this node represents.*/

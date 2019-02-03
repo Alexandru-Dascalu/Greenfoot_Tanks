@@ -53,18 +53,18 @@ public abstract class MobileEnemyTank extends Tank
 {
 	/**The minimal distance in cells or pixels the chosen target point can be 
 	 * away from the player tank, so this tank will try to not get too close 
-	 * to the player. It's value is {@value}.*/
+	 * to the player. Its value is {@value}.*/
 	private static final int DISTANCE_FROM_PLAYER=150;
 	
 	/**The maximum distance in cells or pixels this tank needs to be away 
 	 * from a graph point for it to consider it has "reached" that point and
-	 * can move towards the next point. It's value is {@value}.*/
+	 * can move towards the next point. Its value is {@value}.*/
 	private static final int POINT_RADIUS=22;
 	
 	/**The maximum value of the difference between the target rotation and the
 	 * current rotation in degrees where the tank can still turn while moving
 	 * and while it is avoiding a mine. Used to make the tank move more naturally 
-	 * and efficiently around a mine. It's value is {@value}.*/
+	 * and efficiently around a mine. Its value is {@value}.*/
 	private static final int MINE_AVOIDANCE_TURN_TOLERANCE=25;
 	
 	/**A random number generator used to choose a destination point for this 

@@ -41,16 +41,18 @@ import greenfoot.*;
 public class PlayerTurret extends Turret
 {
     /**The default x position of the player tank target. Needed because in the
-     * beginning we do not have any information about the location of the mouse.*/
+     * beginning we do not have any information about the location of the mouse.
+     * Its value is  {@value}.*/
     private static final int DEFAULT_MOUSE_X = 200;
     
     /**The default y position of the player tank target. Needed because in the
-     * beginning we do not have any information about the location of the mouse.*/
+     * beginning we do not have any information about the location of the mouse.
+     * Its value is  {@value}.*/
     private static final int DEFAULT_MOUSE_Y = 200;
     
     /**The maximum amount of shells this turret has fired that can be in the game
      * world at the same time. If the limit is reached, the turret will not fire
-     * even if it is told to.*/
+     * even if it is told to. Its value is  {@value}.*/
     private static final int LIVE_SHELLS_ALLOWED = 5;
     
     /**The array of target line actors that will form a line between the turret

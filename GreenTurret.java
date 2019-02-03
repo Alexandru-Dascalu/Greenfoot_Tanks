@@ -36,16 +36,16 @@
 public class GreenTurret extends EnemyTurret
 {
 	/**The cooldown period in miliseconds after firing which the turret will not 
-	 * fire again. It's value is {@value}.*/
+	 * fire again. Its value is {@value}.*/
 	private static final int FIRE_COOLDOWN=700;
 	
 	/**The maximum number of shells that the turret has fired that can be in the 
-	 * world at the same time. It's value is {@value}.*/
+	 * world at the same time. Its value is {@value}.*/
 	private static final int LIVE_SHELLS_ALLOWED=2;
 	
 	/**The size in degrees of the angle of an imaginary cone whose axis extends
 	 * to the position of the player tank. In this angle the turret moves 
-	 * randomly. It's value is {@value}.*/
+	 * randomly. Its value is {@value}.*/
 	private static final int AIM_ANGLE=30;
 	
 	/**

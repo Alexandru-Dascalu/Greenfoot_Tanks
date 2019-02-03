@@ -45,7 +45,7 @@ public class TargetLine extends Actor
 {
 	/**
 	 * The number of target line actors that will form an interrupted line to the
-	 * player target.
+	 * player target. Its values is {@value}.
 	 */
 	public static final int NR_LINES = 9;
 

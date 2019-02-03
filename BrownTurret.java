@@ -52,11 +52,11 @@ import greenfoot.*;
 public class BrownTurret extends EnemyTurret
 {
 	/**The cooldown period in miliseconds after firing which the turret will not 
-	 * fire again. It's value is {@value}.*/
+	 * fire again. Its value is {@value}.*/
 	private static final int FIRE_COOLDOWN=1400;
 	
 	/**The maximum number of shells that the turret has fired that can be in the 
-	 * world at the same time. It's value is {@value}.*/
+	 * world at the same time. Its value is {@value}.*/
 	private static final int LIVE_SHELLS_ALLOWED=2;
 	
 	/**

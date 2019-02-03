@@ -42,11 +42,11 @@ public class LivesMeter extends UIDisplay
 	private static final String TEXT="Player lives: ";
 	
 	/**The x coordinate inside the image where the number of player lives left
-	 * will be placed.*/
+	 * will be placed. Its value is {@value}.*/
 	private static final int TEXT_XPOS=20;
 	
 	/**The y coordinate inside the image where the number of player lives left
-	 * will be placed.*/
+	 * will be placed. Its value is {@value}.*/
 	private static final int TEXT_YPOS=10;
 	
 	/**Overrides the default method so that the updated data displays the new

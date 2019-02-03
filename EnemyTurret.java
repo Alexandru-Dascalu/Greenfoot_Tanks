@@ -45,12 +45,13 @@ import greenfoot.World;
 public abstract class EnemyTurret extends Turret
 {
 	/**The approximate length in cells(pixels) between points on the line of
-	 * sight where we check if the player is there. It's value is {@value}.*/
+	 * sight where we check if the player is there. Its value is {@value}.*/
 	private static final int DETECT_INTERVAL=10;
 	
 	/**The number of intervals away from this turret's tank's centre where the 
 	 * search for the target will start, to make sure the search does not stop 
-	 * immediately because it checks a point inside this turret's tank.*/
+	 * immediately because it checks a point inside this turret's tank.
+	 * Its value is {@value}.*/
 	private static final int NR_INTERVALS_FROM_TANK=5;
 
 	/**A boolean that says whether the turret has finished turning to the last 

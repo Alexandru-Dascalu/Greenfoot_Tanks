@@ -44,11 +44,11 @@ public class EnemyCount extends UIDisplay
 	private static final String TEXT="Enemy tanks: ";
 	
 	/**The x coordinate inside the image where the number of enemy tanks left
-	 * will be placed.*/
+	 * will be placed. Its value is {@value}.*/
 	private static final int TEXT_XPOS=50;
 	
 	/**The y coordinate inside the image where the number of enemy tanks left
-	 * will be placed.*/
+	 * will be placed. Its value is {@value}.*/
 	private static final int TEXT_YPOS=12;
 	
 	/**Overrides the default method so that the updated data displays the new

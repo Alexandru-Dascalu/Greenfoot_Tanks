@@ -49,19 +49,19 @@ import java.util.List;
 public class LandMine extends Actor
 {
 	/**The time in milliseconds from the moment the mine is laid down when the
-	 * mine will explode. It's value is {@value}.*/
+	 * mine will explode. Its value is {@value}.*/
 	private static final int COUNT_DOWN=12500;
 	
 	/**The time in milliseconds from the moment the mine is laid down when the
-	 * mine will start to flash red It's value is {@value}..*/
+	 * mine will start to flash red Its value is {@value}.*/
 	private static final int START_FLASHING=8000;
 	
 	/**The time interval in milliseconds when the mine will flash from red to 
-	 * green or from green to red. It's value is {@value}.*/
+	 * green or from green to red. Its value is {@value}.*/
 	private static final int FLASH_INTERVAL=500;
 	
 	/**The radius around the mine where all tanks,shells,mines and walls will
-	 * be destroyed if their centre is inside the radius. It's value is {@value}.*/
+	 * be destroyed if their centre is inside the radius. Its value is {@value}.*/
 	public static final int EXPLOSION_RANGE=140;
 	
 	/**The system time in milliseconds when the mine was laid down.*/
