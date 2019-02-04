@@ -67,19 +67,42 @@ public class TargetLine extends Actor
 	 */
 	private final int number;
 
+	public static TargetLine[] makeTargetLines(PlayerTurret playerTurret, Target playerTarget)
+	{
+		//create an empty array of target line actors for the given player turret
+		TargetLine[] targetLines = new TargetLine[NR_LINES];
+		
+		/*initialise references to the player turret and player that the target 
+		 * the target lines will follow*/
+		PLAYER_TURRET = playerTurret;
+		PLAYER_TARGET = playerTarget;
+		
+		World world = playerTurret.getWorld();
+		
+		 /* Make new target line actors and place them in the world so that they
+         * form a line between the turret and the player target.*/
+		for(int i = 0; i < TargetLine.NR_LINES; i++)
+		{
+			targetLines[i] = new TargetLine(i+1);
+			world.addObject(targetLines[i], targetLines[i].getNewX(), 
+                    targetLines[i].getNewY());
+			
+			 /*call their act methods to make sure they have the correct rotation 
+             * from the beginning.*/
+            targetLines[i].act();
+		}
+		
+		return targetLines;
+	}
+	
 	/**
 	 * Makes a new TargetLine actor for the turret and target given.
 	 * 
-	 * @param playerTurret The player's turret that this TargetLine will be aligned with.
-	 * @param playerTarget The player's target that this TargetLine will be aligned with.
 	 * @param number The number of this TargetLine object in the line between the
 	 * turret and the target.
 	 */
-	public TargetLine(PlayerTurret playerTurret, Target playerTarget, int number)
+	private TargetLine(int number)
 	{
-		// initialise the instance variables with the arguments given
-		PLAYER_TURRET = playerTurret;
-		PLAYER_TARGET = playerTarget;
 		this.number = number;
 	}
 

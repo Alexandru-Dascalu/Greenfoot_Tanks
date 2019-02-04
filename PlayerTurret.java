@@ -70,22 +70,8 @@ public class PlayerTurret extends Turret
         super(tank);
         
         /*Initialise the array of target line actors.*/
-        TankWorld world=getWorldOfType(TankWorld.class);
-        targetLines=new TargetLine[TargetLine.NR_LINES];
-        Target playerTarget=world.getTankTarget();
-       
-        /* Make new target line actors and place them in the world so that they
-         * form a line between the turret and the player target.*/
-        for (int i = 0;  i< TargetLine.NR_LINES; i++)
-        {
-            targetLines[i]=new TargetLine(this, playerTarget,i+1);
-            world.addObject(targetLines[i], targetLines[i].getNewX(), 
-                    targetLines[i].getNewY());
-            
-            /*call their act methods to make sure they have the correct rotation 
-             * from the beginning.*/
-            targetLines[i].act();
-        }
+        targetLines = TargetLine.makeTargetLines(this, 
+        		getWorldOfType(TankWorld.class).getTankTarget());
     }
     
     /**
