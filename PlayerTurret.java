@@ -2,9 +2,9 @@ import greenfoot.*;
 
 /**
  * <p><b>File name: </b> PlayerTurret.java
- * @version 1.2
+ * @version 1.3
  * @since 07.06.2018
- * <p><b>Last modification date: </b> 07.08.2018
+ * <p><b>Last modification date: </b> 09.02.2019
  * @author Alexandru F. Dascalu
  * <p><b>Copyright (C)</b> 2018  Alexandru F. Dascalu
  * 
@@ -53,6 +53,7 @@ public class PlayerTurret extends Turret
      * and the player tank target.*/
     private TargetLine[] targetLines;
     
+    /**The tank target of this player turret, showing where this turret is aiming.*/
     private Target tankTarget;
     
     /**
@@ -82,6 +83,8 @@ public class PlayerTurret extends Turret
         int tankRotation = tank.getRotation();
         this.setRotation(tankRotation);
         
+        /*make a new tank target and calculate the coordinates where it should 
+         * be placed, at a certain distance in front of the tank.*/
         tankTarget = new Target();
         int targetX = getX() + (int)(DEFAULT_DISTANCE_TO_TARGET*Math.cos(Math.toRadians(tankRotation)));
         int targetY = getY() + (int)(DEFAULT_DISTANCE_TO_TARGET*Math.sin(Math.toRadians(tankRotation)));
@@ -98,6 +101,8 @@ public class PlayerTurret extends Turret
         //get information about the mouse from the player tank of this turret
         MouseInfo mouseInfo=((PlayerTank)tank).getMouseInfo();
         
+        /*Check if the mouse info is not null, which it is at the very start
+         * of the game. If it is not, aim the turret where the mouse points.*/
         if(mouseInfo!=null)
         {
 			int mouseX = mouseInfo.getX();
