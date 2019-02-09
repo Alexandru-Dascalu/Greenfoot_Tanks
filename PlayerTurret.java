@@ -40,15 +40,9 @@ import greenfoot.*;
 
 public class PlayerTurret extends Turret
 {
-    /**The default x position of the player tank target. Needed because in the
-     * beginning we do not have any information about the location of the mouse.
-     * Its value is  {@value}.*/
-    private static final int DEFAULT_MOUSE_X = 200;
-    
-    /**The default y position of the player tank target. Needed because in the
-     * beginning we do not have any information about the location of the mouse.
-     * Its value is  {@value}.*/
-    private static final int DEFAULT_MOUSE_Y = 200;
+    /**The default distance of the player tank target away from the tank of this
+     * turret. Its value is  {@value}.*/
+    private static final int DEFAULT_DISTANCE_TO_TARGET = 200;
     
     /**The maximum amount of shells this turret has fired that can be in the game
      * world at the same time. If the limit is reached, the turret will not fire
@@ -58,6 +52,8 @@ public class PlayerTurret extends Turret
     /**The array of target line actors that will form a line between the turret
      * and the player tank target.*/
     private TargetLine[] targetLines;
+    
+    private Target tankTarget;
     
     /**
      * Makes a new PlayerTurret on top of the tank actor given as a parameter.
@@ -71,7 +67,7 @@ public class PlayerTurret extends Turret
         
         /*Initialise the array of target line actors.*/
         targetLines = TargetLine.makeTargetLines(this, 
-        		getWorldOfType(TankWorld.class).getTankTarget());
+        		tankTarget);
     }
     
     /**
@@ -82,9 +78,15 @@ public class PlayerTurret extends Turret
     @Override
     protected void addedToWorld(World world)
     {
-        TankWorld tankWorld=(TankWorld) world;
-        Target target=tankWorld.getTankTarget();
-        turnTowards(target.getX(),target.getY());
+    	//make this turret face the same direction as its tank
+        int tankRotation = tank.getRotation();
+        this.setRotation(tankRotation);
+        
+        tankTarget = new Target();
+        int targetX = getX() + (int)(DEFAULT_DISTANCE_TO_TARGET*Math.cos(Math.toRadians(tankRotation)));
+        int targetY = getY() + (int)(DEFAULT_DISTANCE_TO_TARGET*Math.sin(Math.toRadians(tankRotation)));
+        
+        world.addObject(tankTarget, targetX, targetY);
     }
     
     /**
@@ -94,29 +96,19 @@ public class PlayerTurret extends Turret
     public void aim()
     {
         //get information about the mouse from the player tank of this turret
-        int mouseX, mouseY;
         MouseInfo mouseInfo=((PlayerTank)tank).getMouseInfo();
         
-        /*Check if we have information about the mouse in the first place.*/
-        if (mouseInfo == null)
+        if(mouseInfo!=null)
         {
-            //if we don't, use the default coordinates for the player target
-            mouseX = DEFAULT_MOUSE_X;
-            mouseY = DEFAULT_MOUSE_Y;
-        } 
-        //If we do, use it to get correct coordinates for the target.
-        else
-        {
-            mouseX = mouseInfo.getX();
-            mouseY = mouseInfo.getY();
-        }
+			int mouseX = mouseInfo.getX();
+			int mouseY = mouseInfo.getY();
 
-        //place the player target where the mouse cursor is
-        TankWorld tankWorld = getWorldOfType(TankWorld.class);
-        tankWorld.getTankTarget().setLocation(mouseX, mouseY);
-        
-        //turn the turret towards the player target
-        this.turnTowards(mouseX, mouseY);   
+			// place the player target where the mouse cursor is
+			tankTarget.setLocation(mouseX, mouseY);
+
+			// turn the turret towards the player target
+			this.turnTowards(mouseX, mouseY);
+        }
     }
 
     /**

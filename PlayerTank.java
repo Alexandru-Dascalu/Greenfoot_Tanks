@@ -174,7 +174,7 @@ public class PlayerTank extends Tank
 		 * about the mouse, or null if the mouse has not been moved or clicked.*/
 		MouseInfo mouse=Greenfoot.getMouseInfo();
 	        
-		/*Only update mouse info if the mouse has been used since the last tome
+		/*Only update mouse info if the mouse has been used since the last time
 		 * this method was called.*/
 		if(mouse!=null)
 		{

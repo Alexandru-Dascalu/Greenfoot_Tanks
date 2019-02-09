@@ -84,9 +84,6 @@ public class TankWorld extends World
      * Is remade each time a new level is loaded.*/
     private Graph worldGraph;
     
-	/**The tank target display used by the player and moved using the mouse.*/
-    private final Target tankTarget;
-    
     /**The player tank of this game world.*/
     private PlayerTank playerTank;
     
@@ -108,9 +105,6 @@ public class TankWorld extends World
     	 * cells being one pixels.It is also bounded so actors can not move 
     	 * outside the world.*/
         super(LENGTH, WIDTH, 1,true);
-        
-        //make a new tank target for this game world
-        tankTarget=new Target();
         
         //the game has not started so the level is 0
         level=0;
@@ -223,9 +217,6 @@ public class TankWorld extends World
     	addWall(820, 315, false, false, 5);
     	addWall(820-WallBlock.SIDE, 315-WallBlock.SIDE, false, true, 3);
     	addWall(820-WallBlock.SIDE , 315+5*WallBlock.SIDE, false, true, 3);
-    	
-    	//add the player tank target
-    	addObject(tankTarget,500,200);
         
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(190,300,0);
@@ -257,9 +248,6 @@ public class TankWorld extends World
     	addWall(540, 600, false, true, 3);
     	addWall(540+3*WallBlock.SIDE, 600, true, true, 3);
     	addWall(540+6*WallBlock.SIDE, 600, false, true, 3);
-    	
-    	//add the player tank target
-    	addObject(tankTarget,500,200);
         
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(160,290, 0);
@@ -292,9 +280,6 @@ public class TankWorld extends World
 		addWall(570+6*WallBlock.SIDE, 210+4*WallBlock.SIDE, false, false, 3);
 		addWall(570+6*WallBlock.SIDE, 210+7*WallBlock.SIDE, false, true, -3);
 		addWall(1245, 250, false, true, 5);
-		
-		//add the player tank target
-    	addObject(tankTarget,500,200);
     	
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(140,400, 0);
@@ -337,8 +322,6 @@ public class TankWorld extends World
     	addWall(97+6*WallBlock.SIDE, 610, false, true, 4);
     	
     	addWall(1503, 545, false, true, -9);
-    	//add the player tank target
-    	addObject(tankTarget,500,200);
         
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(140,190, 0);
@@ -380,9 +363,6 @@ public class TankWorld extends World
     	addWall(775, 793-3*WallBlock.SIDE, true , true, -4);
     	addWall(775-4*WallBlock.SIDE, 793-3*WallBlock.SIDE, false , true, -3);
     	addWall(775+WallBlock.SIDE, 793-3*WallBlock.SIDE, false , true, 5);
-    	
-    	//add the player tank target
-    	addObject(tankTarget,500,200);
         
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(155,650, 0);
@@ -437,8 +417,6 @@ public class TankWorld extends World
     	addWall(380+11*WallBlock.SIDE, 650, true, true, 2);
     	addWall(380+13*WallBlock.SIDE, 650, false, true, 2);
     	
-    	//add the player tank target
-    	addObject(tankTarget,500,200);
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(120, 360, 0);
         addObject(playerTank, 120, 360);
@@ -484,9 +462,6 @@ public class TankWorld extends World
     	addWall(1200-8*WallBlock.SIDE, 215+6*WallBlock.SIDE, true, true, -2);
     	addWall(1200-9*WallBlock.SIDE, 215+5*WallBlock.SIDE, false, false, 1);
     	
-    	//add the player tank target
-    	addObject(tankTarget,500,200);
-    	
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(1450, 420, 180);
         addObject(playerTank, 1450, 420);
@@ -521,9 +496,6 @@ public class TankWorld extends World
     	addWall(680+4*WallBlock.SIDE, 230+4*WallBlock.SIDE, true, false, 2);
     	addWall(680+5*WallBlock.SIDE, 230+5*WallBlock.SIDE, false, false, 2);
     	addWall(680+6*WallBlock.SIDE, 230+6*WallBlock.SIDE, false, false, 2);
-    	
-    	//add the player tank target
-    	addObject(tankTarget,500,200);
     	
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(870, 673, 210);
@@ -573,9 +545,6 @@ public class TankWorld extends World
     	addWall(435+WallBlock.SIDE, 670-WallBlock.SIDE, true, true, 3);
     	addWall(435+4*WallBlock.SIDE, 670-WallBlock.SIDE, false, true, 2);
     	
-    	//add the player tank target
-    	addObject(tankTarget,500,200);
-    	
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(145, 670, 270);
         addObject(playerTank, 145, 670);
@@ -615,9 +584,6 @@ public class TankWorld extends World
     	
     	addWall(680, 793, true, false, -3);
     	addWall(1503, 246, true, true, -5);
-    	
-    	//add the player tank target
-    	addObject(tankTarget,500,200);
     	
     	//make a player tank and add it to the world.
         playerTank=new PlayerTank(827, 244, 90);
@@ -753,7 +719,6 @@ public class TankWorld extends World
     	/*Reload the player tank to it's original place, reset the location of the
     	 * tank target and show the display for the (re)start of this level.*/
     	playerTank.reloadTank(this);
-    	tankTarget.setLocation(200, 200);
     	showStartScreen();
     }
     
@@ -849,15 +814,6 @@ public class TankWorld extends World
     					startY+yInterval*i);
     		}
     	}
-    }
-    
-    /**
-     * Getter for the player tank target.
-     * @return A reference to the tank target used by the player to aim.
-     */
-    public Target getTankTarget()
-    {
-        return tankTarget;
     }
     
     /**
