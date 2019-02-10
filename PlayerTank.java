@@ -46,27 +46,27 @@ public class PlayerTank extends Tank
 {
 	/**The time in milliseconds from the start of a mouse press by which the 
 	* mouse button must be released so that a click may be detected.*/
-	private static final int CLICK_TIME_WINDOW=165;
+	protected static final int CLICK_TIME_WINDOW=165;
 	
 	/**The distance measured in cell-size units by which this tank moves each 
 	 * time it acts. Its value is {@value}.*/
-	private static final int SPEED=3;
+	protected static final int SPEED=3;
 	
 	/**The maximum number of degrees by which this tank can turn each time the
      * act() method is called. Its value is {@value}.*/
-    private static final int MAX_TURN_SPEED=3;
+    protected static final int MAX_TURN_SPEED=3;
     
     /**The maximum number of mines this type of tank can lay in one level. Its
      * value is {@value}.*/
-    private static final int NR_OF_MINES=2;
+    protected static final int NR_OF_MINES=2;
 	
 	/**The last information about the state of the mouse we have.*/
-    private MouseInfo lastMouseInfo;
+    protected MouseInfo lastMouseInfo;
     
     /**The system time in milliseconds when the left mouse button has last been 
 	* pressed. Used to ensure that a shell is only fired when the player quickly
 	* clicks the left mouse button.*/
-	private long leftMBPressStart;
+	protected long leftMBPressStart;
 
 	/**
 	* Make a new player tank object.
