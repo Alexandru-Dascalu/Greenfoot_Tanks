@@ -236,12 +236,7 @@ public class PlayerTank extends Tank
 	@Override
 	public boolean isMoving()
 	{
-		/*The player tank moves only if the player is pressing W,A,S or D keys
-		 * on the keyboard.*/
-		boolean isMoving = Greenfoot.isKeyDown("w") || Greenfoot.isKeyDown("s") 
-				|| Greenfoot.isKeyDown("a") || Greenfoot.isKeyDown("d");
-
-		return isMoving;
+		return false;
 	}
 	
 	/**
@@ -251,7 +246,7 @@ public class PlayerTank extends Tank
 	@Override
 	public boolean isMovingForward()
 	{
-		return Greenfoot.isKeyDown("w");
+		return false;
 	}
 	
 	/**
@@ -261,7 +256,7 @@ public class PlayerTank extends Tank
 	@Override
 	public boolean isMovingBackward()
 	{
-		return Greenfoot.isKeyDown("s");
+		return false;
 	}
 	
 	/**
