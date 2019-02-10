@@ -301,7 +301,7 @@ public class YellowTank extends MobileEnemyTank
      * it is avoiding a mine.
      */
     @Override
-    public double getMineLengthMultiplier()
+    public double getMineAvoidanceDistance()
     {
     	return MINE_LENGTH_MULTIPLIER;
     }
@@ -313,7 +313,7 @@ public class YellowTank extends MobileEnemyTank
      * it is avoiding a mine.
      */
     @Override
-    public double getShellLengthMultiplier()
+    public double getShellAvoidanceDistance()
     {
     	return SHELL_LENGTH_MULTIPLIER;
     }

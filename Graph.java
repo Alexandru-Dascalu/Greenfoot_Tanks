@@ -279,10 +279,14 @@ public class Graph
     public LinkedList<GraphPoint> getPathAvoidingMine(MobileEnemyTank tank, 
     		LandMine mine, GraphPoint target)
     {
+    	/*multiply the multiplier of this type of tank with the tanl length to 
+    	 * get the actual mine avoidance distance*/
+    	int mineAvoidanceDistance = (int)(tank.getMineAvoidanceDistance()*Tank.LENGTH);
+    	
     	/*Starting from the node closest to the mine, check the nodes recursively 
     	 * and mark them as visited if they are too close to the mine, so that
     	 * they will be ignored by the shortest path algorithm.*/
-    	visitNodesCloseToMine(mine, tank.getMineAvoidanceDistance(),
+    	visitNodesCloseToMine(mine, mineAvoidanceDistance,
     			getPoint(mine.getX(), mine.getY()));
     	
     	//using the shortest path algorithm, get a path that avoids the given mine

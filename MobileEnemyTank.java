@@ -571,9 +571,13 @@ public abstract class MobileEnemyTank extends Tank
      */
     private Shell detectIncomingShells()
     {
+    	/*multiply the multiplier of this type of tank with the tank length to 
+    	 * get the actual shell avoidance distance*/
+    	int shellAvoidanceDistance = (int)(this.getShellAvoidanceDistance()*LENGTH);
+    	
     	//get a list of all the shells within a circle whose radius is the 
     	//minimum distance this type of tank keeps away from incoming shells
-    	List<Shell> shells=getObjectsInRange(getShellAvoidanceDistance(),Shell.class);
+    	List<Shell> shells=getObjectsInRange(shellAvoidanceDistance,Shell.class);
     	
     	/*A shell in this list might be a shell fired by this tank's turret. 
     	 * These do not need to be avoided, so we search for shells that were 
@@ -809,9 +813,13 @@ public abstract class MobileEnemyTank extends Tank
      */
     private LandMine detectLandMines()
     {
+    	/*multiply the multiplier of this type of tank with the tanl length to 
+    	 * get the actual mine avoidance distance*/
+    	int mineAvoidanceDistance = (int)(this.getMineAvoidanceDistance()*Tank.LENGTH);
+    	
     	//get a list of all the mines within a circle whose radius is the 
     	//minimum distance this type of tank keeps away from mines
-    	List<LandMine> mines=getObjectsInRange(getMineAvoidanceDistance(), 
+    	List<LandMine> mines=getObjectsInRange(mineAvoidanceDistance, 
     			LandMine.class);
     	
     	//Check if the list is empty
@@ -1058,41 +1066,24 @@ public abstract class MobileEnemyTank extends Tank
     }
     
     /**
-     * Indicates the safe distance this type of tank will keep from a mine when
-     * it is avoiding a mine. 
-     * @return the safe distance this type of tank will keep away from a mine.
-     */
-    public int getMineAvoidanceDistance()
-    {
-    	return (int)(getMineLengthMultiplier()*LENGTH);
-    }
-    
-    /**
      * Indicates a real number that will be multiplied by the length of this 
-     * tank and cast as an integer to get the mine avoidance distance of this tank
+     * tank and cast as an integer to get the actual mine avoidance distance 
+     * of this tank. The mine avoidance distance of a tank is the minimum safe 
+     * distance a tank will keep away from a mine.
      * @return a number by which the length of this will be multiplied to get the 
      * mine avoidance distance of this tank.
      */
-    public abstract double getMineLengthMultiplier();
-    
-    /**
-     * Indicates the distance from which the tank starts evasive action to avoid
-     * an incoming shell.
-     * @return the distance from which the tank starts evasive action to avoid
-     * an incoming shell.
-     */
-    public int getShellAvoidanceDistance()
-    {
-    	return (int)(getShellLengthMultiplier()*LENGTH);
-    }
+    public abstract double getMineAvoidanceDistance();
     
     /**
      * Indicates a real number that will be multiplied by the length of this 
-     * tank and cast as an integer to get the shell avoidance distance of this tank
+     * tank and cast as an integer to get the actual shell avoidance distance 
+     * of this tank. The shell avoidance distance of a tank is he distance from 
+     * which the tank starts evasive action to avoid an incoming shell.
      * @return a number by which the length of this will be multiplied to get the 
      * shell avoidance distance of this tank.
      */
-    public abstract double getShellLengthMultiplier();
+    public abstract double getShellAvoidanceDistance();
     
     /**
      * Gets a number that indicates the maximum period in milliseconds

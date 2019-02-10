@@ -285,9 +285,13 @@ public class LandMine extends Actor
     	/*Calculate the distance using Pythagora's theorem.*/
     	int distance=(int)Math.sqrt((xDistance*xDistance)+(yDistance*yDistance));
     	
+    	/*multiply the multiplier of this type of tank with the tanl length to 
+    	 * get the actual mine avoidance distance*/
+    	int mineAvoidanceDistance = (int)(tank.getMineAvoidanceDistance()*Tank.LENGTH);
+    	
     	/*Check if the distance between this mine and it's parent tank is bigger
     	 * than this tank's mine avoidance distance.*/
-    	if(distance>tank.getMineAvoidanceDistance())
+    	if(distance>mineAvoidanceDistance)
     	{
     		canBeIgnoredByParent=false;
     	}
