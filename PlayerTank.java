@@ -267,7 +267,7 @@ public class PlayerTank extends Tank
 	@Override
 	public int getSpeed()
 	{
-		return SPEED;
+		return 0;
 	}
 	
 	/**
@@ -278,7 +278,7 @@ public class PlayerTank extends Tank
     @Override
     public int getMaxTurnSpeed()
     {
-    	return MAX_TURN_SPEED;
+    	return 0;
     }
     
     /**
@@ -288,7 +288,7 @@ public class PlayerTank extends Tank
 	 */
 	public int getNumberOfMines()
 	{
-		return NR_OF_MINES;
+		return 0;
 	}
 	
 	/**Getter for the MouseInfo object of the player's tank. Needed so that the
