@@ -221,7 +221,7 @@ public abstract class MobileEnemyTank extends Tank
     
     /**Generates a path to a destination point in the game world for the tank 
      * to follow.*/
-    private void generatePath()
+    protected void generatePath()
     {
     	//Get a reference to the world this tank is in
     	TankWorld world=(TankWorld)getWorldOfType(TankWorld.class);
@@ -234,7 +234,7 @@ public abstract class MobileEnemyTank extends Tank
     }
     
     /**Chooses a random destination point for the tank to get to.*/
-    private GraphPoint chooseDestinationPoint()
+    protected GraphPoint chooseDestinationPoint()
     {
     	//the destination point that will be returned eventually
     	GraphPoint destination=null;
@@ -399,7 +399,7 @@ public abstract class MobileEnemyTank extends Tank
      * @param point A point in the world graph the tank wants to reach.
      * @return True if the tank has reached, false if not.
      */
-    private boolean reachedPoint(GraphPoint point)
+    protected boolean reachedPoint(GraphPoint point)
     {
     	/*calculate the horizontal and vertical distances between this tank the
     	 * given graph point*/
@@ -429,7 +429,7 @@ public abstract class MobileEnemyTank extends Tank
      * @param nextPoint The point this tank wants to turn towards.
      * @return The rotation, from 0 to 359, this needs to have.
      */
-    private int calculateTargetRotation(GraphPoint nextPoint)
+    protected int calculateTargetRotation(GraphPoint nextPoint)
     {
     	/*Get the value of the angle between the horizontal axis and the 
 		 * line between this tank and the given GraphPoint.*/
@@ -449,7 +449,7 @@ public abstract class MobileEnemyTank extends Tank
      * act() method. Negative values mean the tank will turn counter clockwise,
      * positive values clockwise.
      */
-    private int calculateTurn()
+    protected int calculateTurn()
     {
     	/*We need to decide which way the tank will turn. So we calculate the 
     	 * number of degrees between the desired rotation and the tank's current
@@ -516,7 +516,7 @@ public abstract class MobileEnemyTank extends Tank
      * @param nextPoint The graphPoint whose position this tank needs to reach.
      * @return True if this tank can safely move while turning, false if not.
      */
-    private boolean canMoveWhileTurning()
+    protected boolean canMoveWhileTurning()
     {
     	/*Check if the tank can move forwards without hitting a wall.*/
     	if(!canMoveForwards())
@@ -569,7 +569,7 @@ public abstract class MobileEnemyTank extends Tank
      * @return A reference to one of the shells that is dangerously close to 
      * this tank. Ignores shells fired by  this tank's turret.
      */
-    private Shell detectIncomingShells()
+    protected Shell detectIncomingShells()
     {
     	/*multiply the multiplier of this type of tank with the tank length to 
     	 * get the actual shell avoidance distance*/
@@ -604,7 +604,7 @@ public abstract class MobileEnemyTank extends Tank
      * an argument.
      * @param incomingShell The shell that is to be avoided by this tank.
      */
-    private void calculateShellAvoidance(Shell incomingShell)
+    protected void calculateShellAvoidance(Shell incomingShell)
     {
     	//the rotation of the incoming shell
     	int shellRotation=incomingShell.getRotation();
@@ -718,7 +718,7 @@ public abstract class MobileEnemyTank extends Tank
     
     /**Makes the tank avoid the incoming shell, based on the targetRotation and 
      * the boolean flags set by the calculateShellAvoidance(Shell) method.*/
-    private void avoidIncomingShell()
+    protected void avoidIncomingShell()
     {
     	//turn the tank towards's it's target rotation
     	turn(calculateTurn());
@@ -760,7 +760,7 @@ public abstract class MobileEnemyTank extends Tank
      * @param shell The shell that we want to see if it is moving away from this tank.
      * @return True if it is moving away from tank, false if not.
      */
-    private boolean shellIsMovingAway(Shell shell)
+    protected boolean shellIsMovingAway(Shell shell)
     {
     	//get the horizontal and vertical distances between the tank and the 
     	//shell based on their coordinates 
@@ -811,7 +811,7 @@ public abstract class MobileEnemyTank extends Tank
      * @return A reference to one of the mines that is dangerously close to 
      * this tank.
      */
-    private LandMine detectLandMines()
+    protected LandMine detectLandMines()
     {
     	/*multiply the multiplier of this type of tank with the tanl length to 
     	 * get the actual mine avoidance distance*/
@@ -866,7 +866,7 @@ public abstract class MobileEnemyTank extends Tank
      * mine given as an argument.
      * @param mine The mine that is to be avoided by this tank.
      */
-    private void avoidLandMine(LandMine mine)
+    protected void avoidLandMine(LandMine mine)
     {
     	/*In order to avoid this mine, nodes that are too close to the mine must
     	 * be removed from the path.*/
@@ -948,7 +948,7 @@ public abstract class MobileEnemyTank extends Tank
      * This point in time will be in a random number of milliseconds from now
      * on. This random number is between half of the mine laying period of 
      * this tank and the mine laying period of this tank.*/
-    private void generateNextMineLayingTime()
+    protected void generateNextMineLayingTime()
     {
     	/*Generate a new random number, that will be at least half of the mine 
          * laying period of this tank and at most equal to the mine laying 
@@ -973,7 +973,7 @@ public abstract class MobileEnemyTank extends Tank
      * lay a mine without potentially destroying other enemy tanks.
      * @return True if it is far away from other tanks, false if not.
      */
-    private boolean safeToLayMine()
+    protected boolean safeToLayMine()
     {
     	//get a list of all mobile enemy tanks within a radius bigger than all 
     	//their mine avoidance distances could be.
@@ -1071,9 +1071,13 @@ public abstract class MobileEnemyTank extends Tank
      * of this tank. The mine avoidance distance of a tank is the minimum safe 
      * distance a tank will keep away from a mine.
      * @return a number by which the length of this will be multiplied to get the 
-     * mine avoidance distance of this tank.
+     * mine avoidance distance of this tank. Unless overridden, it returns 0 so 
+     * the tank will not avoid mines.
      */
-    public abstract double getMineAvoidanceDistance();
+    public double getMineAvoidanceDistance()
+    {
+    	return 0;
+    }
     
     /**
      * Indicates a real number that will be multiplied by the length of this 
@@ -1081,9 +1085,13 @@ public abstract class MobileEnemyTank extends Tank
      * of this tank. The shell avoidance distance of a tank is he distance from 
      * which the tank starts evasive action to avoid an incoming shell.
      * @return a number by which the length of this will be multiplied to get the 
-     * shell avoidance distance of this tank.
+     * shell avoidance distance of this tank. Unless overridden, it returns 0 so 
+     * the tank will not avoid mines.
      */
-    public abstract double getShellAvoidanceDistance();
+    public double getShellAvoidanceDistance()
+    {
+    	return 0;
+    }
     
     /**
      * Gets a number that indicates the maximum period in milliseconds
@@ -1092,10 +1100,12 @@ public abstract class MobileEnemyTank extends Tank
      * will not be laid. It should not be overriden if the tank extending this class 
      * does not lay mines.
      * @return The maximum period in milliseconds between when mines 
-     * are laid by this tank.
+     * are laid by this tank. Unless overridden, it returns the maximum value of 
+     * an Integer, so the tank will not lay a mine unless you play the game 
+     * continuously for 600 hours.
      */
     public int getMineLayingPeriod()
     {
-    	return 0;
+    	return Integer.MAX_VALUE;
     }
 }
