@@ -129,7 +129,7 @@ public class PlayerTank extends Tank
 	/**
 	 * Makes the tank move in accordance with the player's keystrokes.
 	 */
-	private void moveAndTurn()
+	protected void moveAndTurn()
 	{
 		/*Check if the tank should move forwards. It should only if it there is
 		 * no wall in front of it and if the player presses "w".*/
@@ -168,7 +168,7 @@ public class PlayerTank extends Tank
 	
 	/**Updates the last known state of the mouse. Necessary in order to detect
 	 * left and middle mouse button clicks and to aim the turret.*/
-	private void updateMouseInfo()
+	protected void updateMouseInfo()
 	{
 		/*getMouseInfo() returns a MouseInfo object with the latest information
 		 * about the mouse, or null if the mouse has not been moved or clicked.*/
@@ -183,7 +183,7 @@ public class PlayerTank extends Tank
 	}
 	
 	/**Detects whether the middle mouse button has been clicked.*/
-	private boolean middleMBClicked()
+	protected boolean middleMBClicked()
 	{
 		/*Check if lastMouseInfo is not null to avoid a NullPointerException.
 		 * LastMouseInfo is null only if the mouse has not been in the game 
@@ -204,7 +204,7 @@ public class PlayerTank extends Tank
 	}
 	
 	/**Detects whether the left mouse button has been clicked.*/
-	private boolean leftMBClicked()
+	protected boolean leftMBClicked()
 	{
 		/*Check if lastMouseInfo is not null to avoid a NullPointerException.
 		 * LastMouseInfo is null only if the mouse has not been in the game 
