@@ -56,7 +56,7 @@ public abstract class StaticEnemyTank extends Tank
 	 * @return false.
 	 */
 	@Override
-	public boolean isMoving()
+	public final boolean isMoving()
 	{
 		return false;
 	}
@@ -66,7 +66,7 @@ public abstract class StaticEnemyTank extends Tank
 	 * @return False, because this type of the tank is stationary.
 	 */
 	@Override
-	public boolean isMovingForward()
+	public final boolean isMovingForward()
 	{
 		return false;
 	}
@@ -76,7 +76,7 @@ public abstract class StaticEnemyTank extends Tank
 	 * @return False, because this type of the tank is stationary.
 	 */
 	@Override
-	public boolean isMovingBackward()
+	public final boolean isMovingBackward()
 	{
 		return false;
 	}
@@ -86,7 +86,7 @@ public abstract class StaticEnemyTank extends Tank
 	 * each time the move(int) method is called.
 	 * @return 0, since static tanks do not move.
 	 */
-	public int getSpeed()
+	public final int getSpeed()
 	{
 		return 0;
 	}
@@ -95,7 +95,7 @@ public abstract class StaticEnemyTank extends Tank
 	 * The number of mines this tank can lay in one level.
 	 * @return 0, since tanks that do not move can not lay mines.
 	 */
-	public int getNumberOfMines()
+	public final int getNumberOfMines()
 	{
 		return 0;
 	}
@@ -106,7 +106,7 @@ public abstract class StaticEnemyTank extends Tank
 	 * player tank.
 	 * @return 	0, since static tanks do not turn or move.
 	 */
-    public int getMaxTurnSpeed()
+    public final int getMaxTurnSpeed()
     {
     	return 0;
     }
