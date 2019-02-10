@@ -176,7 +176,7 @@ public class Shell extends Actor
      * @return true if it has destroyed any targets (and thus has also removed 
      * itself from the world), false if not.
      */
-    private boolean destroyTargets()
+    protected boolean destroyTargets()
     {
     	//a list of all the shells that intersect this shell
     	List<Shell> intersectShells=getIntersectingObjects(Shell.class);
@@ -239,7 +239,7 @@ public class Shell extends Actor
      * Checks if the shell has hit a wall or the boundary of the world.
      * @return true if it has hit the world's limit or a wall, false if not.
      */
-    private boolean hitsWall()
+    protected boolean hitsWall()
     {	
     	/*Checks if the shell has hit the world's boundary.*/
     	if(isAtEdge())
@@ -266,7 +266,7 @@ public class Shell extends Actor
     }
     
     /**Makes the shell bounce.*/
-    private void bounce()
+    protected void bounce()
     {
     	/*A string that tells what side of the wall block the shell will hit, or 
     	 *what edge of the world the shell will hit.*/
@@ -339,7 +339,7 @@ public class Shell extends Actor
      * length LOOK_AHEAD from the center of the shell pointing ahead of the shell.
      * @return The approximate length of the x-axis component.
      */
-    private int getXOffset()
+    protected int getXOffset()
     {
     	/*The x length is the length of LOOK_AHEAD multiplied by the cosinus of 
     	 * the angle of the shell (which in Greenfoot is a value from 0 to 360. 
@@ -370,7 +370,7 @@ public class Shell extends Actor
      * length LOOK_AHEAD from the center of the shell pointing ahead of the shell.
      * @return The approximate length of the y-axis component.
      */
-    private int getYOffset()
+    protected int getYOffset()
     {
     	/*The y length is the length of LOOK_AHEAD multiplied by the sinus of 
     	 * the angle of the shell (which in Greenfoot is a value from 0 to 360. 
@@ -403,7 +403,7 @@ public class Shell extends Actor
      * degrees from 0 to 359.
      * @return The value in degrees from 0 to 359 of the new angle.
      */
-    private int getMirroredVertically(int direction)
+    protected int getMirroredVertically(int direction)
     {
     	/*To flip an object around it's vertical axis, it's new angle must have 
     	 * the same sine but the opposite cosine. The angle that meets this 
@@ -419,7 +419,7 @@ public class Shell extends Actor
      * degrees from 0 to 359.
      * @return The value in degrees from 0 to 359 of the new angle.
      */
-    private int getMirroredHorizontally(int direction)
+    protected int getMirroredHorizontally(int direction)
     {
     	/*To flip an object around it's horizontal axis, it's new angle must have 
     	 * the same cosine but the opposite sine. The angle that meets this 
