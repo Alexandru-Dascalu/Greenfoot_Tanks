@@ -54,22 +54,22 @@ public abstract class MobileEnemyTank extends Tank
 	/**The minimal distance in cells or pixels the chosen target point can be 
 	 * away from the player tank, so this tank will try to not get too close 
 	 * to the player. Its value is {@value}.*/
-	private static final int DISTANCE_FROM_PLAYER=150;
+	protected static final int DISTANCE_FROM_PLAYER=150;
 	
 	/**The maximum distance in cells or pixels this tank needs to be away 
 	 * from a graph point for it to consider it has "reached" that point and
 	 * can move towards the next point. Its value is {@value}.*/
-	private static final int POINT_RADIUS=22;
+	protected static final int POINT_RADIUS=22;
 	
 	/**The maximum value of the difference between the target rotation and the
 	 * current rotation in degrees where the tank can still turn while moving
 	 * and while it is avoiding a mine. Used to make the tank move more naturally 
 	 * and efficiently around a mine. Its value is {@value}.*/
-	private static final int MINE_AVOIDANCE_TURN_TOLERANCE=25;
+	protected static final int MINE_AVOIDANCE_TURN_TOLERANCE=25;
 	
 	/**A random number generator used to choose a destination point for this 
 	 * tank.*/
-	private Random numberGenerator;
+	protected Random numberGenerator;
     
 	/**Indicates if this tank is moving (if it is moving forwards, backwards,
 	 * or turning).*/
@@ -87,17 +87,17 @@ public abstract class MobileEnemyTank extends Tank
 	
 	/**The rotation this tank should have for it to continue moving in the 
 	 * correct direction.*/
-	private int targetRotation;
+	protected int targetRotation;
 	
 	/**The GraphPoint object that is the next point in the game world this tank
 	 * needs to reach in it's path.*/
-	private GraphPoint nextPoint;
+	protected GraphPoint nextPoint;
 	
 	/**A flag that indicates if this tank is currently avoiding a mine.*/
-	private boolean avoidingMine;
+	protected boolean avoidingMine;
 	
 	/**A flag that indicates if this tank is currently avoiding a shell.*/
-	private boolean avoidingShell;
+	protected boolean avoidingShell;
 	
 	/**The next point in time in milliseconds when this tank will lay a mine.*/
 	protected long nextMineLayingTime;
