@@ -328,6 +328,14 @@ public class PlayerTank extends Tank
 		return NR_OF_MINES;
 	}
 	
+	/**Getter for the MouseInfo object of the player's tank. Needed so that the
+	 * player turret can access the location of the cursor an know where to aim.
+	 * @return The latest information about the mouse this tank tracks.*/
+	public MouseInfo getMouseInfo()
+	{
+		return lastMouseInfo;
+	}
+	
 	/**Method reloads this tank into the game world to prepare it for another start
 	 * of the current level. Overloaded the method from the Tank class because
 	 * player tanks need to be readded to the world after they have been removed
@@ -354,14 +362,6 @@ public class PlayerTank extends Tank
 			setRotation(startRotation);
 			tankTurret.setRotation(startRotation);
 		}
-	}
-	
-	/**Getter for the MouseInfo object of the player's tank. Needed so that the
-	 * player turret can access the location of the cursor an know where to aim.
-	 * @return The latest information about the mouse this tank tracks.*/
-	public MouseInfo getMouseInfo()
-	{
-		return lastMouseInfo;
 	}
 	
 	/**
