@@ -194,7 +194,7 @@ public abstract class Tank extends Actor
      * is not being pushed so this method just moves this tank on each axis by
      * the distances given.
      */
-    private void getPushed(double dx, double dy, Tank pushingTank)
+    protected void getPushed(double dx, double dy, Tank pushingTank)
     {
     	/*Check if this tank is being pushed by another.*/
     	if(pushingTank!=null)
@@ -818,7 +818,7 @@ public abstract class Tank extends Actor
 	 * @param corner The corner of this touching the other tank.
 	 * @return The distance the other should be moved horizontally.
 	 */
-	private double computeHorizontalPush(String corner)
+	protected double computeHorizontalPush(String corner)
 	{
 		//The distance on the x axis the other tank should be moved
 		double dx = 0;
@@ -857,7 +857,7 @@ public abstract class Tank extends Actor
 	 * @param corner The corner of this touching the other tank.
 	 * @return The distance the other should be moved vertically.
 	 */
-	private double computeVerticalPush(String corner)
+	protected double computeVerticalPush(String corner)
 	{
 		//The distance on the y axis the other tank should be moved
 		double dy = 0;
