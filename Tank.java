@@ -1018,23 +1018,35 @@ public abstract class Tank extends Actor
 	/**
 	 * The speed of this tank, meaning the distance in cells that the tank moves
 	 * each time the move(int) method is called.
-	 * @return The speed of this tank.
+	 * @return The speed of this tank. Unless overriden, it returns 0, so the
+	 *  tank will not move.
 	 */
-	public abstract int getSpeed();
+	public int getSpeed()
+	{
+		return 0;
+	}
 	
 	/**
 	 * The number of mines this tank can lay in one level.
-	 * @return The number of mines this tank can lay.
+	 * @return The number of mines this tank can lay. Unless overriden, it 
+	 * returns 0, so the tank will not lay mines.
 	 */
-	public abstract int getNumberOfMines();
+	public int getNumberOfMines()
+	{
+		return 0;
+	}
 	
 	/**
 	 * Getter The maximum number of degrees by which this tank can turn each 
 	 * time the act() method is called. Used by mobile enemy tanks and the 
 	 * player tank.
-	 * @return 	The maximum turn speed of this type of tank.
+	 * @return 	The maximum turn speed of this type of tank. Unless overriden, 
+	 * it returns 0, so the tank will not turn.
 	 */
-    public abstract int getMaxTurnSpeed();
+    public int getMaxTurnSpeed()
+    {
+    	return 0;
+    }
 	
 	/**Deletes this tank and it's turret along with any other associated actors
 	 * from this game world.*/
