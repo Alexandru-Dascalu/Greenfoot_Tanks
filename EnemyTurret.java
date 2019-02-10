@@ -403,11 +403,11 @@ public abstract class EnemyTurret extends Turret
         	return RocketShell.TIMES_ALLOWED_TO_BOUNCE;
         }
         /*Else, check if this turret is firing rocket shells MK2.*/
-        else if(getShellType()==RocketShellMk2.class)
+        /*else if(getShellType()==RocketShellMk2.class)
         {
         	//if so, return the amount of times rocket shells can bounce
         	return RocketShellMk2.TIMES_ALLOWED_TO_BOUNCE;
-        }
+        }*/
         else
         {
         	/*If the shell type is something different, returning it's type

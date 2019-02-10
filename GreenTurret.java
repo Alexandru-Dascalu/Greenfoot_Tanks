@@ -88,7 +88,8 @@ public class GreenTurret extends EnemyTurret
 	@Override
 	public Class<? extends Shell> getShellType()
     {
-    	return RocketShellMk2.class;
+    	//return RocketShellMk2.class;
+		return RocketShell.class;
     }
 	
 	/**
