@@ -44,36 +44,36 @@ import java.util.List;
 public class Shell extends Actor
 {
    	/**The speed with which all shells move. The value is {@value}.*/
-    private static final int SHELL_SPEED=4;
+    protected static final int SHELL_SPEED=4;
     
     /**The number of times the shell is allowed to bounce off a wall.The value
      *  is {@value}.*/
     public static final int TIMES_ALLOWED_TO_BOUNCE=1;
     
     /**The number of degrees in <i>pi</i> (or around 3.14) radians.*/
-    private final static int PI_RADIANS=180;
+    protected final static int PI_RADIANS=180;
     
     /**The average distance at which the shell looks ahead to check if it will
      * hit a wall. The value is {@value}, because the shell image is 10 by 17 pixels.*/
-    private static final int LOOK_AHEAD=17;
+    protected static final int LOOK_AHEAD=17;
     
     /**The number of times the shell has bounced off a wall so far.*/
-    private int timesBounced;
+    protected int timesBounced;
     
     /**The tank object whose turret has fired this shell.*/
-    private Tank parentTank;
+    protected Tank parentTank;
     
     /**A boolean that tells the shells whether to destroy it's parent tank if
      * it collides with it. Needed because sometimes when the shell is fired
      * it intersects with it's parent tank and destroys it immediately, which
      * we do not want.*/
-    private boolean destroyParent;
+    protected boolean destroyParent;
     
     /**The correct x position of the shell, represented by a real number.*/
-	private double realX;
+	protected double realX;
 	
 	/**The correct x position of the shell, represented by a real number.*/
-	private double realY;
+	protected double realY;
 	
     /**
      * Makes a new shell at the given coordinates and with the rotation given.
