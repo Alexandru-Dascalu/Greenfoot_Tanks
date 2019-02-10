@@ -30,6 +30,12 @@
  * nothing except make sure it is not being pushed into a wall by another tank
  * and telling it's turret to aim and fire.
  * 
+ * All the methods in this class are getters that override Tank methods, but they 
+ * return the same values. The only difference is that these overriding methods
+ * are final, so any subclass of this class will be a tank that can not move. 
+ * This class is kept because mine laying algorithms need to make a distinction
+ * between static enemy tanks and moving ones.
+ * 
  * <p><b>Version History</b>
  * <p>	-1.0 - Created the class.
  */
