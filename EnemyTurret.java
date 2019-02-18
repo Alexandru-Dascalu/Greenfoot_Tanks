@@ -133,38 +133,16 @@ public abstract class EnemyTurret extends Turret
 	 */
 	public void aim()
 	{	
-		/*We check if we need to generate a new angle to rotate towards or 
-		 * finish the current rotation, based on the value of finishTurn.*/
-		if(finishTurn)
+		int nextTurn = getRotationDirection();
+		/* Check if the turret has reached nextRotation. */
+		if (nextTurn == 0) 
 		{
-			calculateTurn();
+			calculateNextRotation();
 		}
-		/*If the previous turn is not finished, the turret needs to turn in the
-		 * correct direction until it reaches nextRotation.*/
-		else
+		/* Else, the needs to slowly turn in the correct direction. */
+		else 
 		{
-			/*Check if the turret has reached nextRotation.*/
-			if(nextRotation==getRotation())
-			{
-				/*If it has, we set finishTurn to true so that a new turn will
-				 * be generated.*/
-				finishTurn=true;
-			}
-			/*Else, the needs to slowly turn in the correct direction.*/
-			else
-			{
-				/*Decide the correct direction.
-				 * If nextTurn is positive, the turret turns clockwise.*/
-				if(nextTurn>=0)
-				{
-					turn(1);
-				}
-				/*If it is negative, the turret turns anti clockwise*/
-				else
-				{
-					turn(-1);
-				}
-			}
+			turn(nextTurn);
 		}
 	}
 	
@@ -331,6 +309,63 @@ public abstract class EnemyTurret extends Turret
 		/*If the search has stopped and it has not found the target, it returns
 		 * false.*/
 		return false;
+	}
+	
+	/**Calculates where the turret should turn next. It modifies the nextRotation
+	 * attribute. Makes the turret follow the player around, it does not point at 
+	 * the player exactly, but with a random offset.*/
+	protected void calculateNextRotation()
+	{
+		/*Get the value of the angle between the horizontal axis and the 
+		 * line between this turret and the player tank.*/
+		double theta=Math.toDegrees(Math.atan2(playerTank.getY()-getY(), 
+    			playerTank.getX()-getX()));
+		
+		//transform that angle into a positive integer between 0 and 359 
+		nextRotation=(int)Math.round(Tank.normalizeAngle(theta));
+		
+		/*We would like the turret to be able to turn in either direction,
+		 * so we subtract from the random number half of the upper limit. This
+		 * means we will get a number from AIM_ANGLE/2 to -AIM_ANGLE/2.*/
+		int aimDifference=Greenfoot.getRandomNumber(getAimAngle())-(getAimAngle()/2);
+		
+		/*The next rotation this turret should reach is obtained by adding 
+		 * the random number of degrees to the rotation need to make the 
+		 * turret point towards the player tank.*/
+		nextRotation=(int)Tank.normalizeAngle(nextRotation+aimDifference);
+	}
+	
+	protected int getRotationDirection()
+	{
+		int nextTurn;
+		
+		/*Calculate the clockwise and counter clockwise differences between
+		 * the desired rotation and the current rotation of the turret to 
+		 * decide which way the turret will turn.*/
+		int clockwiseDiff=(int)Tank.normalizeAngle(nextRotation-getRotation());
+		int counterClockwiseDiff=(int)Tank.normalizeAngle(getRotation()-nextRotation);
+		
+		//check if the rotation of this tank is the same as the target rotation
+		if(clockwiseDiff == 0 || counterClockwiseDiff == 0)
+		{
+			nextTurn = 0;
+		}
+		/*Else, Check if it is shorter for the turret to turn clockwise.*/
+		else if(clockwiseDiff<counterClockwiseDiff)
+		{
+			//if it is, it will turn clockwise
+			nextTurn = 1;
+		}
+		else
+		{
+			/*else it will turn counter clockwise. The differences are positive 
+			 * values, and nextTurn is set to a negative one because the turn(int)
+			 * method turns the actor counter clockwise only if the argument is 
+			 * negative.*/
+			nextTurn = -1;
+		}
+		
+		return nextTurn;
 	}
 	
 	/**Calculates how the turret should turn next. It modifies the nextRotation,
