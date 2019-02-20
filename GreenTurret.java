@@ -81,18 +81,6 @@ public class GreenTurret extends EnemyTurret
 	}
 	
 	/**
-	 * Indicates the type of shell fired by this turret.
-	 * @return The type of shell fired by this turret, indicated by a Class 
-	 * object.
-	 */
-	@Override
-	public Class<? extends Shell> getShellType()
-    {
-    	//return RocketShellMk2.class;
-		return RocketShell.class;
-    }
-	
-	/**
 	 * Gets the size in degrees of the angle of an imaginary cone whose axis extends
 	 * to the position of the player tank. In this angle the turret moves 
 	 * randomly.
