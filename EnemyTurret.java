@@ -387,7 +387,7 @@ public abstract class EnemyTurret extends Turret
         else
         {
         	/*If the shell type is something different, returning it's type
-        	 * bounce limit must be hardcoded. Since this method does not 
+        	 * bounce limit must be hard coded. Since this method does not 
         	 * recognize it, throw an exception.*/
         	throw new IllegalStateException("The type of shell fired by this "
         			+ "turret is not recognized by this method.");
@@ -396,19 +396,25 @@ public abstract class EnemyTurret extends Turret
 	
 	/**Gets the cool down period(in milliseconds) after which this turret can 
 	 * fire another shell. This period is a static variable and is the same for
-	 * all objects of this class. It returns 0 because this method is meant to 
-	 * be always overridden.
+	 * all objects of this class. It returns the maximum value of an integer so 
+	 * that it will not fire a shell until the game is played for 600 hours 
+	 * non-stop, unless the is overridden.
 	 * @return The period in milliseconds after which this turret can fire another
 	 * shell.*/
-	public abstract int getFireCooldown();
+	public int getFireCooldown()
+	{
+		return Integer.MAX_VALUE;
+	}
 	
 	/**
 	 * Gets the size in degrees of the angle of an imaginary cone whose axis extends
 	 * to the position of the player tank. In this angle the turret moves 
-	 * randomly. Returns 0 unless overriden, since there is no set behaviour for 
-	 * a basic enemy turret.
+	 * randomly. Returns 360 unless overridden, so the turret would aim around randomly.
 	 * @return The aim angle of this type of turret in relation to the player tank.
 	 */
-	public abstract int getAimAngle();
+	public int getAimAngle()
+	{
+		return 360;
+	}
 }
 
