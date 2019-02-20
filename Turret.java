@@ -107,8 +107,11 @@ public abstract class Turret extends Actor
     	liveShells++;
     }
     
-    /**Makes the turret aim. */
-    public abstract void aim();
+    /**Makes the turret aim. Does nothing unless overridden.*/
+    public void aim()
+    {
+    	
+    }
     
     /**
      * Calculates the x position of the end of the turret's gun barrel.
@@ -143,10 +146,13 @@ public abstract class Turret extends Actor
     /**Gets the limit of how many shells fired by this turret can be in the world
 	 * at the same time. This number is a static variable and is the same for
 	 * all objects of this class.It returns 0 because this method is meant to 
-	 * be always overriden.
+	 * be always overridden.
 	 * @return the limit of how many shells fired by this turret can be in the world
 	 * at the same time.*/
-	public abstract int getLiveShellLimit();
+	public int getLiveShellLimit()
+	{
+		return 0;
+	}
 	
     /**Decrements the number of shells in the game world fired by this turret.
      * Since removing the shells is handled in the TankWorld class, we need
