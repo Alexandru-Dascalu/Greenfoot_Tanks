@@ -72,7 +72,7 @@ public class BrownTurret extends EnemyTurret
 	/**Calculates how the turret should turn next. It modifies the nextRotation,
 	 * nextTurn and finishTurn attributes. Makes the turret move randomly.*/
 	@Override
-	protected void calculateTurn()
+	protected void calculateNextRotation()
 	{
 		/*We generate a new angle. We would like this turret to have varried
 		 * movements, but then if the generated angle is big it would turn 
@@ -101,7 +101,7 @@ public class BrownTurret extends EnemyTurret
 		 * so we subtract from the random number half of the upper limit. This
 		 * means we will get a number either from -80 to 80, exclusive, or from
 		 * -360 to 360, exclusive.*/
-		nextTurn=Greenfoot.getRandomNumber(upperLimit)-(upperLimit/2);
+		int nextTurn = Greenfoot.getRandomNumber(upperLimit)-(upperLimit/2);
 		
 		/*We need to know when to stop, so we calculate the rotation of the 
 		 * turret after it will have turned nextTurn degrees. In Greenfoot 
@@ -116,10 +116,6 @@ public class BrownTurret extends EnemyTurret
 		{
 			nextRotation=360+nextRotation;
 		}
-	
-		/*The turret has a new angle to turn towards now, so it has not
-		 * finished it's current turn.*/
-		finishTurn=false;
 	}
 	
 	/**Gets the cool down period(in milliseconds) after which this turret can 
