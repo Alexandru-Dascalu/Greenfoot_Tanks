@@ -49,7 +49,7 @@ public class StartScreen extends Actor
 		/*Make images with text that reads the current level and the number of 
 		 * enemy tanks on a transparent background.*/
     	Color background=new Color(0,0,0,0);
-    	GreenfootImage levelNumber= new GreenfootImage(""+world.getLevel(),50,Color.WHITE,background);
+    	GreenfootImage levelNumber= new GreenfootImage(""+TankWorld.getCurrentLevel(),50,Color.WHITE,background);
     	GreenfootImage enemyTanks=new GreenfootImage(""+world.getNrEnemyTanks(),50,Color.WHITE,background);
     	
     	/*Make an image from the default image and then draw the level number and
