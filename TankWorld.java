@@ -85,7 +85,7 @@ public class TankWorld extends World
     
     protected static ArrayList<TankWorld> gameLevels = new ArrayList<>();
     
-    protected static int currentLevel = -1;
+    protected static int currentLevel = 0;
     
     /**The graph of nodes used by mobile enemy tanks to generate their paths. 
      * Is remade each time a new level is loaded.*/
@@ -104,10 +104,15 @@ public class TankWorld extends World
     {
     	currentLevel++;
     	
+    	for(TankWorld t: gameLevels)
+    	{
+    		System.out.println(t);
+    	}
+    	
     	TankWorld nextWorld = null;
     	try
     	{
-    		nextWorld = gameLevels.get(currentLevel);
+    		nextWorld = gameLevels.get(currentLevel - 1);
     		Greenfoot.setWorld(nextWorld);
         	nextWorld.addExternalWalls();
         	nextWorld.prepare();
@@ -115,7 +120,7 @@ public class TankWorld extends World
     	}
     	catch(IndexOutOfBoundsException e)
     	{
-    		gameLevels.get(currentLevel - 1).gameWin();
+    		gameLevels.get(gameLevels.size() - 1).gameWin();
     	}
     }
     
@@ -139,7 +144,7 @@ public class TankWorld extends World
     public void act()
     {
     	/*If the game has just started, set the level to level 1 and load it.*/
-    	if(currentLevel == -1)
+    	if(currentLevel == 0)
     	{
     		loadNextLevel();
     	}
