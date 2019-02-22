@@ -100,7 +100,7 @@ public abstract class TankWorld extends World
     /**The number of lives the player has left.*/
     private int playerLives;
     
-    public static void loadNextLevel()
+    public static void loadNextLevel(TankWorld currentWorld, TankWorld nextWorld)
     {
     	currentLevel++;
     	
@@ -109,19 +109,22 @@ public abstract class TankWorld extends World
     		System.out.println(t);
     	}*/
     	
-    	TankWorld nextWorld = null;
-    	try
+    	if(nextWorld != null)
     	{
-    		nextWorld = gameLevels.get(currentLevel - 1);
     		Greenfoot.setWorld(nextWorld);
         	nextWorld.addExternalWalls();
         	nextWorld.prepare();
         	nextWorld.initializeLevelStartUI();
     	}
-    	catch(IndexOutOfBoundsException e)
+    	else
     	{
-    		gameLevels.get(gameLevels.size() - 1).gameWin();
+    		currentWorld.gameWin();
     	}
+    }
+    
+    public static TankWorld getFirstWorld()
+    {
+    	return new ExampleWorld();
     }
     
     /**
@@ -146,7 +149,7 @@ public abstract class TankWorld extends World
     	/*If the game has just started, set the level to level 1 and load it.*/
     	if(currentLevel == 0)
     	{
-    		loadNextLevel();
+    		loadNextLevel(null, getFirstWorld());
     	}
     }
     
@@ -157,6 +160,11 @@ public abstract class TankWorld extends World
     protected void prepare()
     {
     	
+    }
+    
+    public TankWorld getNextWorld()
+    {
+    	return null;
     }
     
     protected void initializeLevelStartUI()
@@ -223,7 +231,7 @@ public abstract class TankWorld extends World
     	}
     	
     	//increment the level counter and load the next level.
-    	loadNextLevel();
+    	loadNextLevel(this, this.getNextWorld());
     }
     
     /**Displays a message that the player has beaten the game and stops the 

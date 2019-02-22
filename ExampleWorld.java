@@ -40,4 +40,9 @@ public class ExampleWorld extends TankWorld
   
         enemyTanks=2;
     }
+    
+    public TankWorld getNextWorld()
+    {
+    	return new AnotherExample();
+    }
 }
