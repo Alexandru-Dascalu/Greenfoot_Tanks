@@ -50,25 +50,25 @@ public class LandMine extends Actor
 {
 	/**The time in milliseconds from the moment the mine is laid down when the
 	 * mine will explode. Its value is {@value}.*/
-	private static final int COUNT_DOWN=12500;
+	protected static final int COUNT_DOWN=12500;
 	
 	/**The time in milliseconds from the moment the mine is laid down when the
-	 * mine will start to flash red Its value is {@value}.*/
-	private static final int START_FLASHING=8000;
+	 * mine will staprotectedrt to flash red Its value is {@value}.*/
+	protected static final int START_FLASHING=8000;
 	
 	/**The time interval in milliseconds when the mine will flash from red to 
 	 * green or from green to red. Its value is {@value}.*/
-	private static final int FLASH_INTERVAL=500;
+	protected static final int FLASH_INTERVAL=500;
 	
 	/**The radius around the mine where all tanks,shells,mines and walls will
 	 * be destroyed if their centre is inside the radius. Its value is {@value}.*/
 	public static final int EXPLOSION_RANGE=140;
 	
 	/**The system time in milliseconds when the mine was laid down.*/
-	private final long creationTime;
+	protected final long creationTime;
 	
 	/**The tank that laid down this mine.*/
-	private Tank parentTank;
+	protected Tank parentTank;
 	
 	/**Since when it is first laid down this mine overlaps with it's parent tank,
 	 * it would immediately destroy it since the tank "steps" on it. This boolean
@@ -76,7 +76,7 @@ public class LandMine extends Actor
 	 * set to false, and when the mine sees the parent tank does not overlap it
 	 * anymore, it is set to true so that if the player steps on this mine again,
 	 * it will explode.*/
-	private boolean destroyParent;
+	protected boolean destroyParent;
 	
 	/**A flag that tells the parent tank if it can ignore this mine when it detects
 	 * it being too close. Since immediately after being laid, the mine is too 
@@ -89,7 +89,7 @@ public class LandMine extends Actor
 	 * 
 	 * If the parent tank is not a MobileEnemyTank, then this flag is set to 
 	 * false the first time the act() method is called.*/
-	private boolean canBeIgnoredByParent;
+	protected boolean canBeIgnoredByParent;
 	
 	/**
 	 * Make a new land mine, with the parent tank being the one given in the
@@ -144,7 +144,7 @@ public class LandMine extends Actor
     }    
     
 	/** Makes the land mine flash red.*/
-    private void flashRed()
+	protected void flashRed()
     {
     	long timeSinceLaid=System.currentTimeMillis()-creationTime;
     	
@@ -167,7 +167,7 @@ public class LandMine extends Actor
     
     /**Makes the mine explode and destroy tanks, mines, shells and walls if their
      * centre are in the explosion range of this mine.*/
-    private void explode()
+	protected void explode()
     {
     	/*When we remove a shell, we need to update the live shell counter of it's
     	 * parent tank. When we remove a tank, we need to remove their turret and
@@ -242,7 +242,7 @@ public class LandMine extends Actor
      * Determines if this mine has just been hit by a shell.
      * @return True if it has been hit by a shell, false if not.
      */
-    private boolean hitByShell()
+	protected boolean hitByShell()
     {
     	/*The mines is hit by a shell if the list of shells that intersect it
     	 * is not empty.*/
@@ -250,7 +250,7 @@ public class LandMine extends Actor
     }
     
     /*Decides if the canBeIgnoredByParent flag can be set to false.*/
-    private void updateIgnoredByParent()
+	protected void updateIgnoredByParent()
     {
     	/*To get the mine avoidance distance, the parentTank should be cast as 
     	 * a MobileEnemyTank.*/
@@ -301,7 +301,7 @@ public class LandMine extends Actor
      * Determines if the mine is being stepped on by a tank.
      * @return True if the mine is being stepped on by a tank, false if not.
      */
-    private boolean steppedOnByTank()
+	protected boolean steppedOnByTank()
     {
     	//get all tanks that intersect this land mine
     	List<Tank> tanks=getIntersectingObjects(Tank.class);
