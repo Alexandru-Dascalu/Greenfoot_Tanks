@@ -50,26 +50,26 @@ import java.util.List;
 public abstract class TankWorld extends World
 {
 	/**The file name of the image displayed when the player dies.*/
-    private static final String MISSION_FAILED="mission_failed.png";
+	protected static final String MISSION_FAILED="mission_failed.png";
     
     /**The file name of the image displayed when the player dies and there are 0
      * available player lives left.*/
-    private static final String GAME_OVER="game_over.png";
+	protected static final String GAME_OVER="game_over.png";
     
     /**The file name of the image displayed when the player defeats all enemies 
      * in a level.*/
-    private static final String MISSION_CLEARED="mission_cleared.png";
+	protected static final String MISSION_CLEARED="mission_cleared.png";
     
     /**The file name of the image displayed when the player beats the final level.*/
-    private static final String GAME_WIN="game_Win.png";
+	protected static final String GAME_WIN="game_Win.png";
     
     /**The number of time steps the mission clear or mission fail message will 
      * show up on the screen, during which the game is paused. Its value is {@value}.*/
-    private static final int END_LEVEL_DELAY = 200;
+	protected static final int END_LEVEL_DELAY = 200;
     
     /**The number of time steps the mission clear or mission fail message will 
      * show up on the screen, during which the game is paused. Its value is {@value}.*/
-    private static final int START_LEVEL_DELAY = 75;
+	protected static final int START_LEVEL_DELAY = 75;
     
     /**The horizontal length of the world. Its value is {@value}. Public so the
      * graph of points enemy tanks pass through is generated correctly based on
@@ -87,7 +87,7 @@ public abstract class TankWorld extends World
     
     /**The graph of nodes used by mobile enemy tanks to generate their paths. 
      * Is remade each time a new level is loaded.*/
-    private Graph worldGraph;
+    protected Graph worldGraph;
     
     /**The player tank of this game world.*/
     protected PlayerTank playerTank;
@@ -96,7 +96,7 @@ public abstract class TankWorld extends World
     protected int enemyTanks;
     
     /**The number of lives the player has left.*/
-    private int playerLives;
+    protected int playerLives;
     
     public static void loadNextLevel(TankWorld currentWorld, TankWorld nextWorld)
     {
@@ -189,7 +189,7 @@ public abstract class TankWorld extends World
     /**Shows the updated start screen display for the start of this level.
      * It displays the current level number and the number of remaining enemy
      * tanks (this method is also called after a level is reloaded.).*/
-    private void showStartScreen()
+    protected void showStartScreen()
     {
     	//make an updated start screen and add it in the middle of the world.
     	StartScreen levelStart=new StartScreen(this);
@@ -205,7 +205,7 @@ public abstract class TankWorld extends World
     
     /**Displays a message for the player telling him he cleared this level for
      * a bit then removes it and calls the prepare method to load the next level.*/
-    private void missionCleared()
+    protected void missionCleared()
     {
     	/*We just need to display an image that always is the same, but we need to 
     	 * remove it so we make an actor and set it's image to the display. And we
@@ -234,7 +234,7 @@ public abstract class TankWorld extends World
     
     /**Displays a message that the player has beaten the game and stops the 
      * game indefinitely.*/
-    private void gameWin()
+    protected void gameWin()
     {
     	/*We just need to display an image that always is the same. We use a wall
     	 * block actor because they do not override any Actor methods, so if it 
@@ -253,7 +253,7 @@ public abstract class TankWorld extends World
      *  lives left. This means the player tank is re-added to the world and enemy
      *  tanks that have not been destroyed are put back at their original place
      *  in the world.*/
-    private void reloadLevel()
+    protected void reloadLevel()
     {
     	/*Make the display that tells the player the mission has been failed, add 
     	 * it, stop the game for a bit then remove it.*/
@@ -295,7 +295,7 @@ public abstract class TankWorld extends World
     
     /**Displays a message that the player has lost the game because it has no 
      * remaining lives left, then stops the game indefinitely.*/
-    private void gameOver()
+    protected void gameOver()
     {
     	/*Make the display telling the player the game is over, put it in the 
     	 * world and stop the game.*/

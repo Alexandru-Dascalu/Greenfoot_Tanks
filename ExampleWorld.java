@@ -19,6 +19,7 @@ public class ExampleWorld extends TankWorld
      * level class variable. It removes all actors in the current world, adds
      * actors for the next level and updates the displays for the number of enemies
      * and the number of player lives left.*/
+	@Override
     protected void prepare()
     {
     	/*Add other walls in the level.*/
@@ -41,6 +42,7 @@ public class ExampleWorld extends TankWorld
         enemyTanks=2;
     }
     
+	@Override
     public TankWorld getNextWorld()
     {
     	return new AnotherExample();
