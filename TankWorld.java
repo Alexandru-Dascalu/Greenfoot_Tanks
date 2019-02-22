@@ -49,7 +49,7 @@ import greenfoot.core.WorldHandler;
  * shortest path between a moving enemy tank and a selected point.
  */
 
-public class TankWorld extends World
+public abstract class TankWorld extends World
 {
 	/**The file name of the image displayed when the player dies.*/
     private static final String MISSION_FAILED="mission_failed.png";
@@ -104,10 +104,10 @@ public class TankWorld extends World
     {
     	currentLevel++;
     	
-    	for(TankWorld t: gameLevels)
+    	/*for(TankWorld t: gameLevels)
     	{
     		System.out.println(t);
-    	}
+    	}*/
     	
     	TankWorld nextWorld = null;
     	try

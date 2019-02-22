@@ -13,14 +13,14 @@ public class AnotherExample extends TankWorld
 	
 	static
 	{
-		System.out.println("shbj");
-		if(LEVEL_NUMBER < gameLevels.size())
+		System.out.println("nkjkkkk");
+		if(LEVEL_NUMBER <= gameLevels.size())
 		{
-			gameLevels.add(LEVEL_NUMBER, new ExampleWorld());
+			gameLevels.add(LEVEL_NUMBER - 1, new AnotherExample());
 		}
 		else
 		{
-			gameLevels.add(new ExampleWorld());
+			gameLevels.add(new AnotherExample());
 		}
 	}
 	

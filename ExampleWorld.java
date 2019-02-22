@@ -5,9 +5,9 @@ public class ExampleWorld extends TankWorld
 	
 	static
 	{
-		if(LEVEL_NUMBER < gameLevels.size())
+		if(LEVEL_NUMBER <= gameLevels.size())
 		{
-			gameLevels.add(LEVEL_NUMBER, new ExampleWorld());
+			gameLevels.add(LEVEL_NUMBER - 1, new ExampleWorld());
 		}
 		else
 		{
