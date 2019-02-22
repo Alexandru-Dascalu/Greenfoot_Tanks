@@ -138,7 +138,7 @@ public abstract class EnemyTurret extends Turret
 	 * false if not or if the shell would hit another enemy tank before it would
 	 * hit the player.
 	 */
-	private boolean detectPlayer()
+	protected boolean detectPlayer()
 	{
 		//counts the number of times the line of sight has bounced off walls
 		int bounces=0;

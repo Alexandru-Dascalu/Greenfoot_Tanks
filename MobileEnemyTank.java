@@ -160,35 +160,7 @@ public abstract class MobileEnemyTank extends Tank
 		//See if there is a shell dangerously close to the tank
 		Shell shell=detectIncomingShells();
 		
-		/*Check if there is an instance of a shell that is too close to the tank.*/
-		if(shell!=null)
-		{
-			/*Check if the shell is moving away from the tank or not.*/
-			if(!shellIsMovingAway(shell))
-			{
-				/*If the shell is moving closer to the tank, check if the flag 
-				 * is set accordingly to trigger evasive action.*/
-				if(!avoidingShell)
-				{
-					/*if the flag was not already set, set it to true and calculate
-					 * how the tank should avoid the incoming shell.*/
-					avoidingShell=true;
-					calculateShellAvoidance(shell);
-				}
-			}
-			/*If the shell is moving away from the tank, it cannot hit the tank,
-			 * therefore there is no need to avoid it, so the flag is set accordingly.*/
-			else
-			{
-				avoidingShell=false;
-			}
-		}
-		/*If there is no shell dangerously close to the tank, make sure the flag
-		 * is set accordingly.*/
-		else
-		{
-			avoidingShell=false;
-		}
+		setShellAvoidanceFlag(shell);
 		
 		/*Check if the tank is supposed to avoid an incoming shell.*/
 		if(avoidingShell)
@@ -597,6 +569,39 @@ public abstract class MobileEnemyTank extends Tank
     	/*If so a shell has not been returned, then no shell not fired by this 
     	 * tank is dangerously close to this tank.*/
     	return null;
+    }
+    
+    protected void setShellAvoidanceFlag(Shell shell)
+    {
+    	/*Check if there is an instance of a shell that is too close to the tank.*/
+		if(shell!=null)
+		{
+			/*Check if the shell is moving away from the tank or not.*/
+			if(!shellIsMovingAway(shell))
+			{
+				/*If the shell is moving closer to the tank, check if the flag 
+				 * is set accordingly to trigger evasive action.*/
+				if(!avoidingShell)
+				{
+					/*if the flag was not already set, set it to true and calculate
+					 * how the tank should avoid the incoming shell.*/
+					avoidingShell=true;
+					calculateShellAvoidance(shell);
+				}
+			}
+			/*If the shell is moving away from the tank, it cannot hit the tank,
+			 * therefore there is no need to avoid it, so the flag is set accordingly.*/
+			else
+			{
+				avoidingShell=false;
+			}
+		}
+		/*If there is no shell dangerously close to the tank, make sure the flag
+		 * is set accordingly.*/
+		else
+		{
+			avoidingShell=false;
+		}
     }
     
     /**
