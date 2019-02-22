@@ -1,8 +1,6 @@
 import greenfoot.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import greenfoot.core.WorldHandler;
 
 /**
  * <p><b>File name: </b> TankWorld.java
