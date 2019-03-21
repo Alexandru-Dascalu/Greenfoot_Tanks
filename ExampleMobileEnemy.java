@@ -9,7 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class ExampleMobileEnemy extends MobileEnemyTank
 {
 	/**
-     * Make a new TurquoiseTank whose starting position will be at the given
+     * Make a new ExampleMobileEnemy whose starting position will be at the given
      * coordinates.
      * @param startX The x coordinate the tank will be at the beginning of the
      * level.
@@ -26,7 +26,7 @@ public class ExampleMobileEnemy extends MobileEnemyTank
     }
     
     /**
-   	 * Prepares the turquoise tank for the beginning of the game. Sets the correct
+   	 * Prepares the example tank for the beginning of the game. Sets the correct
    	 * starting orientation and gives this tank a TurquoiseTurret.
 	 * @param world The game world this tank has just been added to.
    	 */
@@ -35,7 +35,6 @@ public class ExampleMobileEnemy extends MobileEnemyTank
     {
     	this.setRotation(startRotation);
     	
-    	//replace YellowTurret with any other type of turret that you want your new tank type to have
     	tankTurret=new YellowTurret(this);
     }
 }
