@@ -8,21 +8,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class AnotherExample extends TankWorld
 {
-
-    private static final int LEVEL_NUMBER = 2;
-	
-	static
-	{
-		if(LEVEL_NUMBER <= gameLevels.size())
-		{
-			gameLevels.add(LEVEL_NUMBER - 1, new AnotherExample());
-		}
-		else
-		{
-			gameLevels.add(new AnotherExample());
-		}
-	}
-	
 	 /**Prepares the world for the start of a new level, based on the value of the
      * level class variable. It removes all actors in the current world, adds
      * actors for the next level and updates the displays for the number of enemies

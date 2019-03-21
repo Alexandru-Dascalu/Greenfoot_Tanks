@@ -101,12 +101,7 @@ public abstract class TankWorld extends World
     public static void loadNextLevel(TankWorld currentWorld, TankWorld nextWorld)
     {
     	currentLevel++;
-    	
-    	/*for(TankWorld t: gameLevels)
-    	{
-    		System.out.println(t);
-    	}*/
-    	
+   
     	if(nextWorld != null)
     	{
     		Greenfoot.setWorld(nextWorld);
