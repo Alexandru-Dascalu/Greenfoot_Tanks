@@ -47,11 +47,11 @@ public class AnotherExample extends TankWorld
         BrownTank enemy1=new BrownTank(800,520, 180);
         addObject(enemy1, 800,520);
         
-        TurquoiseTank enemy2=new TurquoiseTank(1220,210, 270);
+        /*TurquoiseTank enemy2=new BlueTank(1220,210, 270);
         addObject(enemy2, 1220,210);
         
-        TurquoiseTank enemy3=new TurquoiseTank(850,190, 90);
+        TurquoiseTank enemy3=new BlueTank(850,190, 90);
         addObject(enemy3, 850,190);
-        enemyTanks=3;
+        enemyTanks=3;*/
     }
 }
