@@ -5,4 +5,5 @@ comment1.target=void\ prepare()
 comment1.text=Prepares\ the\ world\ for\ the\ start\ of\ a\ new\ level,\ based\ on\ the\ value\ of\ the\r\n\ level\ class\ variable.\ It\ removes\ all\ actors\ in\ the\ current\ world,\ adds\r\n\ actors\ for\ the\ next\ level\ and\ updates\ the\ displays\ for\ the\ number\ of\ enemies\r\nand\ the\ number\ of\ player\ lives\ left.
 comment2.params=
 comment2.target=TankWorld\ getNextWorld()
+comment2.text=\r\n\ Returns\ an\ instance\ of\ a\ TankWorld\ that\ is\ the\ next\ level\ after\ this\ \r\n\ level.\ That\ world\ will\ be\ loaded\ after\ the\ current\ level\ is\ beaten\ by\ \r\n\ the\ player.\r\n\ @return\ The\ next\ world\ of\ the\ next\ level\ of\ the\ game.\ Returns\ null\ unless\ \r\n\ overridden.\r\n
 numComments=3
