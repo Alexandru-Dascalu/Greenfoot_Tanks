@@ -1,7 +1,7 @@
 
 public class ExampleWorld extends TankWorld 
 {
-	 /**Prepares the world for the start of a new level, based on the value of the
+	/**Prepares the world for the start of a new level, based on the value of the
      * level class variable. It removes all actors in the current world, adds
      * actors for the next level and updates the displays for the number of enemies
      * and the number of player lives left.*/
@@ -28,6 +28,13 @@ public class ExampleWorld extends TankWorld
         enemyTanks=2;
     }
     
+	/**
+     * Returns an instance of a TankWorld that is the next level after this 
+     * level. That world will be loaded after the current level is beaten by 
+     * the player.
+     * @return The next world of the next level of the game. Returns null unless 
+     * overridden.
+     */
 	@Override
     public TankWorld getNextWorld()
     {

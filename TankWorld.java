@@ -81,8 +81,7 @@ public abstract class TankWorld extends World
      * the size of the world.*/
     public static final int WIDTH=890;
     
-    protected static ArrayList<TankWorld> gameLevels = new ArrayList<>();
-    
+    /**The current level the player is playing.*/
     protected static int currentLevel = 0;
     
     /**The graph of nodes used by mobile enemy tanks to generate their paths. 
@@ -98,10 +97,25 @@ public abstract class TankWorld extends World
     /**The number of lives the player has left.*/
     protected int playerLives;
     
-    public static void loadNextLevel(TankWorld currentWorld, TankWorld nextWorld)
+    /**
+     * Loads the next level of the game, or stops the game if the current level
+     * is the last level of the game.
+     * @param currentWorld The TankWorld object of the current level.
+     */
+    public static void loadNextLevel(TankWorld currentWorld)
     {
     	currentLevel++;
-   
+    	
+    	TankWorld nextWorld;
+    	if(currentWorld != null)
+    	{
+    		nextWorld = currentWorld.getNextWorld();
+    	}
+    	else
+    	{
+    		nextWorld = getFirstWorld();
+    	}
+    	
     	if(nextWorld != null)
     	{
     		Greenfoot.setWorld(nextWorld);
@@ -142,7 +156,7 @@ public abstract class TankWorld extends World
     	/*If the game has just started, set the level to level 1 and load it.*/
     	if(currentLevel == 0)
     	{
-    		loadNextLevel(null, getFirstWorld());
+    		loadNextLevel(null);
     	}
     }
     
@@ -155,6 +169,13 @@ public abstract class TankWorld extends World
     	
     }
     
+    /**
+     * Returns an instance of a TankWorld that is the next level after this 
+     * level. That world will be loaded after the current level is beaten by 
+     * the player.
+     * @return The next world of the next level of the game. Returns null unless 
+     * overridden.
+     */
     public TankWorld getNextWorld()
     {
     	return null;
@@ -224,7 +245,7 @@ public abstract class TankWorld extends World
     	}
     	
     	//increment the level counter and load the next level.
-    	loadNextLevel(this, this.getNextWorld());
+    	loadNextLevel(this);
     }
     
     /**Displays a message that the player has beaten the game and stops the 
