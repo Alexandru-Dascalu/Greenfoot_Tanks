@@ -383,8 +383,10 @@ public abstract class EnemyTurret extends Turret
 	
 	/**
 	 * Gets the size in degrees of the angle of an imaginary cone whose axis extends
-	 * to the position of the player tank. In this angle the turret moves 
-	 * randomly. Returns 360 unless overridden, so the turret would aim around randomly.
+	 * to the position of the player tank. Within this angle of the cone the turret moves 
+	 * randomly, unless you override calculateNextRotation so that the turret 
+	 * will no longer follow the player. Returns 360 unless overridden, so the 
+	 * turret would aim around randomly.
 	 * @return The aim angle of this type of turret in relation to the player tank.
 	 */
 	public int getAimAngle()
