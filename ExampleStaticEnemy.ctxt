@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=ExampleStaticEnemy
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ ExampleStaticTank\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=startX\ startY\ startRotation
+comment1.target=ExampleStaticEnemy(int,\ int,\ int)
+comment1.text=\r\n\ Makes\ a\ new\ ExampleStaticEnemy,\ with\ it's\ start\ x\ and\ y\ coordinates\ the\ ones\ given\r\n\ as\ arguments.\r\n\ @param\ startX\ The\ starting\ x\ coordinate\ of\ this\ tank.\r\n\ @param\ startY\ The\ starting\ y\ coordinate\ of\ this\ tank.\r\n\ @param\ startRotation\ The\ starting\ rotation\ of\ this\ tank\ in\ the\ world.\r\n
+comment2.params=world
+comment2.target=void\ addedToWorld(greenfoot.World)
+comment2.text=\r\n\ Overrides\ the\ superclass\ addedToWorld\ method\ so\ that\ a\ Brown\ Turret\ will\ be\ \r\n\ placed\ on\ this\ tank\ not\ a\ simple\ Turret\ object.\r\n\ @param\ world\ The\ game\ world\ this\ tank\ has\ just\ been\ added\ to.\r\n
+numComments=3
