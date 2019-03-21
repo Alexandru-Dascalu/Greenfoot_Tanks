@@ -172,7 +172,7 @@ public class Shell extends Actor
     
     /**
      * This methods checks to see if the shell has hit any tanks or other shells.
-     * If it has, it destroys them, removes this shell from the world.
+     * If it has, it destroys them, then removes this shell from the world.
      * @return true if it has destroyed any targets (and thus has also removed 
      * itself from the world), false if not.
      */

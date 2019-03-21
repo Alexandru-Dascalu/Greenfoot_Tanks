@@ -134,6 +134,8 @@ public abstract class Tank extends Actor
 		pushOtherTanks();
 		
 		//put here code to make tanks aim and fire
+		tankTurret.aim();
+		tankTurret.fire();
 	}
 	
 	/**

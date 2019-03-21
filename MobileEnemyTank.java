@@ -195,14 +195,7 @@ public abstract class MobileEnemyTank extends Tank
      * to follow.*/
     protected void generatePath()
     {
-    	//Get a reference to the world this tank is in
-    	TankWorld world=(TankWorld)getWorldOfType(TankWorld.class);
     	
-    	/*choose a destination point and use the world's graph to get a path 
-    	 * to it.*/
-    	GraphPoint destination=chooseDestinationPoint();
-    	path=world.getWorldGraph().getShortestPath(getX(), getY(), 
-    			destination);
     }
     
     /**Chooses a random destination point for the tank to get to.*/
@@ -543,64 +536,38 @@ public abstract class MobileEnemyTank extends Tank
      */
     protected Shell detectIncomingShells()
     {
-    	/*multiply the multiplier of this type of tank with the tank length to 
-    	 * get the actual shell avoidance distance*/
-    	int shellAvoidanceDistance = (int)(this.getShellAvoidanceDistance()*LENGTH);
-    	
-    	//get a list of all the shells within a circle whose radius is the 
-    	//minimum distance this type of tank keeps away from incoming shells
-    	//List<Shell> shells=getObjectsInRange(shellAvoidanceDistance,Shell.class);
-    	
-    	/*A shell in this list might be a shell fired by this tank's turret. 
-    	 * These do not need to be avoided, so we search for shells that were 
-    	 * fired by other tanks's turrets. This loop goes through the list of
-    	 * shells that are too close , checks if they were fired by this tank,
-    	 * and exits prematurely if it finds a shell that was not.*/
-    	for(Shell s: getObjectsInRange(shellAvoidanceDistance,Shell.class))
-    	{
-    		//Check if this shell was fired by a turret other than this tank's turret.
-    		if(s.getParentTank()!=this)
-    		{
-    			//if so, return the shell
-    			return s;
-    		}
-    	}
-    	
-    	/*If so a shell has not been returned, then no shell not fired by this 
+   
+    	/*If no a shell has not been returned yet, then no shell not fired by this 
     	 * tank is dangerously close to this tank.*/
     	return null;
     }
     
     protected void setShellAvoidanceFlag(Shell shell)
     {
-    	/*Check if there is an instance of a shell that is too close to the tank.*/
-		if(shell!=null)
+		/* Check if there is an instance of a shell that is too close to the tank. */
+		if (shell != null) 
 		{
-			/*Check if the shell is moving away from the tank or not.*/
-			if(!shellIsMovingAway(shell))
+			/*
+			 * If the shell is moving closer to the tank, check if the flag is set
+			 * accordingly to trigger evasive action.
+			 */
+			if (!avoidingShell) 
 			{
-				/*If the shell is moving closer to the tank, check if the flag 
-				 * is set accordingly to trigger evasive action.*/
-				if(!avoidingShell)
-				{
-					/*if the flag was not already set, set it to true and calculate
-					 * how the tank should avoid the incoming shell.*/
-					avoidingShell=true;
-					calculateShellAvoidance(shell);
-				}
-			}
-			/*If the shell is moving away from the tank, it cannot hit the tank,
-			 * therefore there is no need to avoid it, so the flag is set accordingly.*/
-			else
-			{
-				avoidingShell=false;
+				/*
+				 * if the flag was not already set, set it to true and calculate how the tank
+				 * should avoid the incoming shell.
+				 */
+				avoidingShell = true;
+				calculateShellAvoidance(shell);
 			}
 		}
-		/*If there is no shell dangerously close to the tank, make sure the flag
-		 * is set accordingly.*/
-		else
+		/*
+		 * If there is no shell dangerously close to the tank, make sure the flag is set
+		 * accordingly.
+		 */
+		else 
 		{
-			avoidingShell=false;
+			avoidingShell = false;
 		}
     }
     

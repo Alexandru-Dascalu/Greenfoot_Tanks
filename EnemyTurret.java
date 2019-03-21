@@ -106,7 +106,7 @@ public abstract class EnemyTurret extends Turret
 			{
 				/*We fire the shell, update lastFiring and increment the counter
 				 * of live shells in the world fired by this turret.*/
-				//super.fire();
+				super.fire();
 				lastFiring=System.currentTimeMillis();
 			}
 		}
@@ -118,18 +118,7 @@ public abstract class EnemyTurret extends Turret
 	 */
 	public void aim()
 	{	
-		int nextTurn = getTurnDirection();
 		
-		/* Check if the turret has reached nextRotation. */
-		if (nextTurn == 0) 
-		{
-			calculateNextRotation();
-		}
-		/* Else, the needs to slowly turn in the correct direction. */
-		else 
-		{
-			turn(nextTurn);
-		}
 	}
 	
 	/**
