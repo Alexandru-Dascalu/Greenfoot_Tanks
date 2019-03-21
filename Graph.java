@@ -153,10 +153,9 @@ public class Graph
     	}
     }
     
-    
     /**
      * Computes the shortest path between the given coordinates in the game 
-     * world and the target node in this graph using Diejkstr'a algorithm.
+     * world and the target node in this graph using Diejkstra's algorithm.
      * @param startX The starting x coordinate.
      * @param startY The starting y coordinate.
      * @param target The node in the graph that is the destination.
