@@ -94,7 +94,7 @@ public class TankWorld extends World
     protected int enemyTanks;
     
     /**The number of lives the player has left.*/
-    protected int playerLives;
+    private static int playerLives;
     
     /**
      * Loads the next level of the game, or stops the game if the current level
@@ -178,10 +178,6 @@ public class TankWorld extends World
     	{
     		loadNextLevel(null);
     	}
-    	else
-    	{
-    		loadNextLevel(this);
-    	}
     }
     
     /**
@@ -248,8 +244,7 @@ public class TankWorld extends World
     	}
     	
     	//increment the level counter and load the next level.
-    	currentLevel++;
-    	prepare();
+    	loadNextLevel(this);
     }
     
     /**Displays a message that the player has beaten the game and stops the 
