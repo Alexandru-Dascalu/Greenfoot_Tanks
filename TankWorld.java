@@ -152,8 +152,9 @@ public abstract class TankWorld extends World
     @Override
     public void act()
     {
-    	/*If the game has just started, set the level to level 1 and load it.*/
-    	if(currentLevel == 0)
+    	/*If the game has just started, only an instance of TankWorld is loaded,
+    	 * so we make sure to load the subclass associated with the first level.*/
+    	if(getClass() == TankWorld.class)
     	{
     		loadNextLevel(null);
     	}
