@@ -80,114 +80,61 @@ public class TankWorld extends World
      * the size of the world.*/
     public static final int WIDTH=890;
     
+    /**The current level the player is playing.*/
+    protected static int currentLevel = 0;
+    
     /**The graph of nodes used by mobile enemy tanks to generate their paths. 
      * Is remade each time a new level is loaded.*/
-    private Graph worldGraph;
+    protected Graph worldGraph;
     
     /**The player tank of this game world.*/
-    private PlayerTank playerTank;
-    
-    /**The number of the current level of the game the player is in.*/
-    private int level;
+    protected PlayerTank playerTank;
     
     /**The number of enemy tanks left in the current level.*/
-    private int enemyTanks;
+    protected int enemyTanks;
     
     /**The number of lives the player has left.*/
-    private int playerLives;
+    protected int playerLives;
     
     /**
-     * Makes a new TankWorld game world and initialises it's variables. 
+     * Loads the next level of the game, or stops the game if the current level
+     * is the last level of the game.
+     * @param currentWorld The TankWorld object of the current level.
      */
-    public TankWorld()
-    {    
-    	/*make a new TankWorld world, which is always LENGTH x WIDTH pixels with the 
-    	 * cells being one pixels.It is also bounded so actors can not move 
-    	 * outside the world.*/
-        super(LENGTH, WIDTH, 1,true);
-        
-        //the game has not started so the level is 0
-        level=0;
-        
-        //the player has 3 lives in the beginning
-        playerLives=3;
-    }
-
-    /**Ensures that the first level is initiated and that the mouse cursor is hidden
-     * when the mouse is in the world.*/
-    @Override
-    public void act()
+    public static void loadNextLevel(TankWorld currentWorld)
     {
-    	/*If the game has just started, set the level to level 1 and load it.*/
-    	if(level==0)
+    	currentLevel++;
+    	
+    	TankWorld nextWorld;
+    	if(currentWorld != null)
     	{
-    		level++;
-    		prepare();
+    		nextWorld = currentWorld.getNextWorld();
+    	}
+    	else
+    	{
+    		nextWorld = getFirstWorld();
+    	}
+    	
+    	if(nextWorld != null)
+    	{
+    		Greenfoot.setWorld(nextWorld);
+        	nextWorld.addExternalWalls();
+        	nextWorld.prepare();
+        	nextWorld.initializeLevelStartUI();
+    	}
+    	else
+    	{
+    		currentWorld.gameWin();
     	}
     }
     
-    /**Prepares the world for the start of a new level, based on the value of the
-     * level class variable. It removes all actors in the current world, adds
-     * actors for the next level and updates the displays for the number of enemies
-     * and the number of player lives left.*/
-    private void prepare()
+    public static TankWorld getFirstWorld()
     {
-    	//get a list of all actors currently in the world
-    	List<Actor> actors=getObjects(null);
-    	
-    	//remove every actor from the world
-    	for(Actor a: actors)
-    	{
-    		removeObject(a);
-    	}
-    	
-    	//add the walls along the edges of the game world
-    	addExternalWalls();
-    	
-    	/*We use a switch statement to call the appropiate method to prepare
-    	 * the world for that specific level, or to display the message for
-    	 * winning the game if the last level has been won.*/
-    	switch(level)
-    	{
-    		case 1:
-    			prepareLevel1();
-    			break;
-    		case 2:
-    			prepareLevel2();
-    			break;
-    		case 3: 
-    			prepareLevel3();
-    			break;
-    		case 4: 
-        		prepareLevel4();
-        		break;
-    		case 5: 
-        		prepareLevel5();
-        		break;
-    		case 6:
-    			prepareLevel6();
-    			break;
-    		case 7:
-    			prepareLevel7();
-    			break;
-    		case 8:
-    			prepareLevel8();
-    			break;
-    		case 9:
-    			prepareLevel9();
-    			break;
-    		case 10:
-    			prepareLevel10();
-    			break;
-    		/*If the last level has been cleared, then the level counter has been
-        	* incremented beyond the number of levels in the game, so it will
-        	* resort to calling the method that display the game win message and 
-        	* stop the game.*/
-    		default:
-    			gameWin();
-    			return;
-    	}
-    	
+    	return new Level1World();
+    }
+    
+    protected void initializeLevelStartUI()
+    {
     	/*Re-add the display elements for the number of player lives and 
     	 * update it.*/
     	LivesMeter livesMeter=new LivesMeter();
@@ -205,6 +152,53 @@ public class TankWorld extends World
         
         /*Show the updated start screen for the new level.*/
         showStartScreen();
+    }
+    
+    /**
+     * Makes a new TankWorld game world and initialises it's variables. 
+     */
+    public TankWorld()
+    {    
+    	/*make a new TankWorld world, which is always LENGTH x WIDTH pixels with the 
+    	 * cells being one pixels.It is also bounded so actors can not move 
+    	 * outside the world.*/
+        super(LENGTH, WIDTH, 1,true);
+        
+        //the player has 3 lives in the beginning
+        playerLives=3;
+    }
+
+    /**Ensures that the first level is initiated and that the mouse cursor is hidden
+     * when the mouse is in the world.*/
+    @Override
+    public void act()
+    {
+    	/*If the game has just started, set the level to level 1 and load it.*/
+    	if(currentLevel == 0)
+    	{
+    		loadNextLevel(null);
+    	}
+    }
+    
+    /**
+     * Returns an instance of a TankWorld that is the next level after this 
+     * level. That world will be loaded after the current level is beaten by 
+     * the player.
+     * @return The next world of the next level of the game. Returns null unless 
+     * overridden.
+     */
+    public TankWorld getNextWorld()
+    {
+    	return null;
+    }
+    
+    /**Prepares the world for the start of a new level, based on the value of the
+     * level class variable. It removes all actors in the current world, adds
+     * actors for the next level and updates the displays for the number of enemies
+     * and the number of player lives left.*/
+    protected void prepare()
+    {
+    	
     }
     
     /**
@@ -651,13 +645,13 @@ public class TankWorld extends World
     	removeObject(missionCleared);
     	
     	/*Check if the player should receive a bonus life. This happens every 3 levels.*/
-    	if(level%3==0)
+    	if(currentLevel%3==0)
     	{
     		playerLives++;
     	}
     	
     	//increment the level counter and load the next level.
-    	level++;
+    	currentLevel++;
     	prepare();
     }
     
@@ -781,7 +775,7 @@ public class TankWorld extends World
      * vertical) the previous block. If it is positive, they will be put to the
      * right (or under if the wall is vertical).
      */
-    private void addWall(int startX, int startY, boolean destroyable,
+    protected void addWall(int startX, int startY, boolean destroyable,
     		boolean isHorizontal, int nrOfBlocks)
     {
     	int xInterval;
@@ -829,9 +823,9 @@ public class TankWorld extends World
      * Getter for number of the current level.
      * @return The current level of the game.
      */
-    public int getLevel()
+    public static int getCurrentLevel()
     {
-    	return level;
+    	return currentLevel;
     }
     
     /**
