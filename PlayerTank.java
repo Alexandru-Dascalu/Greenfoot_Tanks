@@ -131,7 +131,39 @@ public class PlayerTank extends Tank
 	 */
 	protected void moveAndTurn()
 	{
-		
+		/*Check if the tank should move forwards. It should only if it there is
+		 * no wall in front of it and if the player presses "w".*/
+		if (Greenfoot.isKeyDown("w") && canMoveForwards())
+		{
+			/*If it should move, move the tank and it's turret.*/
+			move(SPEED);
+		}
+
+		/*Check if the tank should move backwards. It should only if it there is
+		 * no wall behind it and if the player presses "s".*/
+		if (Greenfoot.isKeyDown("s") && canMoveBackwards())
+		{
+			/*If it should move, move the tank and it's turret.*/
+			move(-SPEED);
+		}
+
+		/*Check if the tank should turn left. It should only if it there is
+		 * no wall in the way and if the player presses "a".*/
+		if (Greenfoot.isKeyDown("a") && canTurnLeft())
+		{
+			/*If it should turn, turn the tank and not also the turret (it should
+			 * always face the player target).*/
+			turn(-MAX_TURN_SPEED);
+		}
+
+		/*Check if the tank should turn right. It should only if it there is
+		 * no wall in the way and if the player presses "d".*/
+		if (Greenfoot.isKeyDown("d") && canTurnRight())
+		{
+			/*If it should turn, turn the tank and not also the turret (it should
+			 * always face the player target).*/
+			turn(MAX_TURN_SPEED);
+		}
 	}
 	
 	/**Updates the last known state of the mouse. Necessary in order to detect

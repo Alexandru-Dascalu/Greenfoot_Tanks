@@ -1,5 +1,4 @@
 import greenfoot.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,7 +94,7 @@ public abstract class TankWorld extends World
     protected int enemyTanks;
     
     /**The number of lives the player has left.*/
-    protected int playerLives;
+    protected static int playerLives;
     
     /**
      * Loads the next level of the game, or stops the game if the current level
