@@ -142,9 +142,6 @@ public abstract class TankWorld extends World
     	 * cells being one pixels.It is also bounded so actors can not move 
     	 * outside the world.*/
         super(LENGTH, WIDTH, 1,true);
-        
-        //the player has 3 lives in the beginning
-        playerLives=3;
     }
 
     /**Ensures that the first level is initiated and that the mouse cursor is hidden
@@ -156,6 +153,8 @@ public abstract class TankWorld extends World
     	 * so we make sure to load the subclass associated with the first level.*/
     	if(getClass() == TankWorld.class)
     	{
+    		//the player has 3 lives in the beginning
+            playerLives=3;
     		loadNextLevel(null);
     	}
     }
