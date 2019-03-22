@@ -1,7 +1,0 @@
-#BlueJ class context
-comment0.target=AnotherExample
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ AnotherExample\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=
-comment1.target=void\ prepare()
-comment1.text=Prepares\ the\ world\ for\ the\ start\ of\ a\ new\ level,\ based\ on\ the\ value\ of\ the\r\n\ level\ class\ variable.\ It\ removes\ all\ actors\ in\ the\ current\ world,\ adds\r\n\ actors\ for\ the\ next\ level\ and\ updates\ the\ displays\ for\ the\ number\ of\ enemies\r\nand\ the\ number\ of\ player\ lives\ left.
-numComments=2
