@@ -35,6 +35,6 @@ public class ExampleMobileEnemy extends MobileEnemyTank
     {
     	this.setRotation(startRotation);
     	
-    	tankTurret=new YellowTurret(this);
+    	tankTurret=new ExampleEnemyTurret(this);
     }
 }

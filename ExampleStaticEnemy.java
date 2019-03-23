@@ -30,6 +30,6 @@ public class ExampleStaticEnemy extends StaticEnemyTank
     protected void addedToWorld(World world)
     {
     	setRotation(startRotation);
-    	tankTurret = new BrownTurret(this);
+    	tankTurret = new ExampleEnemyTurret(this);
     }
 }
