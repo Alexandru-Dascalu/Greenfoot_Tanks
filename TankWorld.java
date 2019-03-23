@@ -128,6 +128,11 @@ public class TankWorld extends World
     	}
     }
     
+    /**
+     * Returns an instance of a subclass of TankWorld that is supposed to be the
+     * first level of the game.
+     * @return the first level of the game.
+     */
     public static TankWorld getFirstWorld()
     {
     	return new Level1World();
