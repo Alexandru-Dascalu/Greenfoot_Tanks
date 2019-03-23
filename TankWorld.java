@@ -154,7 +154,8 @@ public class TankWorld extends World
     	if(getClass() == TankWorld.class)
     	{
     		//the player has 3 lives in the beginning
-            playerLives=3;
+            playerLives = 3;
+            currentLevel = 0;
     		loadNextLevel(null);
     	}
     }
