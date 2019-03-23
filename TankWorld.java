@@ -46,7 +46,7 @@ import java.util.List;
  * shortest path between a moving enemy tank and a selected point.
  */
 
-public abstract class TankWorld extends World
+public class TankWorld extends World
 {
 	/**The file name of the image displayed when the player dies.*/
 	protected static final String MISSION_FAILED="mission_failed.png";
