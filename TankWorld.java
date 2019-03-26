@@ -93,39 +93,26 @@ public class TankWorld extends World
     /**The number of enemy tanks left in the current level.*/
     protected int enemyTanks;
     
+    protected boolean selfLoad;
+    
     /**The number of lives the player has left.*/
     protected static int playerLives;
     
     /**
      * Loads the next level of the game, or stops the game if the current level
      * is the last level of the game.
-     * @param currentWorld The TankWorld object of the current level.
+     * @param nextWorld The TankWorld object of the level to be loaded by this
+     *  method.
      */
-    public static void loadNextLevel(TankWorld currentWorld)
+    public static void loadNextLevel(TankWorld nextWorld)
     {
     	currentLevel++;
     	
-    	TankWorld nextWorld;
-    	if(currentWorld != null)
-    	{
-    		nextWorld = currentWorld.getNextWorld();
-    	}
-    	else
-    	{
-    		nextWorld = getFirstWorld();
-    	}
-    	
-    	if(nextWorld != null)
-    	{
-    		Greenfoot.setWorld(nextWorld);
-        	nextWorld.addExternalWalls();
-        	nextWorld.prepare();
-        	nextWorld.initializeLevelStartUI();
-    	}
-    	else
-    	{
-    		currentWorld.gameWin();
-    	}
+    	nextWorld.disableSelfLoad();
+		Greenfoot.setWorld(nextWorld);
+		nextWorld.addExternalWalls();
+		nextWorld.prepare();
+		nextWorld.initializeLevelStartUI();
     }
     
     /**
@@ -147,6 +134,7 @@ public class TankWorld extends World
     	 * cells being one pixels.It is also bounded so actors can not move 
     	 * outside the world.*/
         super(LENGTH, WIDTH, 1,true);
+        selfLoad = true;
     }
 
     /**Ensures that the first level is initiated and that the mouse cursor is hidden
@@ -161,7 +149,11 @@ public class TankWorld extends World
     		//the player has 3 lives in the beginning
             playerLives = 3;
             currentLevel = 0;
-    		loadNextLevel(null);
+    		loadNextLevel(getFirstWorld());
+    	}
+    	else if(selfLoad)
+    	{
+    		loadNextLevel(this);
     	}
     }
     
@@ -250,7 +242,15 @@ public class TankWorld extends World
     	}
     	
     	//increment the level counter and load the next level.
-    	loadNextLevel(this);
+    	TankWorld nextLevel = getNextWorld();
+    	if(nextLevel != null)
+    	{
+    		loadNextLevel(nextLevel);
+    	}
+    	else
+    	{
+    		gameWin();
+    	}	
     }
     
     /**Displays a message that the player has beaten the game and stops the 
@@ -451,6 +451,11 @@ public class TankWorld extends World
     public Graph getWorldGraph()
     {
     	return worldGraph;
+    }
+    
+    public void disableSelfLoad()
+    {
+    	selfLoad = false;
     }
     
     /**Overloads the default removeObject method. This is so that when a shell
