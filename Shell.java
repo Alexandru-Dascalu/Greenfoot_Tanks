@@ -357,8 +357,8 @@ public class Shell extends Actor
     	 * with a radius of 6. After the rounding, the offset might be less than 
     	 * that, which means the image of the shell will intersect with the wall 
     	 * by the time a hit is detected. We do not want the shell to intersect 
-    	 * the wall block, so if it's modulus is less than 6 (or LOOK_AHEAD/2+1)
-    	 * we change to either 6 or -6.*/
+    	 * the wall block, so if it's modulus is less than the width of the shell 
+    	 * multiplied by the cosinus of the rotation, we set it to this value.*/
     	if(Math.abs(xOffset) < (int) Math.round(getWidth() * Math.cos(rotation)))
     	{
     		/*We change the offset to either 6 or -6,depending on the cosinus of
@@ -388,8 +388,8 @@ public class Shell extends Actor
     	 * with a radius of 6. After the rounding, the offset might be less than 
     	 * that, which means the image of the shell will intersect with the wall 
     	 * by the time a hit is detected. We do not want the shell to intersect 
-    	 * the wall block, so if it's modulus is less than 6 we change to either 
-    	 * 6 or -6.*/
+    	 * the wall block, so if it's modulus is less than the width of the shell 
+    	 * multiplied by the sinus of the rotation, we set it to this value.*/
     	if(Math.abs(yOffset)< (int) Math.round(getWidth() * Math.cos(rotation)))
     	{
     		/*We change the offset to either 6 or -6,depending on the sinus of
