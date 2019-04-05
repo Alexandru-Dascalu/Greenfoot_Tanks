@@ -67,7 +67,7 @@ public class YellowTank extends MobileEnemyTank
     
     /**The maximum period in milliseconds between when mines 
      * are laid by this tank. Its value is {@value}.*/
-    private static final int MINE_LAYING_PERIOD=9000;
+    private static final int MINE_LAYING_PERIOD = 3000;
     
     /**The distance in cells from the player tank that this tank needs to be in 
      * order for it to lay a mine and then try to trigger it. Its value is 
@@ -138,7 +138,10 @@ public class YellowTank extends MobileEnemyTank
     			suicide();
     			
     			/*Meanwhile do what any other tank does.*/
-    			super.act();
+    			pushOtherTanks();
+    			
+    			tankTurret.aim();
+    			tankTurret.fire();
     		}
     		/*If not, then this tank needs to get close enough to the player.*/
     		else
