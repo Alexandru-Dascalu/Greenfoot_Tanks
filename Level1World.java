@@ -27,7 +27,7 @@ public class Level1World extends TankWorld
         BrownTank enemy1=new BrownTank(1400,440,180);
         addObject(enemy1, 1400, 440);
         
-        BrownTank enemy2=new BrownTank(800,170,90);
+        BrownTank enemy2=new BrownTank(800,110,90);
         addObject(enemy2, 800, 170);
   
         enemyTanks=2;
