@@ -45,7 +45,7 @@ public class RocketShell extends Shell
     
     /**The length of the shell in pixels. Used in calculations for bouncing, so
      * it has to be precise. The value is {@value}.*/
-    private static final int LENGTH = 54;
+    private static final int LENGTH = 37;
     
     /**The with of the shell in pixels. Used in calculations for bouncing, so
      * it has to be precise. The value is {@value}.*/
