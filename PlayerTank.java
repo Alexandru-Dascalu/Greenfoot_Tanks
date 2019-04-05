@@ -133,18 +133,50 @@ public class PlayerTank extends Tank
 	{
 		/*Check if the tank should move forwards. It should only if it there is
 		 * no wall in front of it and if the player presses "w".*/
-		if (Greenfoot.isKeyDown("w") && canMoveForwards())
+		if (Greenfoot.isKeyDown("w"))
 		{
-			/*If it should move, move the tank and it's turret.*/
-			move(SPEED);
+			WallBlock frontWall = getForwardsWallContact();
+			if(frontWall == null)
+			{
+				/*If it should move, move the tank and it's turret.*/
+				move(SPEED);
+			}
+			else
+			{
+				String quadrant = frontWall.getQuadrant(getX(), getY());
+				if(quadrant.equalsIgnoreCase("top") || quadrant.equalsIgnoreCase("bottom"))
+				{
+					moveHorizontal(SPEED);
+				}
+				else
+				{
+					moveVertical(SPEED);
+				}
+			}
 		}
 
 		/*Check if the tank should move backwards. It should only if it there is
 		 * no wall behind it and if the player presses "s".*/
-		if (Greenfoot.isKeyDown("s") && canMoveBackwards())
+		if (Greenfoot.isKeyDown("s"))
 		{
-			/*If it should move, move the tank and it's turret.*/
-			move(-SPEED);
+			WallBlock backWall = getBackwardsWallContact();
+			if(backWall == null)
+			{
+				/*If it should move, move the tank and it's turret.*/
+				move(-SPEED);
+			}
+			else
+			{
+				String quadrant = backWall.getQuadrant(getX(), getY());
+				if(quadrant.equalsIgnoreCase("top") || quadrant.equalsIgnoreCase("bottom"))
+				{
+					moveHorizontal(-SPEED);
+				}
+				else
+				{
+					moveVertical(-SPEED);
+				}
+			}
 		}
 
 		/*Check if the tank should turn left. It should only if it there is

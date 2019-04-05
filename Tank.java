@@ -180,6 +180,68 @@ public abstract class Tank extends Actor
 	}
     
     /**
+     * Accurately moves the only on the horizontal axis by the horizontal 
+     * component of the distance given.
+     * @param distance The distance the tank would travel if it were moved on
+     * both axes.
+     */
+    protected void moveHorizontal(int distance)
+    {
+    	//calculate the rotation of the tank in radians
+    	double radians = Math.toRadians(getRotation());
+    	
+    	/*Calculate the distance the tank should move by in the x axis.*/
+    	double dx = Math.cos(radians) * distance;
+    	
+    	//update the real x coordinate of the tank
+    	realX+=dx;
+    	
+    	/*A world in Greenfoot is made up of finite cells, so positions can only
+    	 * be integers. So we round to the nearest integers the value of the real
+    	 *  X coordinate and set the location of the tank to this number.*/
+    	int tempX=(int) Math.round(realX);
+    	setLocation(tempX, getY());
+    	
+    	/*Check if this tank has a turret placed in the world.*/
+    	if(tankTurret!=null && tankTurret.getWorld()!=null)
+    	{
+    		//If so, also move the turret by the same distance
+    		tankTurret.setLocation(tempX, getY());
+    	}
+    }
+    
+    /**
+     * Accurately moves the only on the vertical axis by the horizontal 
+     * component of the distance given.
+     * @param distance The distance the tank would travel if it were moved on
+     * both axes.
+     */
+    protected void moveVertical(int distance)
+    {
+    	//calculate the rotation of the tank in radians
+    	double radians = Math.toRadians(getRotation());
+    	
+    	/*Calculate the distance the tank should move by in the x axis.*/
+    	double dy = Math.sin(radians) * distance;
+    	
+    	//update the real y coordinate of the tank
+    	realY += dy;
+    	
+    	/*A world in Greenfoot is made up of finite cells, so positions can only
+    	 * be integers. So we round to the nearest integers the value of the real
+    	 * Y coordinate and set the location of the tank to this number.*/
+    	int tempY = (int) Math.round(realY);
+    	setLocation(getX(), tempY);
+    	
+    	/*Check if this tank has a turret placed in the world.*/
+    	if(tankTurret!=null && tankTurret.getWorld()!=null)
+    	{
+    		//If so, also move the turret by the same distance
+    		tankTurret.setLocation(getX(), tempY);
+    	}
+    }
+    
+    /**
      * Moves this tank on each axis by the distances given. Makes sure rounding 
      * errors do not accumulate. It is used when this tank is pushed by another
      * tank. This method also ensures this tank is not pushed by another tank 
@@ -275,36 +337,43 @@ public abstract class Tank extends Actor
 	 * Method checks if the tank can move forwards.
 	 * @return True if the tank can move forwards, false if not.
 	 */
-	public boolean canMoveForwards()
+	public WallBlock getForwardsWallContact()
 	{
 		/*The tank can move forwards if it does not intersect a wall on it's front
 		 * side. We check that by seeing if there is a wall intersecting the tank
 		 * at it's front right corner, front left corner and in the middle point of
 		 * it's front side.*/
-		Actor frontLeft;
-		Actor frontRight;
-		Actor front;
+		WallBlock frontLeft;
+		WallBlock frontRight;
+		WallBlock front;
 
 		/*We get walls located at these points by calculating the distance between
 		 * these points and the center of the tank using other private methods.*/
-		frontRight = getOneObjectAtOffset(getXOffset("front right"), getYOffset("front right"), WallBlock.class);
-		frontLeft = getOneObjectAtOffset(getXOffset("front left"), getYOffset("front left"), WallBlock.class);
-		front = getOneObjectAtOffset(getXOffset("front"),getYOffset("front"),WallBlock.class);
+		frontRight = (WallBlock )getOneObjectAtOffset(getXOffset("front right"),
+				getYOffset("front right"), WallBlock.class);
+		frontLeft = (WallBlock) getOneObjectAtOffset(getXOffset("front left"), 
+				getYOffset("front left"), WallBlock.class);
+		front = (WallBlock) getOneObjectAtOffset(getXOffset("front"), 
+				getYOffset("front"),WallBlock.class);
 		
 
 		/*Check if the tank can move forward. It can only if no wall has been
 		 * detected at those three points, meaning the getOneObjectAtOffset
 		 * method calls returned null.*/
-		if ((frontRight == null) && (frontLeft == null) && (front==null))
+		if (frontRight != null)
 		{
 			/*If no walls are at those points, the tank can move forward.*/
-			return true;
+			return frontRight;
 		} 
 		/*If at least one actor is not null, there is a wall in the way and the
 		 * method returns false.*/
+		else if(frontLeft != null)
+		{
+			return frontLeft;
+		}
 		else
 		{
-			return false;
+			return front;
 		}
 	}
 
@@ -312,35 +381,42 @@ public abstract class Tank extends Actor
 	 * Method checks if the tank can move backwards.
 	 * @return True if the tank can move backwards, false if not.
 	 */
-	public boolean canMoveBackwards()
+	public WallBlock getBackwardsWallContact()
 	{
 		/*The tank can move backwards if it does not intersect a wall on it's back
 		 * side. We check that by seeing if there is a wall intersecting the tank
 		 * at it's back right corner, back left corner and in the middle point of
 		 * it's back side.*/
-		Actor backLeft;
-		Actor backRight;
-		Actor back;
+		WallBlock backLeft;
+		WallBlock backRight;
+		WallBlock back;
 
 		/*We get walls located at these points by calculating the distance between
 		 * these points and the center of the tank using other private methods.*/
-		backRight = getOneObjectAtOffset(getXOffset("back right"), getYOffset("back right"), WallBlock.class);
-		backLeft = getOneObjectAtOffset(getXOffset("back left"), getYOffset("back left"), WallBlock.class);
-		back= getOneObjectAtOffset(getXOffset("back"), getYOffset("back"), WallBlock.class);
+		backRight = (WallBlock) getOneObjectAtOffset(getXOffset("back right"), 
+				getYOffset("back right"), WallBlock.class);
+		backLeft = (WallBlock) getOneObjectAtOffset(getXOffset("back left"), 
+				getYOffset("back left"), WallBlock.class);
+		back = (WallBlock) getOneObjectAtOffset(getXOffset("back"),
+				getYOffset("back"), WallBlock.class);
 		
 		/*Check if the tank can move backwards. It can only if no wall has been
 		 * detected at those three points, meaning the getOneObjectAtOffset
 		 * method calls returned null.*/
-		if ((backRight == null) && (backLeft == null) && (back==null))
+		if (backRight != null)
 		{
 			/*If no walls are at those points, the tank can move forward.*/
-			return true;
+			return backRight;
 		} 
 		/*If at least one actor is not null, there is a wall in the way and the
 		 * method returns false.*/
+		else if(backLeft != null)
+		{
+			return backLeft;
+		}
 		else
 		{
-			return false;
+			return back;
 		}
 	}
 	

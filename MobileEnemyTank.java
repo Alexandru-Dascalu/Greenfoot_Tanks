@@ -519,7 +519,7 @@ public abstract class MobileEnemyTank extends Tank
     private boolean canMoveWhileTurning()
     {
     	/*Check if the tank can move forwards without hitting a wall.*/
-    	if(!canMoveForwards())
+    	if(getForwardsWallContact() != null)
     	{
     		//If it can not, it can not move while turning.
     		return false;
@@ -723,7 +723,7 @@ public abstract class MobileEnemyTank extends Tank
     	if(isMovingForward && !isMovingBackward)
     	{
     		/*Check if it can do so without hitting a wall.*/
-    		if(canMoveForwards())
+    		if(getForwardsWallContact() == null)
     		{
     			//if so, move forward at maximum speed
     			move(getSpeed());
@@ -733,7 +733,7 @@ public abstract class MobileEnemyTank extends Tank
     	else if(!isMovingForward && isMovingBackward)
     	{
     		/*Check if it can do so without hitting a wall.*/
-    		if(canMoveBackwards())
+    		if(getBackwardsWallContact() == null)
     		{
     			//if so, move backward at maximum speed
     			move(-getSpeed());
