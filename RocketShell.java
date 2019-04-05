@@ -43,11 +43,13 @@ public class RocketShell extends Shell
      *  is {@value}.*/
     public static final int TIMES_ALLOWED_TO_BOUNCE=0;
     
-    /**The average distance at which the shell looks ahead to check if it will
-     * hit a wall. The value is {@value}, because the shell image is 37 pixels
-     * long, and it is set slightly more than half so shells will not disappear
-     * too far away from the wall.*/
-    private static final int LOOK_AHEAD=20;
+    /**The length of the shell in pixels. Used in calculations for bouncing, so
+     * it has to be precise. The value is {@value}.*/
+    private static final int LENGTH = 54;
+    
+    /**The with of the shell in pixels. Used in calculations for bouncing, so
+     * it has to be precise. The value is {@value}.*/
+    private static final int WIDTH = 15;
     
     /**
      * Makes a new rocket shell at the given coordinates and with the rotation
@@ -86,17 +88,25 @@ public class RocketShell extends Shell
     {
     	return TIMES_ALLOWED_TO_BOUNCE;
     }
-    
-    /**
-     * Gets the average distance at which the shell looks ahead to check if 
-     * it will hit a wall.
-     * @return the average distance at which the shell looks ahead to check if 
-     * it will hit a wall.
+	
+	 /**
+     * Gets the length of this shell.
+     * @return the length of this shell, in pixels.
      */
 	@Override
-    public int getLookAhead()
+    public int getLength()
     {
-    	return LOOK_AHEAD;
+    	return LENGTH;
+    }
+    
+    /**
+     * Gets the width of this shell.
+     * @return the width of this shell, in pixels.
+     */
+	@Override
+    public int getWidth()
+    {
+    	return WIDTH;
     }
 }
 

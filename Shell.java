@@ -46,16 +46,20 @@ public class Shell extends Actor
    	/**The speed with which all shells move. The value is {@value}.*/
     private static final int SHELL_SPEED=4;
     
+    /**The length of the shell in pixels. Used in calculations for bouncing, so
+     * it has to be precise. The value is {@value}.*/
+    private static final int LENGTH = 17;
+    
+    /**The with of the shell in pixels. Used in calculations for bouncing, so
+     * it has to be precise. The value is {@value}.*/
+    private static final int WIDTH = 10;
+    
     /**The number of times the shell is allowed to bounce off a wall.The value
      *  is {@value}.*/
     public static final int TIMES_ALLOWED_TO_BOUNCE=1;
     
     /**The number of degrees in <i>pi</i> (or around 3.14) radians.*/
     private final static int PI_RADIANS=180;
-    
-    /**The average distance at which the shell looks ahead to check if it will
-     * hit a wall. The value is {@value}, because the shell image is 10 by 17 pixels.*/
-    private static final int LOOK_AHEAD=17;
     
     /**The number of times the shell has bounced off a wall so far.*/
     private int timesBounced;
@@ -347,7 +351,7 @@ public class Shell extends Actor
     	 * direction). We get the real value of the x component, and we round it
     	 * and cast it as an integer.*/
     	double rotation=Math.toRadians(getRotation());
-    	int xOffset=(int) Math.round(getLookAhead()*Math.cos(rotation));
+    	int xOffset = (int) Math.round(getLength() * Math.cos(rotation));
     	
     	/*The image of the shell is 10 by 11, so it roughly fits inside a circle 
     	 * with a radius of 6. After the rounding, the offset might be less than 
@@ -355,11 +359,11 @@ public class Shell extends Actor
     	 * by the time a hit is detected. We do not want the shell to intersect 
     	 * the wall block, so if it's modulus is less than 6 (or LOOK_AHEAD/2+1)
     	 * we change to either 6 or -6.*/
-    	if(Math.abs(xOffset)<(getLookAhead()/2)+1)
+    	if(Math.abs(xOffset) < (int) Math.round(getWidth() * Math.cos(rotation)))
     	{
     		/*We change the offset to either 6 or -6,depending on the cosinus of
     		 * the shell's angle*/
-    		xOffset=(getLookAhead()/2+1)*(int)Math.signum(Math.cos(rotation));
+    		xOffset=(int) Math.round(getWidth() * Math.cos(rotation));
     	}
     	
     	return xOffset;
@@ -378,7 +382,7 @@ public class Shell extends Actor
     	 * direction). We get the real value of the y component, and we round it
     	 * and cast it as an integer.*/
     	double rotation=Math.toRadians(getRotation());
-    	int yOffset=(int) Math.round(getLookAhead()*Math.sin(rotation));
+    	int yOffset=(int) Math.round(getLength() * Math.sin(rotation));
     	
     	/*The image of the shell is 10 by 11, so it roughly fits inside a circle 
     	 * with a radius of 6. After the rounding, the offset might be less than 
@@ -386,11 +390,11 @@ public class Shell extends Actor
     	 * by the time a hit is detected. We do not want the shell to intersect 
     	 * the wall block, so if it's modulus is less than 6 we change to either 
     	 * 6 or -6.*/
-    	if(Math.abs(yOffset)<(getLookAhead()/2)+1)
+    	if(Math.abs(yOffset)< (int) Math.round(getWidth() * Math.cos(rotation)))
     	{
     		/*We change the offset to either 6 or -6,depending on the sinus of
     		 * the shell's angle*/
-    		yOffset=(getLookAhead()/2)+1*(int)Math.signum(Math.sin(rotation));
+    		yOffset=(int) Math.round(getWidth() * Math.cos(rotation));
     	}
     	
     	return yOffset;
@@ -479,14 +483,21 @@ public class Shell extends Actor
     }
     
     /**
-     * Gets the average distance at which the shell looks ahead to check if 
-     * it will hit a wall.
-     * @return the average distance at which the shell looks ahead to check if 
-     * it will hit a wall.
+     * Gets the length of this shell.
+     * @return the length of this shell, in pixels.
      */
-    public int getLookAhead()
+    public int getLength()
     {
-    	return LOOK_AHEAD;
+    	return LENGTH;
+    }
+    
+    /**
+     * Gets the width of this shell.
+     * @return the width of this shell, in pixels.
+     */
+    public int getWidth()
+    {
+    	return WIDTH;
     }
 }
 
