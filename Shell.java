@@ -355,11 +355,11 @@ public class Shell extends Actor
     	 * by the time a hit is detected. We do not want the shell to intersect 
     	 * the wall block, so if it's modulus is less than 6 (or LOOK_AHEAD/2+1)
     	 * we change to either 6 or -6.*/
-    	if(Math.abs(xOffset)<(LOOK_AHEAD/2)+1)
+    	if(Math.abs(xOffset)<(getLookAhead()/2)+1)
     	{
     		/*We change the offset to either 6 or -6,depending on the cosinus of
     		 * the shell's angle*/
-    		xOffset=(LOOK_AHEAD/2+1)*(int)Math.signum(Math.cos(rotation));
+    		xOffset=(getLookAhead()/2+1)*(int)Math.signum(Math.cos(rotation));
     	}
     	
     	return xOffset;
@@ -386,11 +386,11 @@ public class Shell extends Actor
     	 * by the time a hit is detected. We do not want the shell to intersect 
     	 * the wall block, so if it's modulus is less than 6 we change to either 
     	 * 6 or -6.*/
-    	if(Math.abs(yOffset)<6)
+    	if(Math.abs(yOffset)<(getLookAhead()/2)+1)
     	{
     		/*We change the offset to either 6 or -6,depending on the sinus of
     		 * the shell's angle*/
-    		yOffset=6*(int)Math.signum(Math.sin(rotation));
+    		yOffset=(getLookAhead()/2)+1*(int)Math.signum(Math.sin(rotation));
     	}
     	
     	return yOffset;
