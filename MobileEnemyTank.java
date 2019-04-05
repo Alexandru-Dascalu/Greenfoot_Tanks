@@ -195,7 +195,14 @@ public abstract class MobileEnemyTank extends Tank
      * to follow.*/
     protected void generatePath()
     {
+    	//Get a reference to the world this tank is in
+    	TankWorld world=(TankWorld)getWorldOfType(TankWorld.class);
     	
+    	/*choose a destination point and use the world's graph to get a path 
+    	 * to it.*/
+    	GraphPoint destination=chooseDestinationPoint();
+    	path=world.getWorldGraph().getShortestPath(getX(), getY(), 
+    			destination);
     }
     
     /**Chooses a random destination point for the tank to get to.*/
@@ -537,7 +544,26 @@ public abstract class MobileEnemyTank extends Tank
     protected Shell detectIncomingShells()
     {
    
-    	/*If no a shell has not been returned yet, then no shell not fired by this 
+    	//get a list of all the shells within a circle whose radius is the 
+    	//minimum distance this type of tank keeps away from incoming shells
+    	List<Shell> shells=getObjectsInRange((int)(getShellAvoidanceDistance()*Tank.LENGTH),Shell.class);
+    	
+    	/*A shell in this list might be a shell fired by this tank's turret. 
+    	 * These do not need to be avoided, so we search for shells that were 
+    	 * fired by other tanks's turrets. This loop goes through the list of
+    	 * shells that are too close , checks if they were fired by this tank,
+    	 * and exits prematurely if it finds a shell that was not.*/
+    	for(Shell s: shells)
+    	{
+    		//Check if this shell was fired by a turret other than this tank's turret.
+    		if(s.getParentTank()!=this)
+    		{
+    			//if so, return the shell
+    			return s;
+    		}
+    	}
+    	
+    	/*If so a shell has not been returned, then no shell not fired by this 
     	 * tank is dangerously close to this tank.*/
     	return null;
     }

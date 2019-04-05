@@ -122,7 +122,7 @@ public class TankWorld extends World
      */
     public static TankWorld getFirstWorld()
     {
-    	return new ExampleWorld();
+    	return new TestWorld();
     }
     
     /**
