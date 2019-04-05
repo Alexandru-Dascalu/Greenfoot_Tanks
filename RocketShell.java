@@ -69,6 +69,7 @@ public class RocketShell extends Shell
 	 * each time the move(int) method is called.
 	 * @return the speed of this type of shells, defined by a static constant.
 	 */
+	@Override
 	public int getSpeed()
     {
     	return SHELL_SPEED;
@@ -80,6 +81,7 @@ public class RocketShell extends Shell
      * we can override for different types of shells.
      * @return the number of times the shell is allowed to bounce off a wall.
      */
+	@Override
     public int getBounceLimit()
     {
     	return TIMES_ALLOWED_TO_BOUNCE;
@@ -91,6 +93,7 @@ public class RocketShell extends Shell
      * @return the average distance at which the shell looks ahead to check if 
      * it will hit a wall.
      */
+	@Override
     public int getLookAhead()
     {
     	return LOOK_AHEAD;

@@ -34,6 +34,9 @@
 
 public class RocketShellMk2 extends RocketShell
 {
+	/**The speed with which all shells move. The value is {@value}.*/
+    private static final int SHELL_SPEED = 5;
+    
 	/**The number of times the shell is allowed to bounce off a wall.The value
      *  is {@value}.*/
     public static final int TIMES_ALLOWED_TO_BOUNCE=2;
@@ -54,11 +57,23 @@ public class RocketShellMk2 extends RocketShell
 	}
 	
 	/**
+	 * The speed of this shell, meaning the distance in cells that the shell moves
+	 * each time the move(int) method is called.
+	 * @return the speed of this type of shells, defined by a static constant.
+	 */
+	@Override
+	public int getSpeed()
+    {
+    	return SHELL_SPEED;
+    }
+	
+	/**
      * Gets the number of times the shell is allowed to bounce off a wall. We 
      * have this method despite the fact it returns a public constant so that 
      * we can override for different types of shells.
      * @return the number of times the shell is allowed to bounce off a wall.
      */
+	@Override
     public int getBounceLimit()
     {
     	return TIMES_ALLOWED_TO_BOUNCE;
