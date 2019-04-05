@@ -66,6 +66,14 @@ public class TankWorld extends World
      * show up on the screen, during which the game is paused. Its value is {@value}.*/
     private static final int END_LEVEL_DELAY = 200;
     
+    /**The number of extra lives the player gets every couple of levels. Its 
+     * value is {@value}.*/
+    private static final int EXTRA_LIVES= 2;
+    
+    /**The number of levels the player has to clear until it gets extra lives
+     * again. Its value is {@value}.*/
+    private static final int LEVELS_UNTILL_REWARD = 3;
+    
     /**The number of time steps the mission clear or mission fail message will 
      * show up on the screen, during which the game is paused. Its value is {@value}.*/
     private static final int START_LEVEL_DELAY = 75;
@@ -244,9 +252,9 @@ public class TankWorld extends World
     	removeObject(missionCleared);
     	
     	/*Check if the player should receive a bonus life. This happens every 3 levels.*/
-    	if(currentLevel%3==0)
+    	if(currentLevel % LEVELS_UNTILL_REWARD ==0)
     	{
-    		playerLives++;
+    		playerLives += EXTRA_LIVES;
     	}
     	
     	//increment the level counter and load the next level.
