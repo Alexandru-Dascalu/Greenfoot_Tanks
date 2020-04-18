@@ -7,3 +7,5 @@
 *.gfar
 *.class
 *.ctxt
+
+clean_binaries.bat
