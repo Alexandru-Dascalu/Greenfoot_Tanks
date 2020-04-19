@@ -244,7 +244,7 @@ public class YellowTank extends MobileEnemyTank
     	if(minesLaid==NR_OF_MINES-1)
     	{
     		//if so, set the flag to true so this tank will start the suicide attack
-    		suicideAttack=true;
+    		suicideAttack=false;
     	}
     	/*Check if this tank 2 more mines to lay and the next mine laying time 
     	 * is divisible by 3. This is so that the time the tank will start the
@@ -252,7 +252,7 @@ public class YellowTank extends MobileEnemyTank
     	else if((minesLaid==NR_OF_MINES-2) && (nextMineLayingTime%4==0))
     	{
     		//if so, set the flag to true so this tank will start the suicide attack
-    		suicideAttack=true;
+    		suicideAttack=false;
     	}
     	/*Else, lay down mines randomly.*/
     	else
