@@ -172,7 +172,7 @@ public class Graph
     	
     	/*make a new priority queue, which will be used to get the node with 
     	 *the shortest tentative distance*/
-    	PriorityQueue<GraphPoint> unvisitedNodes=new PriorityQueue<>();
+    	PriorityQueue<GraphPoint> unvisitedNodes=new PriorityQueue<GraphPoint>();
     	
     	//add all nodes in the graph matrix to the priority queue
     	for(GraphPoint[] pointRow: pointMatrix)
@@ -323,7 +323,7 @@ public class Graph
     private LinkedList<GraphPoint> getPath(GraphPoint target)
     {
     	//the linked list that will be returned
-    	LinkedList<GraphPoint> path=new LinkedList<>();
+    	LinkedList<GraphPoint> path=new LinkedList<GraphPoint>();
     	
     	/*The current node that is to be added to the list, starting with the 
     	 * target node.*/

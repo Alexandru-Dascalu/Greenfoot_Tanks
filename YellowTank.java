@@ -155,7 +155,7 @@ public class YellowTank extends MobileEnemyTank
         		else
         		{
         			//get a reference to the player tank
-        			PlayerTank playerTank=getWorldOfType(TankWorld.class).getPlayerTank();
+        			PlayerTank playerTank = ((TankWorld) getWorld()).getPlayerTank();
         			
         			/*Check if this tank is not close enough to the player tank.*/
         			if(getDistanceFrom(playerTank)>SUICIDE_ATTACK_DISTANCE)
@@ -168,7 +168,7 @@ public class YellowTank extends MobileEnemyTank
         			else
         			{
         				//get a reference to the world the tank is ins
-        				TankWorld world= getWorldOfType(TankWorld.class);
+        				TankWorld world = (TankWorld) getWorld();
         				
         				//make a new land mine and put it in the game world
         				LandMine mine=new LandMine(this);
@@ -205,10 +205,10 @@ public class YellowTank extends MobileEnemyTank
     private void generateAttackPath()
     {
     	//get a reference to the payer tank of the world this tank is in
-    	PlayerTank playerTank=getWorldOfType(TankWorld.class).getPlayerTank();
+    	PlayerTank playerTank = ((TankWorld) getWorld()).getPlayerTank();
     	
     	//the graph of points the tank can travel through of the current level
-	    Graph worldGraph=getWorldOfType(TankWorld.class).getWorldGraph();
+	    Graph worldGraph = ((TankWorld) getWorld()).getWorldGraph();
 	    
 	   	//Get the node/point at the calculated indexes from the graph
 	    GraphPoint destination=worldGraph.getPoint(playerTank.getX(), playerTank.getY());

@@ -1,4 +1,4 @@
-import greenfoot.Actor;
+import greenfoot.*;
 
 /**
  * <p><b>File name: </b> WallBlock.java

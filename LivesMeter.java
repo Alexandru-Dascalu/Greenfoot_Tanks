@@ -54,7 +54,7 @@ public class LivesMeter extends UIDisplay
 	@Override
 	public int getNewData()
 	{
-		TankWorld world=getWorldOfType(TankWorld.class);
+		TankWorld world = (TankWorld) getWorld();
 		return world.getPlayerLives();
 	}
 	
