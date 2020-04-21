@@ -90,7 +90,7 @@ public class PlayerTank extends Tank
 	protected void addedToWorld(World world)
 	{
 		setRotation(startRotation);
-		tankTurret=new PlayerTurret(this);
+		tankTurret = new PlayerTurret(this);
 	}
 	
 	/**

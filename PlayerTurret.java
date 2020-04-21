@@ -66,9 +66,7 @@ public class PlayerTurret extends Turret
         /*Make the new turret and put it on it's parent tank.*/
         super(tank);
         
-        /*Initialise the array of target line actors.*/
-        targetLines = TargetLine.makeTargetLines(this, 
-        		tankTarget);
+        tankTarget = new Target();
     }
     
     /**
@@ -85,11 +83,13 @@ public class PlayerTurret extends Turret
         
         /*make a new tank target and calculate the coordinates where it should 
          * be placed, at a certain distance in front of the tank.*/
-        tankTarget = new Target();
         int targetX = getX() + (int)(DEFAULT_DISTANCE_TO_TARGET*Math.cos(Math.toRadians(tankRotation)));
         int targetY = getY() + (int)(DEFAULT_DISTANCE_TO_TARGET*Math.sin(Math.toRadians(tankRotation)));
         
         world.addObject(tankTarget, targetX, targetY);
+        
+        /*Initialise the array of target line actors.*/
+        targetLines = TargetLine.makeTargetLines(this, tankTarget);
     }
     
     /**
