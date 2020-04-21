@@ -293,12 +293,7 @@ public abstract class MobileEnemyTank extends Tank
     		 * case we make sure the path is null so a new path will be 
     		 * generated in the next call of the act() method and terminate
     		 * this method.*/
-        	catch(NoSuchElementException e)
-        	{
-            	path=null;
-        		return;
-        	}
-        	catch(NullPointerException e)
+        	catch(NullPointerException | NoSuchElementException e)
         	{
             	path=null;
         		return;
@@ -878,14 +873,7 @@ public abstract class MobileEnemyTank extends Tank
 		}
     	/*If in this process the path becomes empty,
    	     * we catch the exception that is thrown.*/
-    	catch(NullPointerException e)
-		{
-    		/*If so, set the path to null and return to make the tank generate 
-    		 * a new path for it to follow.*/
-    		path=null;
-    		return;
-		}
-		catch(NoSuchElementException e)
+    	catch(NoSuchElementException | NullPointerException e)
 		{
     		/*If so, set the path to null and return to make the tank generate 
     		 * a new path for it to follow.*/
