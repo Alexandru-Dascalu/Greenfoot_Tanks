@@ -134,14 +134,7 @@ public abstract class Tank extends Actor
 		pushOtherTanks();
 		
 		tankTurret.aim();
-		try {
-			tankTurret.fire();
-		} catch (IllegalStateException e) {
-			System.out.print(e.getMessage());
-			System.out.println(tankTurret.getWorld());
-			throw e;
-		}
-		
+		tankTurret.fire();
 	}
 	
 	/**
