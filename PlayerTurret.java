@@ -67,8 +67,7 @@ public class PlayerTurret extends Turret
         super(tank);
         
         /*Initialise the array of target line actors.*/
-        targetLines = TargetLine.makeTargetLines(this, 
-        		tankTarget);
+        targetLines = TargetLine.makeTargetLines(this, tankTarget);
     }
     
     /**
