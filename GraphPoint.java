@@ -1,4 +1,4 @@
-import greenfoot.*;
+import greenfoot.World;
 import java.lang.IllegalArgumentException;
 
 /**

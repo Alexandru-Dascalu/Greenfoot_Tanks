@@ -1,5 +1,5 @@
 #Greenfoot properties
-#Tue Apr 21 12:55:53 EEST 2020
+#Tue Apr 21 13:05:51 EEST 2020
 target24.type=ClassTarget
 target16.name=WallBlock
 class.Level3World.superclass=TankWorld
@@ -71,7 +71,7 @@ class.BrownTank.superclass=StaticEnemyTank
 dependency68.to=Target
 target32.width=140
 target3.editor.height=700
-mainWindow.width=1936
+mainWindow.width=1938
 target38.editor.height=700
 dependency118.type=UsesDependency
 target8.showInterface=false
@@ -727,9 +727,9 @@ target18.showInterface=false
 class.RocketShell.superclass=Shell
 target38.name=Level1World
 target21.type=ClassTarget
-mainWindow.y=0
+mainWindow.y=-9
 target13.name=Target
-mainWindow.x=-8
+mainWindow.x=-9
 target16.y=0
 target16.x=0
 dependency28.from=Level5World
@@ -893,7 +893,7 @@ dependency66.to=TankWorld
 class.YellowTank.superclass=MobileEnemyTank
 target27.editor.y=0
 target27.editor.x=0
-mainWindow.height=1038
+mainWindow.height=1048
 dependency8.from=TankWorld
 target10.editor.y=0
 target28.height=50
