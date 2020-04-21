@@ -40,7 +40,7 @@ public class Level8World extends TankWorld
         addObject(enemy5, 1360, 335);
         
         YellowTank enemy6=new YellowTank(1160, 140, 90);
-        addObject(enemy6, 850, 140);
+        addObject(enemy6, 1160, 140);
         enemyTanks=6;
 	}
 	
