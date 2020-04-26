@@ -168,30 +168,45 @@ public class GraphPoint implements Comparable<GraphPoint>
     {
     	/*Based on the value of the string argument, return the corresponding 
     	 * neighbour reference from the array of 8 neighbours.*/
-    	switch(position)
+    	if(position.equals("upper left"))
     	{
-    		case "upper left":
-    			return neighbours[0];
-    		case "upper":
-    			return neighbours[1];
-    		case "upper right":
-    			return neighbours[2];
-    		case "left":
-    			return neighbours[3];
-    		case "right":
-    			return neighbours[4];
-    		case "lower left":
-    			return neighbours[5];
-    		case "lower":
-    			return neighbours[6];
-    		case "lower right":
-    			return neighbours[7];
-    		/*If the argument does not match any of the predetermined  acceptable
-    		 * arguments, throw an exception.*/
-    		default:
-    			throw new IllegalArgumentException("The location string argument"
-    					+ " has a value that is not one of: upper left, upper, "
-    					+ "upper right, left, right, lower left, lower or lower right.");
+    		return neighbours[0];
+    	}
+    	else if(position.equals("upper"))
+    	{
+    		return neighbours[1];
+    	}
+    	else if(position.equals("upper right"))
+    	{
+    		return neighbours[2];
+    	}
+    	else if(position.equals("left"))
+    	{
+    		return neighbours[3];
+    	}
+    	else if(position.equals("right"))
+    	{
+    		return neighbours[4];
+    	}
+    	else if(position.equals("lower left"))
+    	{
+    		return neighbours[5];
+    	}
+    	else if(position.equals("lower"))
+    	{
+    		return neighbours[6];
+    	}
+    	else if(position.equals("lower right"))
+    	{
+    		return neighbours[7];
+    	}
+    	/*If the argument does not match any of the predetermined  acceptable
+		 * arguments, throw an exception.*/
+    	else
+    	{
+    		throw new IllegalArgumentException("The location string argument"
+					+ " has a value that is not one of: upper left, upper, "
+					+ "upper right, left, right, lower left, lower or lower right.");
     	}
     }
     
@@ -251,78 +266,85 @@ public class GraphPoint implements Comparable<GraphPoint>
     	 * recursion where the addNeighbour methods of the 2 nodes call each other
     	 * infinitely). If it passes the check, we set this node to the appropiate 
     	 * place in the neighbouring node's array.*/
-    	switch(location)
+    	if(location.equals("upper left"))
     	{
-    		case "upper left":
-    			neighbours[0]=neighbour;
-    			
-    			if(neighbour!=null && (neighbour.getNeighbour("lower right")!=this))
-    			{
-    				neighbour.addNeighbour(this, "lower right");
-    			}
-    			break;
-    		case "upper":
-    			neighbours[1]=neighbour;
-    			
-    			if(neighbour!=null && (neighbour.getNeighbour("lower")!=this))
-    			{
-    				neighbour.addNeighbour(this, "lower");
-    			}
-    			break;
-    		case "upper right":
-    			neighbours[2]=neighbour;
-    			
-    			if(neighbour!=null && (neighbour.getNeighbour("lower left")!=this))
-    			{
-    				neighbour.addNeighbour(this, "lower left");
-    			}
-    			break;
-    		case "left":
-    			neighbours[3]=neighbour;
-    			
-    			if(neighbour!=null && (neighbour.getNeighbour("right")!=this))
-    			{
-    				neighbour.addNeighbour(this, "right");
-    			}
-    			break;
-    		case "right":
-    			neighbours[4]=neighbour;
-    			
-    			if(neighbour!=null && (neighbour.getNeighbour("left")!=this))
-    			{
-    				neighbour.addNeighbour(this, "left");
-    			}
-    			break;
-    		case "lower left":
-    			neighbours[5]=neighbour;
-    			
-    			if(neighbour!=null && (neighbour.getNeighbour("upper right")!=this))
-    			{
-    				neighbour.addNeighbour(this, "upper right");
-    			}
-    			break;
-    		case "lower":
-    			neighbours[6]=neighbour;
-    			
-    			if(neighbour!=null && (neighbour.getNeighbour("upper")!=this))
-    			{
-    				neighbour.addNeighbour(this, "upper");
-    			}
-    			break;
-    		case "lower right":
-    			neighbours[7]=neighbour;
-    			
-    			if(neighbour!=null && (neighbour.getNeighbour("upper left")!=this))
-    			{
-    				neighbour.addNeighbour(this, "upper left");
-    			}
-    			break;
-    		/*If the argument does not match any of the predetermined  acceptable
-        	 * arguments, throw an exception.*/
-    		default:
-    			throw new IllegalArgumentException("The location string argument"
-    					+ " has a value that is not one of: upper left, upper, "
-    					+ "upper right, left, right, lower left, lower or lower right.");
+    		neighbours[0]=neighbour;
+			
+			if(neighbour!=null && (neighbour.getNeighbour("lower right")!=this))
+			{
+				neighbour.addNeighbour(this, "lower right");
+			}
+    	}
+    	else if(location.equals("upper"))
+    	{
+    		neighbours[1]=neighbour;
+			
+			if(neighbour!=null && (neighbour.getNeighbour("lower")!=this))
+			{
+				neighbour.addNeighbour(this, "lower");
+			}
+    	}
+    	else if(location.equals("upper right"))
+    	{
+    		neighbours[2]=neighbour;
+			
+			if(neighbour!=null && (neighbour.getNeighbour("lower left")!=this))
+			{
+				neighbour.addNeighbour(this, "lower left");
+			}
+    	}
+    	else if(location.equals("left"))
+    	{
+    		neighbours[3]=neighbour;
+			
+			if(neighbour!=null && (neighbour.getNeighbour("right")!=this))
+			{
+				neighbour.addNeighbour(this, "right");
+			}
+    	}
+    	else if(location.equals("right"))
+    	{
+    		neighbours[4]=neighbour;
+			
+			if(neighbour!=null && (neighbour.getNeighbour("left")!=this))
+			{
+				neighbour.addNeighbour(this, "left");
+			}
+    	}
+    	else if(location.equals("lower left"))
+    	{
+    		neighbours[5]=neighbour;
+			
+			if(neighbour!=null && (neighbour.getNeighbour("upper right")!=this))
+			{
+				neighbour.addNeighbour(this, "upper right");
+			}
+    	}
+    	else if(location.equals("lower"))
+    	{
+    		neighbours[6]=neighbour;
+			
+			if(neighbour!=null && (neighbour.getNeighbour("upper")!=this))
+			{
+				neighbour.addNeighbour(this, "upper");
+			}
+    	}
+    	else if(location.equals("lower right"))
+    	{
+    		neighbours[7]=neighbour;
+			
+			if(neighbour!=null && (neighbour.getNeighbour("upper left")!=this))
+			{
+				neighbour.addNeighbour(this, "upper left");
+			}
+    	}
+    	/*If the argument does not match any of the predetermined  acceptable
+    	 * arguments, throw an exception.*/
+    	else
+    	{
+			throw new IllegalArgumentException("The location string argument"
+					+ " has a value that is not one of: upper left, upper, "
+					+ "upper right, left, right, lower left, lower or lower right.");
     	}
     }
     

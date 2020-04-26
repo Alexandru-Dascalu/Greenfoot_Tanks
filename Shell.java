@@ -96,7 +96,7 @@ public class Shell extends Actor
         destroyParent=false;
         
         //put the shell in the world
-        TankWorld world=parentTank.getWorldOfType(TankWorld.class);
+        TankWorld world = (TankWorld) parentTank.getWorld();
         world.addObject(this, x, y);
     }
     
@@ -163,7 +163,7 @@ public class Shell extends Actor
 	        	//if it has, the shell is removed from the world
 	        	else
 	        	{
-	        		TankWorld tankWorld=getWorldOfType(TankWorld.class);
+	        		TankWorld tankWorld = (TankWorld) getWorld();
 	        		tankWorld.removeObject(this);
 	        	}
 	        }
@@ -187,7 +187,7 @@ public class Shell extends Actor
     	/*A variable that will be true if any targets have been destroyed, 
     	 *false if not.*/
     	boolean removeShell=false;
-    	TankWorld world=getWorldOfType(TankWorld.class);
+    	TankWorld world = (TankWorld) getWorld();
     	
     	/*Checks if this shell intersects any other shell.*/
     	if(!intersectShells.isEmpty())

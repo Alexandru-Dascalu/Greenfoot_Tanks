@@ -186,7 +186,7 @@ public class LandMine extends Actor
     	List<LandMine> destroyedMines=getObjectsInRange(EXPLOSION_RANGE, LandMine.class);
     	
     	//we need a reference to the world of type TankWorld
-    	TankWorld world=getWorldOfType(TankWorld.class);
+    	TankWorld world = (TankWorld) getWorld();
     	
     	/*If the player tank is destroyed in the explosion, it does not matter 
     	 * what else happens, the level is lost and will be reloaded or the 

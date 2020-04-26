@@ -56,7 +56,7 @@ public class EnemyCount extends UIDisplay
 	@Override
 	public int getNewData()
 	{
-		TankWorld world=getWorldOfType(TankWorld.class);
+		TankWorld world = (TankWorld) getWorld();
 		return world.getNrEnemyTanks();
 	}
 	

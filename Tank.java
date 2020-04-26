@@ -262,7 +262,7 @@ public abstract class Tank extends Actor
 	protected void layMine()
 	{
 		//get a reference to the world the tank is in
-		TankWorld world= getWorldOfType(TankWorld.class);
+		TankWorld world = (TankWorld) getWorld();
 		
 		//make a new land mine and put it in the game world
 		LandMine mine=new LandMine(this);
@@ -436,77 +436,75 @@ public abstract class Tank extends Actor
 		double degree;
 		
 		/*Depending on the string argument given, we calculate the offset.*/
-		switch (point)
+		if(point.equals("front right"))
 		{
-			case "front right":
-				/*the degree is the rotation of the tank added with the angle between
-				 * the length of the tank with it's diagonal.*/
-				degree = ANGLE+getRotation();
-				
-				/*The offset is the length the projection of half of the diagonal
-				 * of the tank on the horizontal axis, so we multiply it with the
-				 * cosine of the degree and round to the nearest higher integer.*/
-				xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
-				break;
-				
-			case "front":
-				/*the degree is the rotation of the tank*/
-				degree=getRotation();
-				
-				/*The offset is the length of the projection of half of the length
-				 * of the tank on the horizontal axis, so we multiply it with the
-				 * cosine of the degree and round to the nearest higher integer.*/
-				xOffset=(int) Math.round((LENGTH/2.0)*Math.cos(Math.toRadians((int)degree)));
-				break;
-				
-			case "front left":
-				/*the degree is the rotation of the tank added minus the angle between
-				 * the length of the tank and it's diagonal, since the front 
-				 * left corner of the tank comes before the middle of the front
-				 * side in a clockwise rotation.*/
-				degree=getRotation()-ANGLE;
-				
-				/*The offset is the length the projection of half of the diagonal
-				 * of the tank on the horizontal axis, so we multiply it with the
-				 * cosine of the degree and round to the nearest higher integer.*/
-				xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
-				break;
-
-			case "back left":
-				/*The back left corner of the tank is diametrically opposite from
-				 * the front right corner compared to the tank's centre, so we 
-				 * make the same calculations as for the front right corner
-				 * and change the offset to it's opposite.*/
-				degree = ANGLE+getRotation();
-				xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
-				xOffset= -xOffset;
-				break;
-				
-			case "back":
-				/*The middle of the back side of the tank is diametrically 
-				 * opposite from the middle of the front side compared to the 
-				 * tank's centre, so we make the same calculations as for the
-				 * front point and change the offset to it's opposite.*/
-				degree=getRotation();
-				xOffset= (int) Math.round((LENGTH/2.0)*Math.cos(Math.toRadians((int)degree)));
-				xOffset= -xOffset;
-				break;
-				
-			case "back right":
-				/*The back right corner of the tank is diametrically opposite from
-				 * the front left corner compared to the tank's centre, so we 
-				 * make the same calculations as for the front left corner
-				 * and change the offset to it's opposite.*/
-				degree=getRotation()-ANGLE;
-				xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
-				xOffset= -xOffset;
-				break;
-				
+			/*the degree is the rotation of the tank added with the angle between
+			 * the length of the tank with it's diagonal.*/
+			degree = ANGLE+getRotation();
+			
+			/*The offset is the length the projection of half of the diagonal
+			 * of the tank on the horizontal axis, so we multiply it with the
+			 * cosine of the degree and round to the nearest higher integer.*/
+			xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
+		}
+		else if(point.equals("front"))
+		{
+			/*the degree is the rotation of the tank*/
+			degree=getRotation();
+			
+			/*The offset is the length of the projection of half of the length
+			 * of the tank on the horizontal axis, so we multiply it with the
+			 * cosine of the degree and round to the nearest higher integer.*/
+			xOffset=(int) Math.round((LENGTH/2.0)*Math.cos(Math.toRadians((int)degree)));
+		}
+		else if(point.equals("front left"))
+		{
+			/*the degree is the rotation of the tank added minus the angle between
+			 * the length of the tank and it's diagonal, since the front 
+			 * left corner of the tank comes before the middle of the front
+			 * side in a clockwise rotation.*/
+			degree=getRotation()-ANGLE;
+			
+			/*The offset is the length the projection of half of the diagonal
+			 * of the tank on the horizontal axis, so we multiply it with the
+			 * cosine of the degree and round to the nearest higher integer.*/
+			xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
+		}
+		else if(point.equals("back left"))
+		{
+			/*The back left corner of the tank is diametrically opposite from
+			 * the front right corner compared to the tank's centre, so we 
+			 * make the same calculations as for the front right corner
+			 * and change the offset to it's opposite.*/
+			degree = ANGLE+getRotation();
+			xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
+			xOffset= -xOffset;
+		}
+		else if(point.equals("back"))
+		{
+			/*The middle of the back side of the tank is diametrically 
+			 * opposite from the middle of the front side compared to the 
+			 * tank's centre, so we make the same calculations as for the
+			 * front point and change the offset to it's opposite.*/
+			degree=getRotation();
+			xOffset= (int) Math.round((LENGTH/2.0)*Math.cos(Math.toRadians((int)degree)));
+			xOffset= -xOffset;
+		}
+		else if(point.equals("back right"))
+		{
+			/*The back right corner of the tank is diametrically opposite from
+			 * the front left corner compared to the tank's centre, so we 
+			 * make the same calculations as for the front left corner
+			 * and change the offset to it's opposite.*/
+			degree=getRotation()-ANGLE;
+			xOffset = (int) Math.round(HALF_DIAGONAL * Math.cos(Math.toRadians(degree)));
+			xOffset= -xOffset;
+		}
+		else
+		{
 			/*Should never be reached since it is a private method, but it is
 			 * put to highlight bugs if a mistake is made*/
-			default:
-				xOffset=0;
-				break;
+			xOffset=0;
 		}
 		
 		return xOffset;
@@ -532,77 +530,75 @@ public abstract class Tank extends Actor
 		double degree;
 		
 		/*Depending on the string argument given, we calculate the offset.*/
-		switch (point)
+		if(point.equals("front right"))
 		{
-			case "front right":
-				/*the degree is the rotation of the tank added with the angle between
-				 * the length of the tank with it's diagonal.*/
-				degree = ANGLE+getRotation();
-				
-				/*The offset is the length the projection of half of the diagonal
-				 * of the tank on the vertical axis, so we multiply it with the
-				 * sine of the degree and round to the nearest higher integer.*/
-				yOffset = (int) Math.ceil(HALF_DIAGONAL * Math.sin(Math.toRadians(degree)));
-				break;
-				
-			case "front":
-				/*the degree id the rotation of the tank.*/
-				degree=getRotation();
-				
-				/*The offset is the length of the projection of half of the length
-				 * of the tank on the vertical axis, so we multiply it with the
-				 * sine of the degree and round to the nearest higher integer.*/
-				yOffset=(int) Math.ceil((LENGTH/2.0)*Math.sin(Math.toRadians((int)degree)));
-				break;
-				
-			case "front left":
-				/*the degree is the rotation of the tank added minus the angle between
-				 * the length of the tank and it's diagonal, since the front 
-				 * left corner of the tank comes before the middle of the front
-				 * side in a clockwise rotation.*/
-				degree=getRotation()-ANGLE;
-				
-				/*The offset is the length the projection of half of the diagonal
-				 * of the tank on the vertical axis, so we multiply it with the
-				 * sine of the degree and round to the nearest higher integer.*/
-				yOffset = (int) Math.ceil(HALF_DIAGONAL * Math.sin(Math.toRadians(degree)));
-				break;
-
-			case "back left":
-				/*The back left corner of the tank is diametrically opposite from
-				 * the front right corner compared to the tank's centre, so we 
-				 * make the same calculations as for the front right corner
-				 * and change the offset to it's opposite.*/
-				degree = ANGLE+getRotation();
-				yOffset = (int) Math.ceil(HALF_DIAGONAL * Math.sin(Math.toRadians(degree)));
-				yOffset= -yOffset;
-				break;
-				
-			case "back":
-				/*The middle of the back side of the tank is diametrically 
-				 * opposite from the middle of the front side compared to the 
-				 * tank's centre, so we make the same calculations as for the
-				 * front point and change the offset to it's opposite.*/
-				degree=getRotation(); 
-				yOffset= (int) Math.ceil((LENGTH/2.0)*Math.sin(Math.toRadians((int)degree)));
-				yOffset= -yOffset;
-				break;
-				
-			case "back right":
-				/*The back right corner of the tank is diametrically opposite from
-				 * the front left corner compared to the tank's centre, so we 
-				 * make the same calculations as for the front left corner
-				 * and change the offset to it's opposite.*/
-				degree=getRotation()-ANGLE;
-				yOffset = (int) Math.ceil(HALF_DIAGONAL * Math.sin(Math.toRadians(degree)));
-				yOffset= -yOffset;
-				break;
-				
+			/*the degree is the rotation of the tank added with the angle between
+			 * the length of the tank with it's diagonal.*/
+			degree = ANGLE+getRotation();
+			
+			/*The offset is the length the projection of half of the diagonal
+			 * of the tank on the vertical axis, so we multiply it with the
+			 * sine of the degree and round to the nearest higher integer.*/
+			yOffset = (int) Math.ceil(HALF_DIAGONAL * Math.sin(Math.toRadians(degree)));
+		}
+		else if(point.equals("front"))
+		{
+			/*the degree id the rotation of the tank.*/
+			degree=getRotation();
+			
+			/*The offset is the length of the projection of half of the length
+			 * of the tank on the vertical axis, so we multiply it with the
+			 * sine of the degree and round to the nearest higher integer.*/
+			yOffset=(int) Math.ceil((LENGTH/2.0)*Math.sin(Math.toRadians((int)degree)));
+		}
+		else if(point.equals("front left"))
+		{
+			/*the degree is the rotation of the tank added minus the angle between
+			 * the length of the tank and it's diagonal, since the front 
+			 * left corner of the tank comes before the middle of the front
+			 * side in a clockwise rotation.*/
+			degree=getRotation()-ANGLE;
+			
+			/*The offset is the length the projection of half of the diagonal
+			 * of the tank on the vertical axis, so we multiply it with the
+			 * sine of the degree and round to the nearest higher integer.*/
+			yOffset = (int) Math.ceil(HALF_DIAGONAL * Math.sin(Math.toRadians(degree)));
+		}
+		else if(point.equals("back left"))
+		{
+			/*The back left corner of the tank is diametrically opposite from
+			 * the front right corner compared to the tank's centre, so we 
+			 * make the same calculations as for the front right corner
+			 * and change the offset to it's opposite.*/
+			degree = ANGLE+getRotation();
+			yOffset = (int) Math.ceil(HALF_DIAGONAL * Math.sin(Math.toRadians(degree)));
+			yOffset= -yOffset;
+		}
+		else if(point.equals("back"))
+		{
+			/*The middle of the back side of the tank is diametrically 
+			 * opposite from the middle of the front side compared to the 
+			 * tank's centre, so we make the same calculations as for the
+			 * front point and change the offset to it's opposite.*/
+			degree=getRotation(); 
+			yOffset= (int) Math.ceil((LENGTH/2.0)*Math.sin(Math.toRadians((int)degree)));
+			yOffset= -yOffset;
+		}
+		else if(point.equals("back right"))
+		{
+			/*The back right corner of the tank is diametrically opposite from
+			 * the front left corner compared to the tank's centre, so we 
+			 * make the same calculations as for the front left corner
+			 * and change the offset to it's opposite.*/
+			degree=getRotation()-ANGLE;
+			yOffset = (int) Math.ceil(HALF_DIAGONAL * Math.sin(Math.toRadians(degree)));
+			yOffset= -yOffset;
+		}
+		else
+		{
 			/*Should never be reached since it is a private method, but it is
 			* put to highlight bugs if a mistake is made.*/
-			default:
-				yOffset=0;
-				break;
+			yOffset=0;
 		}
 		
 		return yOffset;
@@ -1072,7 +1068,7 @@ public abstract class Tank extends Actor
 	 * tank and it's turret, and all other instance variables. */
 	public void reloadTank()
 	{
-		TankWorld world=getWorldOfType(TankWorld.class);
+		TankWorld world = (TankWorld) getWorld();
 		
 		/*Check if the tank is in a game world to avoid exceptions.*/
 		if(world!=null)

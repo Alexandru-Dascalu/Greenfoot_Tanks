@@ -66,12 +66,13 @@ public abstract class Turret extends Actor
         /*Add the turret to the world on this tank. The if statement is put to 
          * avoid potential NullPointerException, though the given tank should
          * already be in the world.*/
-        TankWorld world=tank.getWorldOfType(TankWorld.class);
-        if(world!=null)
+        TankWorld tankWorld = (TankWorld) tank.getWorld();
+        if(tankWorld!=null)
         {
-            world.addObject(this,tank.getX(),tank.getY());
+            tankWorld.addObject(this, tank.getX(), tank.getY());
+            
             //make sure the image of the turret is on top of the tank's image
-            tank.getImage().drawImage(this.getImage(),tank.getX(),tank.getY());
+            tank.getImage().drawImage(this.getImage(), tank.getX(), tank.getY());
         }
     }
      
