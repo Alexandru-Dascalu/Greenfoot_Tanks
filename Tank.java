@@ -334,8 +334,9 @@ public abstract class Tank extends Actor
 	}
 	
 	/**
-	 * Method checks if the tank can move forwards.
-	 * @return True if the tank can move forwards, false if not.
+	 * Gets any wall touching the front of the tank.
+	 * @return an instance of a wall touching the front of the tank, or null if 
+	 * there is no such wall.
 	 */
 	public WallBlock getForwardsWallContact()
 	{
@@ -378,8 +379,9 @@ public abstract class Tank extends Actor
 	}
 
 	/**
-	 * Method checks if the tank can move backwards.
-	 * @return True if the tank can move backwards, false if not.
+	 * Gets any wall touching the back of the tank.
+	 * @return an instance of a wall touching the back of the tank, or null if 
+	 * there is no such wall.
 	 */
 	public WallBlock getBackwardsWallContact()
 	{
@@ -1000,13 +1002,11 @@ public abstract class Tank extends Actor
     	String[][] quadrants= { {"left","front"}, {"back","right"} };
     	
     	/*An array that will be set to one of the rows of the matrix, based  on
-    	 * if the given point is above or below the diagonal that points to the
-    	 * lower left.*/
+    	 * if the given point is above or below diagonal 1.*/
     	String[] temp;
     	
     	/*The result of this computation. It will be set to one of the values in
-    	 * the temp array, based on if the given point is above or below the 
-    	 * diagonal that points to the upper right.*/
+    	 * the temp array, based on if the given point is above or below diagonal 2.*/
     	String quadrant;
     	
     	/*We narrow down the possible results by seeing if the given point is 
@@ -1160,7 +1160,7 @@ public abstract class Tank extends Actor
 	protected static double normalizeAngle(double angle)
 	{	
 		//Use mod division to bring it to a value between -359 and 359.
-		double normalizedAngle=angle%360;;
+		double normalizedAngle=angle%360;
 		
 		//Check if the value is negative.
 		if(normalizedAngle<0)
