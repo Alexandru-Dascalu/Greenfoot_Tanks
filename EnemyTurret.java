@@ -66,7 +66,7 @@ public abstract class EnemyTurret extends Turret
 	
 	/**
 	 * Makes a new enemy Turret on the Tank given as an argument.
-	 * @param tank The Tank on which this Turret will pe placed.
+	 * @param tank The Tank on which this Turret will be placed.
 	 */
 	public EnemyTurret(Tank tank)
 	{
