@@ -180,7 +180,7 @@ public abstract class Tank extends Actor
 	}
     
     /**
-     * Accurately moves the only on the horizontal axis by the horizontal 
+     * Accurately moves the tank only on the horizontal axis by the horizontal 
      * component of the distance given.
      * @param distance The distance the tank would travel if it were moved on
      * both axes.
@@ -211,7 +211,7 @@ public abstract class Tank extends Actor
     }
     
     /**
-     * Accurately moves the only on the vertical axis by the horizontal 
+     * Accurately moves the tank only on the vertical axis by the horizontal 
      * component of the distance given.
      * @param distance The distance the tank would travel if it were moved on
      * both axes.
